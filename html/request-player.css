@@ -1,0 +1,285 @@
+.send-request-to-player {
+    background: linear-gradient(113deg, rgba(11, 11, 12, 0.40) 0%, rgba(11, 11, 12, 0.40) 100%);
+    width: 50vw;
+    height: 40vh;
+    border: .2vh solid #636363;
+    border-radius: .5vh;
+    position: absolute;
+}
+
+.srtp {
+    background: linear-gradient(118deg, rgba(0, 1, 3, 0.28) 4.7%, rgba(1, 1, 4, 0.71) 100.47%);
+    width: 95%;
+    height: 93%;
+    border: .1vh solid #626262;
+    border-radius: .5vh;
+    position: absolute;
+}
+
+.request-upper {
+    width: 95%;
+    height: 13.5%;
+    top: 5.5%;
+    position: absolute;
+}
+
+.request-upper svg {
+    top: 3.2vh;
+    position: absolute;
+}
+
+.ru-text {
+    color: #7C7C7C;
+    font-size: 2vh;
+    font-weight: 600;
+    letter-spacing: .5vh;
+    top: .1vh;
+    position: absolute;
+}
+
+.request-sender {
+    background: linear-gradient(91deg, rgba(217, 217, 217, 0.07) 7.12%, rgba(217, 217, 217, 0.00) 93.17%);
+    box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+    border: .2vh solid #636363;
+    border-radius: .5vh;
+    width: 35%;
+    height: 100%;
+    left: 0;
+    top: 0;
+    position: absolute;
+}
+
+.rs-pfp {
+    width: 2.4041666666666665vw;
+    height: 4.208775731310942vh;
+    left: 1.5vh;
+    border-radius: 50%;
+    position: absolute;
+}
+
+.rs-welcome-text {
+    color: #707070;
+    font-size: 1.1vh;
+    font-weight: 400;
+    top: 1vh;
+    left: 7vh;
+    position: absolute;
+}
+
+.rs-player-name {
+    color: #C7C5C5;
+    font-size: 1.3vh;
+    font-weight: 600;
+    top: 2.6vh;
+    left: 7vh;
+    position: absolute;
+}
+
+.request-receiver {
+    background: linear-gradient(91deg, rgba(217, 217, 217, 0.07) 7.12%, rgba(217, 217, 217, 0.00) 93.17%);
+    box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+    border: .2vh solid #636363;
+    border-radius: .5vh;
+    width: 35%;
+    height: 100%;
+    right: 0;
+    top: 0;
+    position: absolute;
+}
+
+.rr-pfp {
+    width: 2.4041666666666665vw;
+    height: 4.208775731310942vh;
+    left: 1.5vh;
+    border-radius: 50%;
+    position: absolute;
+}
+
+.rr-welcome-text {
+    color: #707070;
+    font-size: 1.1vh;
+    font-weight: 400;
+    top: 1vh;
+    left: 7vh;
+    position: absolute;
+}
+
+.rr-player-name {
+    color: #C7C5C5;
+    font-size: 1.3vh;
+    font-weight: 600;
+    top: 2.6vh;
+    left: 7vh;
+    position: absolute;
+}
+
+.sr-housename {
+    width: 45%;
+    height: 17%;
+    left: 2.16vh;
+    top: 10vh;
+    position: absolute;
+}
+
+.sr-housename span {
+    color: #8D8D8D;
+    font-size: 1.2vh;
+    font-weight: 600;
+    left: 0;
+    top: 0;
+    position: absolute;
+}
+
+.sr-housename div {
+    background: rgba(217, 217, 217, 0.04);
+    width: 100%;
+    height: 60%;
+    border: .1vh solid #434343;
+    border-radius: .4vh;
+    left: 0;
+    bottom: 0;
+    position: absolute;
+}
+
+.sr-housename div span {
+    color: #A1A1A1;
+    font-size: 1.3vh;
+    left: 1.5vh;
+    top: 1.1vh;
+    position: absolute;
+}
+
+.sr-housenumber {
+    width: 45%;
+    height: 17%;
+    right: 2.16vh;
+    top: 10vh;
+    position: absolute;
+}
+
+.sr-housenumber span {
+    color: #8D8D8D;
+    font-size: 1.2vh;
+    font-weight: 600;
+    left: 0;
+    top: 0;
+    position: absolute;
+}
+
+.sr-housenumber div {
+    background: rgba(217, 217, 217, 0.04);
+    width: 100%;
+    height: 60%;
+    border: .1vh solid #434343;
+    border-radius: .4vh;
+    left: 0;
+    bottom: 0;
+    position: absolute;
+}
+
+.sr-housenumber div span {
+    color: #A1A1A1;
+    font-size: 1.3vh;
+    left: 1.5vh;
+    top: 1.1vh;
+    position: absolute;
+}
+
+.sr-housetime {
+    width: 95%;
+    height: 17%;
+    top: 19vh;
+    position: absolute;
+}
+
+.sr-housetime span {
+    color: #8D8D8D;
+    font-size: 1.2vh;
+    font-weight: 600;
+    left: 0;
+    top: 0;
+    position: absolute;
+}
+
+.sr-housetime div {
+    background: rgba(217, 217, 217, 0.04);
+    width: 100%;
+    height: 60%;
+    border: .1vh solid #434343;
+    border-radius: .4vh;
+    left: 0;
+    bottom: 0;
+    position: absolute;
+}
+
+.sr-housetime div span {
+    color: #A1A1A1;
+    font-size: 1.3vh;
+    left: 1.5vh;
+    top: 1.1vh;
+    position: absolute;
+}
+
+.sr-houseprice {
+    width: 95%;
+    height: 17%;
+    left: 2.16vh;
+    top: 19vh;
+    position: absolute;
+}
+
+.sr-houseprice span {
+    color: #8D8D8D;
+    font-size: 1.2vh;
+    font-weight: 600;
+    left: 0;
+    top: 0;
+    position: absolute;
+}
+
+.sr-houseprice div {
+    background: rgba(217, 217, 217, 0.04);
+    width: 100%;
+    height: 60%;
+    border: .1vh solid #434343;
+    border-radius: .4vh;
+    left: 0;
+    bottom: 0;
+    position: absolute;
+}
+
+.sr-houseprice div span {
+    color: #A1A1A1;
+    font-size: 1.3vh;
+    left: 1.5vh;
+    top: 1.1vh;
+    position: absolute;
+}
+
+.sr-accept {
+    background: #3779D8;
+    width: 45%;
+    height: 11%;
+    left: 2.16vh;
+    bottom: 4vh;
+    border-radius: .5vh;
+    cursor: pointer;
+    color: white;
+    font-size: 1.4vh;
+    font-weight: 600;
+    position: absolute;
+}
+
+.sr-decline {
+    background: #6A6A6A;
+    width: 45%;
+    height: 11%;
+    right: 2.16vh;
+    bottom: 4vh;
+    border-radius: .5vh;
+    cursor: pointer;
+    color: white;
+    font-size: 1.4vh;
+    font-weight: 600;
+    position: absolute;
+}

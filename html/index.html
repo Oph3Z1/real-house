@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="garage.css">
+    <link rel="stylesheet" type="text/css" href="wrapper.css">
+    <link rel="stylesheet" type="text/css" href="house-management.css">
+    <link rel="stylesheet" type="text/css" href="request-player.css">
+    <title>oph3z-housev2</title>
+</head>
+<body>
+    <div id="app">
+        <div class="main">
+            <div class="wrapper" v-if="page == 'buyhouse'">
+                <div class="wrapper-upper">
+                    <div class="player-information">
+                        <img class="warpper-pfp" src="img/ursupp.png">
+                        <span class="wrapper-welcome-text">Welcome To The Home Menu</span>
+                        <span class="wrapper-player-name">Oph3Z HouseV2</span>
+                    </div>
+                    <div class="player-money">
+                        <div class="pm-left">
+                            <img src="img/bank.png" class="bankmoneyimg">
+                            <span class="player-bank-balance">$ 100.000.000</span>
+                        </div>
+                        <div class="pm-right">
+                            <img src="img/cash.png" class="cashmoneyimg">
+                            <span class="player-cash-balance">$ 100.000.000</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="wrapper-lower">
+                    <img src="img/background-effect.png" class="wrapper-lower-background">
+                    <div class="house-img-container">
+                        <img src="img/house-background.png">
+                    </div>
+                    <div class="house-name-contianer">
+                        <span>HOUSE NAME</span>
+                        <div class="hnc-container"> <span> My New Home </span> </div>
+                    </div>
+                    <div class="house-price-container">
+                        <span>HOUSE PRICE</span>
+                        <div class="hpc-container"> <span> $ 100.000.000 </span> </div>
+                    </div>
+                    <div class="house-garage-container">
+                        <span>GARAGE</span>
+                        <div class="hgc-container">
+                            <span> 
+                                Garage Available
+                                <svg xmlns="http://www.w3.org/2000/svg" width="35" height="32" viewBox="0 0 35 32" fill="none">
+                                    <g filter="url(#filter0_d_11_57)">
+                                      <path d="M11.5782 16.771L15.122 20.3148L23.7284 11.7084" stroke="#9CFE6E" stroke-width="2.02503"/>
+                                    </g>
+                                    <defs>
+                                      <filter id="filter0_d_11_57" x="0.737103" y="0.86726" width="33.8324" height="31.0046" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+                                        <feFlood flood-opacity="0" result="BackgroundImageFix"/>
+                                        <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
+                                        <feOffset/>
+                                        <feGaussianBlur stdDeviation="5.06258"/>
+                                        <feComposite in2="hardAlpha" operator="out"/>
+                                        <feColorMatrix type="matrix" values="0 0 0 0 0.611765 0 0 0 0 0.996078 0 0 0 0 0.431373 0 0 0 0.55 0"/>
+                                        <feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_11_57"/>
+                                        <feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow_11_57" result="shape"/>
+                                      </filter>
+                                    </defs>
+                                </svg>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="garage-amount-container">
+                        <span>GARAGE SLOT</span>
+                        <div class="gac-container"> <span> 2 SLOT </span> </div>
+                    </div>
+                    <div class="house-description-container"> 
+                        <span>HOUSE DESCRIPTION</span>
+                        <div class="hdc-container">
+                            <span>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Veritatis, reprehenderit assumenda enim, dolor aspernatur neque dolorem eos beatae blanditiis eaque, cupiditate velit deserunt alias. Laudantium explicabo molestiae, reiciendis, architecto asperiores deleniti quis, quisquam ipsa porro qui nisi possimus quibusdam ad dolores sapiente pariatur sint. Excepturi suscipit tempora maiores recusandae, nam laboriosam esse quod cupiditate officiis sed dolor rem tenetur natus quam. Facilis, sit. At veniam dolores omnis laborum possimus architecto soluta natus? Accusantium quae vitae labore deleniti commodi animi accusamus, dicta fuga quasi nihil incidunt ipsam porro ex reprehenderit officiis? Expedita, cum, quod consectetur a, delectus dolorem in vel incidunt voluptates qui quam nemo. Et soluta ipsam in quas non perspiciatis tempora ea totam culpa sint! Officiis soluta mollitia quas quis voluptatibus vero repellendus accusantium enim quisquam. Sunt, ullam reiciendis non laboriosam veniam maxime unde sequi temporibus aliquam fugiat necessitatibus error. Culpa in deserunt vel aspernatur, delectus accusamus illo praesentium dolorem reprehenderit sit amet eum ratione facilis officiis nesciunt repellat saepe deleniti velit impedit atque aliquid et, ex iste sequi. Non natus odit voluptatum tempora quis deleniti nostrum ipsa sit nisi doloribus! Reprehenderit architecto debitis in beatae vero sit, eum minima ex necessitatibus harum ratione, quae eligendi illo nobis asperiores facere excepturi praesentium magni quis corporis quas officia ullam. Ratione aliquam assumenda similique dicta voluptates veniam magni ab sit eos quod, quae odio natus eveniet nulla. Voluptates atque sequi velit nobis nesciunt, voluptatem nostrum culpa impedit quod voluptate, ipsa, porro quo accusantium aliquam reiciendis obcaecati. Quam ab expedita similique, exercitationem iure fugit neque ratione quod magnam mollitia laborum in maxime sapiente ipsum. Blanditiis asperiores adipisci voluptatum modi vero repellat quia facilis amet! Similique exercitationem eum cupiditate placeat in tempore, dolorem maxime quaerat iste atque expedita, facilis, unde voluptates libero dolor repudiandae. Aut repellat facere, ipsum totam, optio reprehenderit tempore fuga suscipit odit repellendus perspiciatis molestiae error ex, amet voluptates! Ea suscipit officia nostrum minus tempora nam asperiores laudantium placeat atque. Excepturi quos perferendis id est quis molestiae ab obcaecati cumque, atque maxime exercitationem, eius amet dolorem facere. Laborum laudantium doloribus error nemo explicabo doloremque quia in numquam, ipsum, temporibus ab quos sequi molestias veniam corrupti accusamus, consequuntur sunt rerum soluta. Repudiandae maxime reiciendis distinctio fuga id, dolorem ea aliquid, quo laboriosam consectetur voluptatibus eos, provident neque corrupti recusandae officia. Quis deserunt tempore esse, suscipit dolorum autem quibusdam a ab nobis omnis voluptatum, sit provident eligendi aliquam asperiores ducimus id cupiditate soluta, deleniti voluptas excepturi sequi iusto! Eaque corporis laudantium sed dolore mollitia ullam exercitationem, suscipit reprehenderit libero, quae ex ducimus necessitatibus accusamus blanditiis dolorem ea laborum optio saepe aperiam, fuga consequatur vero. Corrupti, culpa veniam. Rerum sit similique tempora temporibus. Eum voluptate placeat aperiam dolores, consectetur architecto! Aliquam, sint voluptatem illum, officia aliquid debitis commodi tenetur iusto nobis fuga eveniet ea ab, ipsa quidem. Omnis fugit modi quos tempore necessitatibus deleniti illo error hic sapiente voluptatem placeat, deserunt maxime eum voluptate officiis dolore! Doloribus maiores laborum nisi laboriosam itaque dicta ratione magni quo pariatur possimus, facere ad fuga repellendus quibusdam?</span>
+                        </div>
+                    </div>
+                    <div class="buy-house-button"> BUY HOUSE </div>
+                    <div class="rent-house-button" v-if="!rented"> RENT HOUSE</div>
+                    <div class="house-rented-container" v-else>
+                        <div class="rented-player-information">
+                            <img src="img/rentpp.png">
+                            <span class="rpi-name">Oph3Z HouseV2</span>
+                            <span class="rpi-mini-text">Rented: 20/10/2023</span>
+                        </div>
+                        <div class="rented-buttom">
+                            RENTED BY USER
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="garage-container" v-if="page == 'garage'">
+                <div class="garage-upper">
+                    <div class="garage-player-information">
+                        <img class="garage-pfp" src="img/ursupp.png">
+                        <span class="garage-welcome-text">Welcome To The Home Menu</span>
+                        <span class="garage-player-name">Oph3Z HouseV2</span>
+                    </div>
+                    <div class="garage-slot-container">
+                        <img src="img/houseslot.png" class="garage-slot-icon">
+                        <span>10/20</span>
+                        <div class="line"></div>
+                        <div class="garage-add-slot-button" @click="popupscreen = 'add-slot'"> ADD SLOT </div>
+                    </div>
+                    <div class="garage-player-money">
+                        <div class="gpm-left">
+                            <img src="img/bank.png" class="gbankmoneyimg">
+                            <span class="gplayer-bank-balance">$ 100.000.000</span>
+                        </div>
+                        <div class="gpm-right">
+                            <img src="img/cash.png" class="gcashmoneyimg">
+                            <span class="gplayer-cash-balance">$ 100.000.000</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="garage-lower">
+                    <div class="garage-item">
+                        <div class="gi-slot">
+                            1/10
+                        </div>
+                        <img src="img/garagecar.png" class="garage-car-icon">
+                        <div class="garage-car-information">
+                            <span>NISSAN SKYLINE R42</span>
+                            <p>99 AA 454</p>
+                        </div>
+                        <div class="garage-car-owner">
+                            <img src="img/rentpp.png">
+                            <span>Oph3Z HouseV2</span>
+                            <p>Vehicle Owner</p>
+                        </div>
+                        <div class="take-out-vehicle"> TAKE OUT </div>
+                    </div>
+                </div>
+                <div class="garage-add-slot-container" v-if="popupscreen == 'add-slot'">
+                    <div class="add-slot-container">
+                        <div class="add-slot">
+                            <h1>GARAGE ADD SLOT</h1>
+                            <div class="as-slot-quantity">
+                                <span>SLOT QUANTITY</span>
+                                <input type="number">
+                            </div>
+                            <div class="as-slot-price">
+                                <span>SLOT PRICE</span>
+                                <div> <span>$ 100.000</span> </div>
+                            </div>
+                            <div class="add-slot-pay-with-cash">PAY WITH CASH</div>
+                            <div class="add-slot-pay-with-bank">PAY WITH CARD</div>
+                            <div class="close-add-slot-screen" @click="popupscreen = false">CANCEL</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="house-management-container" v-if="page == 'house-management'">
+                <div class="management-upper">
+                    <div class="management-player-information">
+                        <img class="management-pfp" src="img/ursupp.png">
+                        <span class="management-welcome-text">Welcome To The Home Menu</span>
+                        <span class="management-player-name">Oph3Z HouseV2</span>
+                    </div>
+                    <div class="management-player-money">
+                        <div class="mpm-left">
+                            <img src="img/bank.png" class="mbankmoneyimg">
+                            <span class="mplayer-bank-balance">$ 100.000.000</span>
+                        </div>
+                        <div class="mpm-right">
+                            <img src="img/cash.png" class="mcashmoneyimg">
+                            <span class="mplayer-cash-balance">$ 100.000.000</span>
+                        </div>
+                    </div>
+                    <div class="management-extend-time" @click="ChangeScreens(false, 'rent-settings')" v-if="rented == true"> RENT SETTINGS </div>
+                    <div class="management-housesettings" @click="ChangeScreens(false, 'house-settings')" v-if="rented == false"> HOUSE SETTINGS </div>
+                </div>
+                <div class="management-lower">
+                    <div class="mhouse-img-container">
+                        <img src="img/management-housebg.png"> <!-- 966 x 252 -->
+                    </div>
+                    <div class="house-friends">
+                        <span>HOUSE FRIENDS</span>
+                        <div class="hf-header"> <span>Friends List</span> </div>
+                        <div class="hf-container">
+                            <div class="friends-item" v-for="(data, index) in friends">
+                                <img :src="data.img" class="fi-icon">
+                                <span>{{data.firstname + ' ' + data.lastname}}</span>
+                                <img src="img/kick-icon.png" class="fi-kick-icon" @click="RemoveFromFriends(data.id)">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="sell-rent-house-nearby-players">
+                        <span>RENT/SELL HOUSE TO NEARBY PLAYERS</span>
+                        <div class="srh-header"> <span>Nearby Players</span> </div>
+                        <div class="srh-container">
+                            <div class="nearby-players" v-for="data in nerabyplayers">
+                                <img src="img/ursupp.png" class="np-icon">
+                                <span>{{data.firstname + ' ' + data.lastname}}</span>
+                                <img src="img/green-tik-icon.png" class="tik-icon" @click="popupscreen = 'sellrenthouse'">
+                                <img src="img/green-add-friend-icon.png" class="add-friend-icon" @click="AddToFriends(data.id, data.firstname, data.lastname, data.img); RemoveFromNearbyPlayers(data.id)">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="allow-rent-container">
+                        <span>ALLOW RENT? YES/NO</span>
+                        <div class="arc-header"> <span>Do you agree to rent out?</span> </div>
+                        <div class="allow-rent-button" @click="rentallowed = true" :style=" {border: rentallowed == true ? '1px solid white' : '',} "> YES </div>
+                            <div class="dont-allow-rent" @click="rentallowed = false" :style=" {border: rentallowed == false ? '1px solid white' : '',} "> NO </div>
+                        <div v-if="rentallowed">
+                            <input type="number" class="rent-price" placeholder="$1000">
+                            <input type="number" class="rent-time" placeholder="24 (Hours)">
+                            <div class="allow-rent-save-button"> SAVE </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="sell-rent-house-popupscreen" v-if="page == 'house-management' && popupscreen == 'sellrenthouse'">
+                    <div class="sell-rent-house-container">
+                        <div class="srhc">
+                            <h1>RENT OR SELL?</h1>
+                            <div class="srhc-rent-option" @click="rentsellhouseoption = 'rent'" :style="{ opacity: rentsellhouseoption === 'rent' ? 1 : 0.36 }">RENT HOUSE</div>
+                            <div class="srhc-sell-option" @click="rentsellhouseoption = 'sell'" :style="{ opacity: rentsellhouseoption === 'sell' ? 1 : 0.36 }">SELL HOUSE</div>
+                            <div class="rent-option" v-if="rentsellhouseoption == 'rent'">
+                                <span class="ro-text1">RENT TIME</span>
+                                <input type="number" class="ro-time" placeholder="24 (Hours)">
+                                <span class="ro-text2">RENT PRICE</span>
+                                <input type="number" class="ro-price" placeholder="$ 1.000">
+                            </div>
+                            <div class="sell-option" v-if="rentsellhouseoption == 'sell'">
+                                <span class="so-text">HOUSE PRICE</span>
+                                <input type="number" class="so-price" placeholder="$ 1.000">
+                            </div>
+                            <div class="srhc-confirm" :style="{background: rentsellhouseoption === 'sell' ? '#D83771' : '#3778D6'}">CONFIRM</div>
+                            <div class="srhc-cancel" @click="popupscreen = false">CANCEL</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="rent-settings" v-if="popupscreen == 'rent-settings'">
+                <div class="rent-upper">
+                    <div class="rent-player-information">
+                        <img class="rent-pfp" src="img/ursupp.png">
+                        <span class="rent-welcome-text">Welcome To The Home Menu</span>
+                        <span class="rent-player-name">Oph3Z HouseV2</span>
+                    </div>
+                    <div class="rent-player-money">
+                        <div class="rpm-left">
+                            <img src="img/bank.png" class="rbankmoneyimg">
+                            <span class="rplayer-bank-balance">$ 100.000.000</span>
+                        </div>
+                        <div class="rpm-right">
+                            <img src="img/cash.png" class="rcashmoneyimg">
+                            <span class="rplayer-cash-balance">$ 100.000.000</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="rent-lower">
+                    <img src="img/rent-settings-background.png">
+                    <div class="rl-housename">
+                        <span>HOUSE NAME</span>
+                        <div> <span>My New Home</span> </div>
+                    </div>
+                    <div class="rl-new-rent-time">
+                        <span>HOW LONG DO YOU WANT TO EXTEND THE TIME?</span>
+                        <input type="number" placeholder="24 (HOURS)">
+                    </div>
+                    <div class="house-price">
+                        <span>HOUSE PRICE</span>
+                        <div> <span>$ 100.000</span> </div>
+                    </div>
+                    <div class="extend-time">EXTEND TIME</div>
+                    <div class="rent-settings-cancel" @click="ChangeScreens('house-management', false)">CANCEL</div>
+                    <span class="rent-time-remaining">Remaining term of the lease: 7 Days - 3 Hours - 45 Minutes</span>
+                </div>
+            </div>
+            <div class="send-request-to-player" v-if="popupscreen == 'request-screen'">
+                <div class="srtp">
+                    <div class="request-upper">
+                        <div class="request-sender">
+                            <img class="rs-pfp" src="img/ursupp.png">
+                            <span class="rs-welcome-text">Welcome To The Home Menu</span>
+                            <span class="rs-player-name">Oph3Z HouseV2</span>
+                        </div>
+                        <span class="ru-text">REQUEST</span>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="20" viewBox="0 0 29 25" fill="none">
+                            <path d="M14.5138 24.9959C14.1574 24.9968 13.8073 24.9025 13.4997 24.7228C13.192 24.543 12.9379 24.2843 12.7638 23.9734L0.762535 2.98468C0.591541 2.68312 0.501133 2.34259 0.500034 1.99593C0.500685 1.67624 0.577965 1.36136 0.725391 1.07769C0.872818 0.79402 1.0861 0.549826 1.34735 0.365575C1.60861 0.181325 1.91023 0.0623875 2.22693 0.0187332C2.54362 -0.0249212 2.86617 0.00797971 3.16753 0.114678L13.1613 3.53343C13.2602 3.56711 13.346 3.63092 13.4068 3.71589C13.4675 3.80086 13.5001 3.90272 13.5 4.00718L13.5 12.9959C13.4997 13.133 13.5276 13.2687 13.582 13.3946C13.6363 13.5204 13.716 13.6338 13.8159 13.7275C13.9159 13.8213 14.0341 13.8935 14.1632 13.9397C14.2923 13.9859 14.4295 14.005 14.5663 13.9959C14.8234 13.9733 15.0625 13.8543 15.2357 13.6628C15.4088 13.4714 15.5032 13.2216 15.5 12.9634L15.5 4.01593C15.4998 3.91163 15.5323 3.80988 15.5928 3.72492C15.6533 3.63997 15.7389 3.57608 15.8375 3.54218L25.8375 0.112179C26.2207 -0.0213933 26.6355 -0.0352424 27.0267 0.0724709C27.418 0.180184 27.7672 0.404363 28.028 0.715238C28.2888 1.02611 28.4489 1.40898 28.487 1.81298C28.5251 2.21699 28.4394 2.62303 28.2413 2.97718L16.255 23.9772C16.0811 24.2861 15.8282 24.5432 15.5223 24.7222C15.2163 24.9012 14.8683 24.9957 14.5138 24.9959Z" fill="#7C7C7C"/>
+                        </svg>
+                        <div class="request-receiver">
+                            <img class="rr-pfp" src="img/ursupp.png">
+                            <span class="rr-welcome-text">Welcome To The Home Menu</span>
+                            <span class="rr-player-name">Oph3Z HouseV2</span>
+                        </div>
+                    </div>
+                    <div class="sr-housename">
+                        <span>HOUSE NAME</span>
+                        <div> <span>My New Home</span> </div>
+                    </div>
+                    <div class="sr-housenumber">
+                        <span>HOUSE NUMBER</span>
+                        <div> <span>17</span> </div>
+                    </div>
+                    <div class="sr-housetime" v-if="rented == true">
+                        <span>HOUSE RENT TIME</span>
+                        <div> <span>17 DAYS</span> </div>
+                    </div>
+                    <div class="sr-houseprice" v-else>
+                        <span>HOUSE PRICE</span>
+                        <div> <span>$ 1.000</span> </div>
+                    </div>
+                    <div class="sr-accept">Accept</div>
+                    <div class="sr-decline">Decline</div>
+                </div>
+            </div>
+            <div class="house-settings" v-if="popupscreen == 'house-settings'">
+                <div class="house-settings-upper">
+                    <div class="house-settings-player-information">
+                        <img class="house-settings-pfp" src="img/ursupp.png">
+                        <span class="house-settings-welcome-text">Welcome To The Home Menu</span>
+                        <span class="house-settings-player-name">Oph3Z HouseV2</span>
+                    </div>
+                    <div class="house-settings-player-money">
+                        <div class="house-settings-rpm-left">
+                            <img src="img/bank.png" class="house-settings-rbankmoneyimg">
+                            <span class="house-settings-rplayer-bank-balance">$ 100.000.000</span>
+                        </div>
+                        <div class="house-settings-rpm-right">
+                            <img src="img/cash.png" class="house-settings-rcashmoneyimg">
+                            <span class="house-settings-rplayer-cash-balance">$ 100.000.000</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="house-settings-lower">
+                    <div class="house-settings-save" @click="ChangeScreens('house-management', false)"> SAVE </div>
+                    <img src="img/house-settings-img-example.png">
+                    <h1>HOUSE SETTINGS</h1>
+                    <p>Here you can change information about your house.</p>
+                    <div class="house-settings-lower-house-name">
+                        <span>HOUSE NAME</span>
+                        <input type="text" placeholder="Enter House Name">
+                    </div>
+                    <div class="house-settings-lower-house-value">
+                        <span>HOUSE VALUE/PRICE</span>
+                        <input type="number" placeholder="Enter House Price">
+                    </div>
+                    <div class="house-settings-lower-house-garage-slot">
+                        <span>HOUSE GARAGE SLOT</span>
+                        <input type="number" placeholder="Enter Garage Slot">
+                    </div>
+                    <div class="house-settings-lower-house-img">
+                        <span>HOUSE IMAGE</span>
+                        <input type="text" placeholder="Enter Image URL">
+                    </div>
+                    <div class="house-settings-lower-house-description">
+                        <span>HOUSE DESCRIPTION</span>
+                        <input type="text" placeholder="Enter House Description">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+<script src="nui://game/ui/jquery.js" type="text/javascript"></script>
+<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+<script src="https://unpkg.com/vue"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/vue@2.6.12/dist/vue.js"></script>
+<script src="app.js"></script>
+</html>

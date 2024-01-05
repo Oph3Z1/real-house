@@ -1,0 +1,472 @@
+@import url('https://fonts.cdnfonts.com/css/satoshi');
+
+* {
+    user-select: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+html {
+    overflow: hidden !important;
+}
+
+#app {
+    overflow: hidden;
+    padding: 0;
+    margin: 0;
+    font-family: Satoshi !important;
+    scroll-behavior: smooth;
+
+    -webkit-tap-highlight-color: transparent;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+::-webkit-scrollbar {
+    width: 0.1px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: transparent;
+}
+
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+}
+
+.main {
+    background: url(img/bg.png);
+    background-size: cover;
+    background-repeat: no-repeat;
+    width: 100%;
+    height: 100%;
+    left: 0;
+    top: 0;
+    position: absolute;
+}
+
+.wrapper {
+    background: linear-gradient(113deg, rgba(11, 11, 12, 0.40) 0%, rgba(11, 11, 12, 0.40) 100%);
+    width: 47.135416666666664vw;
+    height: 80.86793066088842vh;
+    border: .2vh solid #636363;
+    border-radius: .5vh;
+    position: absolute;
+}
+
+.wrapper-upper {
+    width: 90%;
+    height: 9%;
+    top: 2.5%;
+    position: absolute;
+}
+
+.player-information {
+    background: linear-gradient(91deg, rgba(217, 217, 217, 0.07) 7.12%, rgba(217, 217, 217, 0.00) 93.17%);
+    box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+    border: .2vh solid #636363;
+    border-radius: .5vh;
+    width: 48%;
+    height: 100%;
+    left: 0;
+    top: 0;
+    position: absolute;
+}
+
+.warpper-pfp {
+    width: 2.6041666666666665vw;
+    height: 4.508775731310942vh;
+    left: 2vh;
+    border-radius: 50%;
+    position: absolute;
+}
+
+.wrapper-welcome-text {
+    color: #707070;
+    font-size: 1.1vh;
+    font-weight: 400;
+    top: 1.7vh;
+    left: 8vh;
+    position: absolute;
+}
+
+.wrapper-player-name {
+    color: #C7C5C5;
+    font-size: 1.4vh;
+    font-weight: 600;
+    top: 3.5vh;
+    left: 8vh;
+    position: absolute;
+}
+
+.player-money {
+    background: linear-gradient(91deg, rgba(217, 217, 217, 0.07) 7.12%, rgba(217, 217, 217, 0.00) 93.17%);
+    border: .2vh solid #636363;
+    border-radius: .5vh;
+    width: 48%;
+    height: 100%;
+    top: 0;
+    right: 0;
+    position: absolute;
+}
+
+.pm-left {
+    width: 50%;
+    height: 100%;
+    left: 0;
+    top: 0;
+    position: absolute;
+}
+
+.bankmoneyimg {
+    width: 1.9791666666666667vw;
+    height: 3.517009750812568vh;
+    left: 1.5vh;
+    position: absolute;
+}
+
+.player-bank-balance {
+    color: #BABABA;
+    font-weight: 600;
+    font-size: 1.4vh;
+    left: 6vh;
+    position: absolute;
+}
+
+.pm-right {
+    width: 50%;
+    height: 100%;
+    right: 0;
+    top: 0;
+    position: absolute;
+}
+
+.cashmoneyimg {
+    width: 1.8791666666666667vw;
+    height: 3.517009750812568vh;
+    left: 1vh;
+    position: absolute;
+}
+
+.player-cash-balance {
+    color: #BABABA;
+    font-weight: 600;
+    font-size: 1.4vh;
+    left: 5.2vh;
+    position: absolute;
+}
+
+.wrapper-lower {
+    width: 89.5%;
+    height: 83%;
+    bottom: 2.5%;
+    border: .2vh solid #636363;
+    border-radius: .7vh;
+    position: absolute;
+}
+
+.wrapper-lower-background {
+    width: 100.5%;
+    height: 100.5%;
+    position: absolute;
+}
+
+.house-img-container {
+    width: 95%;
+    height: 34%;
+    border-radius: 1.2vh;
+    top: 2vh;
+    position: absolute;
+}
+
+.house-img-container img {
+    width: 100%;
+    height: 100%;
+    left: 0;
+    top: 0;
+    position: absolute;
+}
+
+.house-name-contianer {
+    width: 19vw;
+    height: 9vh;
+    left: 1.9vh;
+    top: 26vh;
+    position: absolute;
+}
+
+.house-name-contianer span {
+    color: #8D8D8D;
+    font-weight: 600;
+    font-size: 1.35vh;
+    top: 0;
+    left: 0;
+    position: absolute;
+}
+
+.hnc-container {
+    background: rgba(217, 217, 217, 0.04);
+    border: .1vh solid #434343;
+    border-radius: .4vh;
+    width: 100%;
+    height: 5vh;
+    bottom: 1vh;
+    left: 0;
+    position: absolute;
+}
+
+.hnc-container span {
+    font-weight: 600;
+    font-size: 1.6vh;
+    left: 2vh;
+    top: 1.3vh;
+    position: absolute;
+}
+
+.house-price-container {
+    width: 19vw;
+    height: 9vh;
+    right: 1.9vh;
+    top: 26vh;
+    position: absolute;
+}
+
+.house-price-container span {
+    color: #8D8D8D;
+    font-weight: 600;
+    font-size: 1.35vh;
+    top: 0;
+    left: 0;
+    position: absolute;
+}
+
+.hpc-container {
+    background: rgba(217, 217, 217, 0.04);
+    border: .1vh solid #434343;
+    border-radius: .4vh;
+    width: 100%;
+    height: 5vh;
+    bottom: 1vh;
+    left: 0;
+    position: absolute;
+}
+
+.hpc-container span {
+    font-weight: 600;
+    font-size: 1.6vh;
+    left: 2vh;
+    top: 1.3vh;
+    position: absolute;
+}
+
+.house-garage-container {
+    width: 19vw;
+    height: 9vh;
+    left: 1.9vh;
+    top: 35.5vh;
+    position: absolute;
+}
+
+.house-garage-container span {
+    color: #8D8D8D;
+    font-weight: 600;
+    font-size: 1.35vh;
+    top: 0;
+    left: 0;
+    position: absolute;
+}
+
+.hgc-container {
+    background: rgba(217, 217, 217, 0.04);
+    border: .1vh solid #434343;
+    border-radius: .4vh;
+    width: 100%;
+    height: 5vh;
+    bottom: 1vh;
+    left: 0;
+    position: absolute;
+}
+
+.hgc-container span {
+    font-weight: 600;
+    font-size: 1.6vh;
+    left: 2vh;
+    top: .9vh;
+    position: absolute;
+}
+
+.hgc-container svg {
+    margin-left: .5vh;
+    position: relative;
+}
+
+.garage-amount-container {
+    width: 19vw;
+    height: 9vh;
+    right: 1.9vh;
+    top: 35.5vh;
+    position: absolute;
+}
+
+.garage-amount-container span {
+    color: #8D8D8D;
+    font-weight: 600;
+    font-size: 1.35vh;
+    top: 0;
+    left: 0;
+    position: absolute;
+}
+
+.gac-container {
+    background: rgba(217, 217, 217, 0.04);
+    border: .1vh solid #434343;
+    border-radius: .4vh;
+    width: 100%;
+    height: 5vh;
+    bottom: 1vh;
+    left: 0;
+    position: absolute;
+}
+
+.gac-container span {
+    font-weight: 600;
+    font-size: 1.6vh;
+    left: 2vh;
+    top: 1.3vh;
+    position: absolute;
+}
+
+.house-description-container {
+    width: 95%;
+    height: 10.5vh;
+    right: 1.9vh;
+    top: 45.5vh;
+    position: absolute;
+}
+
+.house-description-container span {
+    color: #8D8D8D;
+    font-weight: 600;
+    font-size: 1.35vh;
+    top: 0;
+    left: 0;
+    position: absolute;
+}
+
+.hdc-container {
+    background: rgba(217, 217, 217, 0.04);
+    border: .1vh solid #434343;
+    border-radius: .4vh;
+    width: 100%;
+    height: 8vh;
+    top: 2.5vh;
+    left: 0;
+    overflow-y: scroll;
+    position: absolute;
+}
+
+.hdc-container span {
+    left: 1vh;
+    top: .7vh;
+    position: absolute;
+    font-size: 1.4vh;
+}
+
+.buy-house-button {
+    background: #3779D8;
+    width: 19vw;
+    height: 6vh;
+    color: white;
+    font-weight: 600;
+    font-size: 1.5vh;
+    left: 1.9vh;
+    bottom: 2vh;
+    border-radius: .5vh;
+    cursor: pointer;
+    position: absolute;
+}
+
+.rent-house-button {
+    background: #3764D8;
+    width: 19vw;
+    height: 6vh;
+    color: white;
+    font-weight: 600;
+    font-size: 1.5vh;
+    right: 1.9vh;
+    bottom: 2vh;
+    border-radius: .5vh;
+    cursor: pointer;
+    position: absolute;
+}
+
+.house-rented-container {
+    width: 19vw;
+    height: 6vh;
+    right: 1.9vh;
+    bottom: 2vh;
+    position: absolute;
+}
+
+.rented-player-information {
+    width: 40%;
+    height: 99%;
+    left: 0;
+    bottom: 0;
+    border: .1vh solid #6C6C6C;
+    border-radius: .5vh;
+    position: absolute;
+}
+
+.rented-player-information img {
+    width: 1.9791666666666667vw;
+    height: 3.617009750812568vh;
+    border-radius: .4vh;
+    left: .8vh;
+    position: absolute;
+}
+
+.rpi-name {
+    color: #BFBFBF;
+    font-size: 1vh;
+    font-weight: 600;
+    left: 5vh;
+    top: 1.2vh;
+    position: absolute;
+}
+
+.rpi-mini-text {
+    color: #bfbfbfcb;
+    font-size: .95vh;
+    font-weight: 600;
+    left: 5vh;
+    bottom: 1vh;
+    position: absolute;
+}
+
+.rented-buttom {
+    background: #6C6C6C;
+    width: 58%;
+    height: 100%;
+    color: white;
+    font-weight: 600;
+    font-size: 1.5vh;
+    right: 0;
+    bottom: 0;
+    border-radius: .5vh;
+    position: absolute;
+}

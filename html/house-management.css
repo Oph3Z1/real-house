@@ -1,0 +1,1206 @@
+.house-management-container {
+    background: linear-gradient(113deg, rgba(11, 11, 12, 0.40) 0%, rgba(11, 11, 12, 0.40) 100%);
+    width: 56.135416666666664vw;
+    height: 70.86793066088842vh;
+    border: .2vh solid #636363;
+    border-radius: .5vh;
+    position: absolute;
+}
+
+.management-upper {
+    width: 95%;
+    height: 7.5%;
+    top: 2.5%;
+    position: absolute;
+}
+
+.management-player-information {
+    background: linear-gradient(91deg, rgba(217, 217, 217, 0.07) 7.12%, rgba(217, 217, 217, 0.00) 93.17%);
+    box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+    border: .2vh solid #636363;
+    border-radius: .5vh;
+    width: 35%;
+    height: 100%;
+    left: 0;
+    top: 0;
+    position: absolute;
+}
+
+.management-pfp {
+    width: 2.4041666666666665vw;
+    height: 4.208775731310942vh;
+    left: 1.5vh;
+    border-radius: 50%;
+    position: absolute;
+}
+
+.management-welcome-text {
+    color: #707070;
+    font-size: 1.1vh;
+    font-weight: 400;
+    top: 1vh;
+    left: 7vh;
+    position: absolute;
+}
+
+.management-player-name {
+    color: #C7C5C5;
+    font-size: 1.3vh;
+    font-weight: 600;
+    top: 2.6vh;
+    left: 7vh;
+    position: absolute;
+}
+
+.management-player-money {
+    background: linear-gradient(91deg, rgba(217, 217, 217, 0.07) 7.12%, rgba(217, 217, 217, 0.00) 93.17%);
+    box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+    border: .2vh solid #636363;
+    border-radius: .5vh;
+    width: 33%;
+    height: 100%;
+    right: 0;
+    top: 0;
+    position: absolute;
+}
+
+.mpm-left {
+    width: 50%;
+    height: 100%;
+    left: 0;
+    top: 0;
+    position: absolute;
+}
+
+.mbankmoneyimg {
+    width: 1.6791666666666667vw;
+    height: 3.017009750812568vh;
+    left: 1.2vh;
+    position: absolute;
+}
+
+.mplayer-bank-balance {
+    color: #BABABA;
+    font-weight: 600;
+    font-size: 1.3vh;
+    left: 5vh;
+    position: absolute;
+}
+
+.mpm-right {
+    width: 50%;
+    height: 100%;
+    right: 0;
+    top: 0;
+    position: absolute;
+}
+
+.mcashmoneyimg {
+    width: 1.8791666666666667vw;
+    height: 3.017009750812568vh;
+    left: .5vh;
+    position: absolute;
+}
+
+.mplayer-cash-balance {
+    color: #BABABA;
+    font-weight: 600;
+    font-size: 1.3vh;
+    left: 4.5vh;
+    position: absolute;
+}
+
+.management-lower {
+    width: 95%;
+    height: 83%;
+    bottom: 2.5%;
+    border: .2vh solid #636363;
+    border-radius: .7vh;
+    position: absolute;
+}
+
+.mhouse-img-container {
+    width: 95%;
+    height: 40%;
+    border-radius: 1.2vh;
+    top: 2vh;
+    position: absolute;
+}
+
+.mhouse-img-container img {
+    width: 100%;
+    height: 100%;
+    top: 0;
+    border-radius: 1.2vh;
+    position: absolute;
+}
+
+.house-friends {
+    width: 29%;
+    height: 48%;
+    left: 2.3vh;
+    bottom: 3vh;
+    position: absolute;
+}
+
+.house-friends span {
+    color: #8D8D8D;
+    font-weight: 600;
+    font-size: 1.2vh;
+    left: 0;
+    top: 0;
+    position: absolute;
+}
+
+.hf-header {
+    background: rgba(217, 217, 217, 0.04);
+    width: 99.7%;
+    height: 14%;
+    top: 2vh;
+    left: 0;
+    border: .1vh solid #434343;
+    border-radius: .3vh;
+    position: absolute;
+}
+
+.hf-header span {
+    color: #A1A1A1;
+    font-size: 1.3vh;
+    font-weight: 600;
+    left: 1vh;
+    top: 1.1vh;
+    position: absolute;
+}
+
+.hf-container {
+    width: 100%;
+    height: 75%;
+    bottom: 0;
+    left: 0;
+    overflow-y: scroll;
+    display: block;
+    position: absolute;
+}
+
+.friends-item {
+    background: rgba(217, 217, 217, 0.08);
+    width: 99.4%;
+    height: 20%;
+    top: 0;
+    left: 0;
+    border: .1vh solid #515151;
+    margin-bottom: 1vh;
+    border-radius: .3vh;
+    position: relative;
+}
+
+.fi-icon {
+    width: 1.9vw;
+    height: 3.2vh;
+    left: 1vh;
+    border-radius: 50%;
+    position: absolute;
+}
+
+.friends-item span {
+    color: #C7C5C5;
+    font-weight: 600;
+    font-size: .9vh;
+    left: 5.5vh;
+    top: 1.4vh;
+    position: absolute;
+}
+
+.fi-kick-icon {
+    width: .82vw;
+    height: 1.4vh;
+    right: 1vh;
+    cursor: pointer;
+    position: absolute;
+}
+
+.sell-rent-house-nearby-players {
+    width: 29%;
+    height: 48%;
+    left: 33.5vh;
+    bottom: 3vh;
+    position: absolute;
+}
+
+.sell-rent-house-nearby-players span {
+    color: #8D8D8D;
+    font-weight: 600;
+    font-size: 1.2vh;
+    left: 0;
+    top: 0;
+    position: absolute;
+}
+
+.srh-header {
+    background: rgba(217, 217, 217, 0.04);
+    width: 99.7%;
+    height: 14%;
+    top: 2vh;
+    left: 0;
+    border: .1vh solid #434343;
+    border-radius: .3vh;
+    position: absolute;
+}
+
+.srh-header span {
+    color: #A1A1A1;
+    font-size: 1.3vh;
+    font-weight: 600;
+    left: 1vh;
+    top: 1.1vh;
+    position: absolute;
+}
+
+.srh-container {
+    width: 100%;
+    height: 75%;
+    bottom: 0;
+    left: 0;
+    overflow-y: scroll;
+    display: block;
+    position: absolute;
+}
+
+.nearby-players {
+    background: rgba(217, 217, 217, 0.08);
+    width: 99.4%;
+    height: 20%;
+    top: 0;
+    left: 0;
+    border: .1vh solid #515151;
+    margin-bottom: 1vh;
+    border-radius: .3vh;
+    position: relative;
+}
+
+.np-icon {
+    width: 1.9vw;
+    height: 3.2vh;
+    left: 1vh;
+    border-radius: 50%;
+    position: absolute;
+}
+
+.nearby-players span {
+    color: #C7C5C5;
+    font-weight: 600;
+    font-size: .9vh;
+    left: 5.5vh;
+    top: 1.4vh;
+    position: absolute;
+}
+
+.tik-icon {
+    width: 1.7vw;
+    height: 2.85vh;
+    right: 1vh;
+    cursor: pointer;
+    position: absolute;
+}
+
+.add-friend-icon {
+    width: .82vw;
+    height: 1.15vh;
+    right: 4vh;
+    cursor: pointer;
+    position: absolute;
+}
+
+.allow-rent-container {
+    width: 29%;
+    height: 48%;
+    right: 2.3vh;
+    bottom: 3vh;
+    position: absolute;
+}
+
+.allow-rent-container span {
+    color: #8D8D8D;
+    font-weight: 600;
+    font-size: 1.2vh;
+    left: 0;
+    top: 0;
+    position: absolute;
+}
+
+.arc-header {
+    background: rgba(217, 217, 217, 0.04);
+    width: 99.3%;
+    height: 14%;
+    top: 2vh;
+    left: 0;
+    border: .1vh solid #434343;
+    border-radius: .3vh;
+    position: absolute;
+}
+
+.arc-header span {
+    color: #A1A1A1;
+    font-size: 1.3vh;
+    font-weight: 600;
+    left: 1vh;
+    top: 1.1vh;
+    position: absolute;
+}
+
+.allow-rent-button {
+    background-color: #3779D8;
+    width: 48%;
+    height: 15.5%;
+    left: 0;
+    top: 7.1vh;
+    color: white;
+    font-size: 1.4vh;
+    font-weight: 600;
+    letter-spacing: .1vh;
+    border-radius: .3vh;
+    cursor: pointer;
+    position: absolute;
+}
+
+.dont-allow-rent {
+    background-color: #D83771;
+    width: 48%;
+    height: 15.5%;
+    right: 0;
+    top: 7.1vh;
+    color: white;
+    font-size: 1.4vh;
+    font-weight: 600;
+    letter-spacing: .1vh;
+    border-radius: .3vh;
+    cursor: pointer;
+    position: absolute;
+}
+
+.rent-price {
+    background: rgba(217, 217, 217, 0.04);
+    width: 93.6%;
+    height: 12%;
+    left: 0;
+    top: 12.5vh;
+    border-radius: .3vh;
+    border: .1vh solid #434343;
+    outline: none;
+    color: #A1A1A1;
+    font-size: 1.3vh;
+    padding-left: 1.5vh;
+    position: absolute;
+}
+
+.rent-time {
+    background: rgba(217, 217, 217, 0.04);
+    width: 93.6%;
+    height: 12%;
+    left: 0;
+    top: 17.3vh;
+    border-radius: .3vh;
+    border: .1vh solid #434343;
+    outline: none;
+    color: #A1A1A1;
+    font-size: 1.3vh;
+    padding-left: 1.5vh;
+    position: absolute;
+}
+
+.allow-rent-save-button {
+    background: #9CFE6E;
+    width: 99.6%;
+    height: 15%;
+    left: 0;
+    bottom: 1.8vh;
+    border-radius: .3vh;
+    border: .1vh solid #434343;
+    color: white;
+    font-size: 1.4vh;
+    font-weight: 600;
+    letter-spacing: .1vh;
+    cursor: pointer;
+    position: absolute;
+}
+
+.management-extend-time {
+    background: #3779D8;
+    width: 15%;
+    height: 100%;
+    left: 43%;
+    top: 0;
+    border-radius: .3vh;
+    color: #EAEAEC;
+    font-size: 1.2vh;
+    font-weight: 600;
+    cursor: pointer;
+    position: absolute;
+}
+
+.rent-settings, .house-settings {
+    background: linear-gradient(113deg, rgba(11, 11, 12, 0.40) 0%, rgba(11, 11, 12, 0.40) 100%);
+    width: 50vw;
+    height: 50vh;
+    border: .2vh solid #636363;
+    border-radius: .5vh;
+    position: absolute;
+}
+
+.rent-upper, .house-settings-upper {
+    width: 95%;
+    height: 11.5%;
+    top: 2.5%;
+    position: absolute;
+}
+
+.rent-player-information {
+    background: linear-gradient(91deg, rgba(217, 217, 217, 0.07) 7.12%, rgba(217, 217, 217, 0.00) 93.17%);
+    box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+    border: .2vh solid #636363;
+    border-radius: .5vh;
+    width: 35%;
+    height: 100%;
+    left: 0;
+    top: 0;
+    position: absolute;
+}
+
+.rent-pfp {
+    width: 2.4041666666666665vw;
+    height: 4.208775731310942vh;
+    left: 1.5vh;
+    border-radius: 50%;
+    position: absolute;
+}
+
+.rent-welcome-text {
+    color: #707070;
+    font-size: 1.1vh;
+    font-weight: 400;
+    top: 1vh;
+    left: 7vh;
+    position: absolute;
+}
+
+.rent-player-name {
+    color: #C7C5C5;
+    font-size: 1.3vh;
+    font-weight: 600;
+    top: 2.6vh;
+    left: 7vh;
+    position: absolute;
+}
+
+.rent-player-money {
+    background: linear-gradient(91deg, rgba(217, 217, 217, 0.07) 7.12%, rgba(217, 217, 217, 0.00) 93.17%);
+    box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+    border: .2vh solid #636363;
+    border-radius: .5vh;
+    width: 33%;
+    height: 100%;
+    right: 0;
+    top: 0;
+    position: absolute;
+}
+
+.rpm-left {
+    width: 50%;
+    height: 100%;
+    left: 0;
+    top: 0;
+    position: absolute;
+}
+
+.rbankmoneyimg {
+    width: 1.6791666666666667vw;
+    height: 3.017009750812568vh;
+    left: 1.2vh;
+    position: absolute;
+}
+
+.rplayer-bank-balance {
+    color: #BABABA;
+    font-weight: 600;
+    font-size: 1.1vh;
+    left: 5vh;
+    position: absolute;
+}
+
+.rpm-right {
+    width: 50%;
+    height: 100%;
+    right: 0;
+    top: 0;
+    position: absolute;
+}
+
+.rcashmoneyimg {
+    width: 1.8791666666666667vw;
+    height: 3.017009750812568vh;
+    left: .5vh;
+    position: absolute;
+}
+
+.rplayer-cash-balance {
+    color: #BABABA;
+    font-weight: 600;
+    font-size: 1.1vh;
+    left: 4.5vh;
+    position: absolute;
+}
+
+.rent-lower, .house-settings-lower {
+    width: 94.5%;
+    height: 80.5%;
+    bottom: 2.5%;
+    border: .2vh solid #636363;
+    border-radius: .7vh;
+    position: absolute;
+}
+
+.rent-lower img {
+    width: 23vw;
+    height: 12vw;
+    left: 3vh;
+    top: 3vh;
+    position: absolute;
+}
+
+.rl-housename {
+    width: 15vw;
+    height: 6vh;
+    right: 10vh;
+    top: 3vh;
+    position: absolute;
+}
+
+.rl-housename span {
+    color: #8D8D8D;
+    font-size: 1.1vh;
+    font-weight: 600;
+    top: 0;
+    left: 0;
+    position: absolute;
+}
+
+.rl-housename div {
+    background: rgba(217, 217, 217, 0.04);
+    width: 100%;
+    height: 60%;
+    bottom: 0;
+    left: 0;
+    border: .1vh solid #434343;
+    border-radius: .4vh;
+    position: absolute;
+}
+
+.rl-housename div span {
+    color: #A1A1A1;
+    top: .95vh;
+    font-size: 1.2vh;
+    font-weight: 600;
+    left: 1.3vh;
+    position: absolute;
+}
+
+.rl-new-rent-time {
+    width: 15vw;
+    height: 6vh;
+    right: 10vh;
+    top: 10.7vh;
+    position: absolute;
+}
+
+.rl-new-rent-time span {
+    color: #8D8D8D;
+    font-size: 1vh;
+    font-weight: 600;
+    top: 0;
+    left: 0;
+    position: absolute;
+}
+
+.rl-new-rent-time input {
+    background: rgba(217, 217, 217, 0.04);
+    width: 94.5%;
+    height: 58.5%;
+    bottom: 0;
+    left: 0;
+    border: .1vh solid #434343;
+    outline: none;
+    color: #A1A1A1;
+    font-size: 1.2vh;
+    font-weight: 600;
+    padding-left: 1.3vh;
+    border-radius: .4vh;
+    position: absolute;
+}
+
+.house-price {
+    width: 15vw;
+    height: 6vh;
+    right: 10vh;
+    top: 18.2vh;
+    position: absolute;
+}
+
+.house-price span {
+    color: #8D8D8D;
+    font-size: 1.1vh;
+    font-weight: 600;
+    top: 0;
+    left: 0;
+    position: absolute;
+}
+
+.house-price div {
+    background: rgba(217, 217, 217, 0.04);
+    width: 100%;
+    height: 60%;
+    bottom: 0;
+    left: 0;
+    border: .1vh solid #434343;
+    border-radius: .4vh;
+    position: absolute;
+}
+
+.house-price div span {
+    color: #A1A1A1;
+    top: .95vh;
+    font-size: 1.2vh;
+    font-weight: 600;
+    left: 1.3vh;
+    position: absolute;
+}
+
+.extend-time {
+    background: #3779D8;
+    width: 45%;
+    height: 11%;
+    left: 3vh;
+    bottom: 5vh;
+    border-radius: .3vh;
+    cursor: pointer;
+    color: white;
+    font-size: 1.2vh;
+    font-weight: 600;
+    position: absolute;
+}
+
+.rent-settings-cancel {
+    background: #6A6A6A;
+    width: 45%;
+    height: 11%;
+    right: 3vh;
+    bottom: 5vh;
+    border-radius: .3vh;
+    cursor: pointer;
+    color: white;
+    font-size: 1.2vh;
+    font-weight: 600;
+    position: absolute;
+}
+
+.rent-time-remaining {
+    color: white;
+    font-size: 1.2vh;
+    font-weight: 600;
+    bottom: 1vh;
+    position: absolute;
+}
+
+.sell-rent-house-popupscreen {
+    background-color: rgba(0, 0, 0, 0.733);
+    width: 100%;
+    height: 100%;
+    left: 0;
+    top: 0;
+    backdrop-filter: blur(.2vh);
+    position: absolute;
+}
+
+.sell-rent-house-container {
+    background: linear-gradient(91deg, rgba(11, 11, 12, 0.40) 7.12%, rgba(11, 11, 12, 0.40) 93.17%);
+    width: 30vw;
+    height: 40vh;
+    border: .1vh solid #636363;
+    border-radius: .5vh;
+    position: absolute;
+}
+
+.srhc {
+    background: linear-gradient(118deg, rgba(0, 1, 3, 0.28) 4.7%, rgba(1, 1, 4, 0.71) 100.47%);
+    width: 90%;
+    height: 90%;
+    border: .1vh solid #636363;
+    border-radius: .5vh;
+    position: absolute;
+}
+
+.srhc h1 {
+    color: #7C7C7C;
+    font-weight: 600;
+    letter-spacing: .5vh;
+    font-size: 2vh;
+    top: 0;
+    position: absolute;
+}
+
+.srhc-rent-option {
+    background: #818181;
+    width: 85%;
+    height: 13%;
+    top: 7vh;
+    border-radius: .5vh;
+    color: white;
+    font-weight: 600;
+    cursor: pointer;
+    position: absolute;
+}
+
+.srhc-sell-option {
+    background: #818181;
+    width: 85%;
+    height: 13%;
+    top: 13vh;
+    border-radius: .5vh;
+    color: white;
+    font-weight: 600;
+    cursor: pointer;
+    position: absolute;
+}
+
+.rent-option {
+    width: 85%;
+    height: 20%;
+    top: 20.5vh;
+    position: absolute;
+}
+
+.ro-text1 {
+    color: #8D8D8D;
+    font-size: 1.3vh;
+    font-weight: 600;
+    left: 0;
+    top: 0;
+    position: absolute;
+}
+
+.ro-text2 {
+    color: #8D8D8D;
+    font-size: 1.3vh;
+    font-weight: 600;
+    left: 21vh;
+    top: 0;
+    position: absolute;
+}
+
+.ro-time {
+    background: rgba(217, 217, 217, 0.04);
+    width: 43%;
+    height: 60%;
+    left: 0;
+    bottom: 0;
+    border: .1vh solid #434343;
+    border-radius: .4vh;
+    padding-left: 1vh;
+    padding-right: 1vh;
+    color: #A1A1A1;
+    font-size: 1.3vh;
+    font-weight: 600;
+    outline: 0;
+    position: absolute;
+}
+
+.ro-price {
+    background: rgba(217, 217, 217, 0.04);
+    width: 43%;
+    height: 60%;
+    right: 0;
+    bottom: 0;
+    border: .1vh solid #434343;
+    border-radius: .4vh;
+    padding-left: 1vh;
+    padding-right: 1vh;
+    color: #A1A1A1;
+    font-size: 1.3vh;
+    font-weight: 600;
+    outline: 0;
+    position: absolute;
+}
+
+.sell-option {
+    width: 85%;
+    height: 20%;
+    top: 20.5vh;
+    position: absolute;
+}
+
+.so-text {
+    color: #8D8D8D;
+    font-size: 1.3vh;
+    font-weight: 600;
+    left: 0;
+    top: 0;
+    position: absolute;
+}
+
+.so-price {
+    background: rgba(217, 217, 217, 0.04);
+    width: 94.5%;
+    height: 60%;
+    left: 0;
+    bottom: 0;
+    border: .1vh solid #434343;
+    border-radius: .4vh;
+    padding-left: 1vh;
+    padding-right: 1vh;
+    color: #A1A1A1;
+    font-size: 1.3vh;
+    font-weight: 600;
+    outline: 0;
+    position: absolute;
+}
+
+.srhc-confirm {
+    background: #3778D6;
+    width: 42%;
+    height: 12%;
+    bottom: 2vh;
+    left: 3.5vh;
+    border-radius: .5vh;
+    color: white;
+    font-weight: 600;
+    cursor: pointer;
+    position: absolute;
+}
+
+.srhc-cancel {
+    background: #ff0000;
+    width: 42%;
+    height: 12%;
+    bottom: 2vh;
+    right: 3.5vh;
+    border-radius: .5vh;
+    color: white;
+    font-weight: 600;
+    cursor: pointer;
+    position: absolute;
+}
+
+.management-housesettings {
+    background: #3779D8;
+    width: 15%;
+    height: 100%;
+    left: 43%;
+    top: 0;
+    border-radius: .3vh;
+    color: #EAEAEC;
+    font-size: 1.2vh;
+    font-weight: 600;
+    cursor: pointer;
+    position: absolute;
+}
+
+.house-settings-player-information {
+    background: linear-gradient(91deg, rgba(217, 217, 217, 0.07) 7.12%, rgba(217, 217, 217, 0.00) 93.17%);
+    box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+    border: .2vh solid #636363;
+    border-radius: .5vh;
+    width: 35%;
+    height: 100%;
+    left: 0;
+    top: 0;
+    position: absolute;
+}
+
+.house-settings-pfp {
+    width: 2.4041666666666665vw;
+    height: 4.208775731310942vh;
+    left: 1.5vh;
+    border-radius: 50%;
+    position: absolute;
+}
+
+.house-settings-welcome-text {
+    color: #707070;
+    font-size: 1.1vh;
+    font-weight: 400;
+    top: 1vh;
+    left: 7vh;
+    position: absolute;
+}
+
+.house-settings-player-name {
+    color: #C7C5C5;
+    font-size: 1.3vh;
+    font-weight: 600;
+    top: 2.6vh;
+    left: 7vh;
+    position: absolute;
+}
+
+.house-settings-player-money {
+    background: linear-gradient(91deg, rgba(217, 217, 217, 0.07) 7.12%, rgba(217, 217, 217, 0.00) 93.17%);
+    box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+    border: .2vh solid #636363;
+    border-radius: .5vh;
+    width: 33%;
+    height: 100%;
+    right: 0;
+    top: 0;
+    position: absolute;
+}
+
+.house-settings-left {
+    width: 50%;
+    height: 100%;
+    left: 0;
+    top: 0;
+    position: absolute;
+}
+
+.house-settings-rbankmoneyimg {
+    width: 1.6791666666666667vw;
+    height: 3.017009750812568vh;
+    left: 1.2vh;
+    position: absolute;
+}
+
+.house-settings-rplayer-bank-balance {
+    color: #BABABA;
+    font-weight: 600;
+    font-size: 1.1vh;
+    left: 5vh;
+    position: absolute;
+}
+
+.house-settings-rpm-right {
+    width: 50%;
+    height: 100%;
+    right: 0;
+    top: 0;
+    position: absolute;
+}
+
+.house-settings-rcashmoneyimg {
+    width: 1.8791666666666667vw;
+    height: 3.017009750812568vh;
+    left: .5vh;
+    position: absolute;
+}
+
+.house-settings-rplayer-cash-balance {
+    color: #BABABA;
+    font-weight: 600;
+    font-size: 1.1vh;
+    left: 4.5vh;
+    position: absolute;
+}
+
+.house-settings-lower img {
+    width: 35%;
+    height: 95%;
+    left: 1%;
+    border-radius: .4vh;
+    position: absolute;
+}
+
+.house-settings-lower h1 {
+    color: #BABABA;
+    font-weight: 600;
+    font-size: 3vh;
+    top: -1.4vh;
+    left: 32.7vh;
+    position: absolute;
+}
+
+.house-settings-lower p {
+    color: #A1A1A1;
+    font-weight: 600;
+    font-size: 1.3vh;
+    top: 4vh;
+    right: 19.9vh;
+    position: absolute;
+}
+
+.house-settings-lower-house-name {
+    width: 20vh;
+    height: 7vh;
+    left: 39.1%;
+    top: 10vh;
+    position: absolute;
+}
+
+.house-settings-lower-house-name span {
+    color: #8D8D8D;
+    font-size: 1.2vh;
+    font-weight: 600;
+    top: 0;
+    left: 0;
+    position: absolute;
+}
+
+.house-settings-lower-house-name input {
+    background: rgba(217, 217, 217, 0.04);
+    width: 92.5%;
+    height: 58.5%;
+    bottom: 0;
+    left: 0;
+    border: .1vh solid #434343;
+    outline: none;
+    color: #A1A1A1;
+    font-size: 1.2vh;
+    font-weight: 600;
+    padding-left: 1.3vh;
+    border-radius: .4vh;
+    position: absolute;
+}
+
+.house-settings-lower-house-value {
+    width: 20vh;
+    height: 7vh;
+    left: 70.1%;
+    top: 10vh;
+    position: absolute;
+}
+
+.house-settings-lower-house-value span {
+    color: #8D8D8D;
+    font-size: 1.2vh;
+    font-weight: 600;
+    top: 0;
+    left: 0;
+    position: absolute;
+}
+
+.house-settings-lower-house-value input {
+    background: rgba(217, 217, 217, 0.04);
+    width: 92.5%;
+    height: 58.5%;
+    bottom: 0;
+    left: 0;
+    border: .1vh solid #434343;
+    outline: none;
+    color: #A1A1A1;
+    font-size: 1.2vh;
+    font-weight: 600;
+    padding-left: 1.3vh;
+    border-radius: .4vh;
+    position: absolute;
+}
+
+.house-settings-lower-house-garage-slot {
+    width: 20vh;
+    height: 7vh;
+    left: 39.1%;
+    top: 20vh;
+    position: absolute;
+}
+
+.house-settings-lower-house-garage-slot span {
+    color: #8D8D8D;
+    font-size: 1.2vh;
+    font-weight: 600;
+    top: 0;
+    left: 0;
+    position: absolute;
+}
+
+.house-settings-lower-house-garage-slot input {
+    background: rgba(217, 217, 217, 0.04);
+    width: 92.5%;
+    height: 58.5%;
+    bottom: 0;
+    left: 0;
+    border: .1vh solid #434343;
+    outline: none;
+    color: #A1A1A1;
+    font-size: 1.2vh;
+    font-weight: 600;
+    padding-left: 1.3vh;
+    border-radius: .4vh;
+    position: absolute;
+}
+
+.house-settings-lower-house-img {
+    width: 20vh;
+    height: 7vh;
+    left: 70.1%;
+    top: 20vh;
+    position: absolute;
+}
+
+.house-settings-lower-house-img span {
+    color: #8D8D8D;
+    font-size: 1.2vh;
+    font-weight: 600;
+    top: 0;
+    left: 0;
+    position: absolute;
+}
+
+.house-settings-lower-house-img input {
+    background: rgba(217, 217, 217, 0.04);
+    width: 92.5%;
+    height: 58.5%;
+    bottom: 0;
+    left: 0;
+    border: .1vh solid #434343;
+    outline: none;
+    color: #A1A1A1;
+    font-size: 1.2vh;
+    font-weight: 600;
+    padding-left: 1.3vh;
+    border-radius: .4vh;
+    position: absolute;
+}
+
+.house-settings-lower-house-description {
+    width: 46.05vh;
+    height: 7vh;
+    left: 39.1%;
+    top: 30vh;
+    position: absolute;
+}
+
+.house-settings-lower-house-description span {
+    color: #8D8D8D;
+    font-size: 1.2vh;
+    font-weight: 600;
+    top: 0;
+    left: 0;
+    position: absolute;
+}
+
+.house-settings-lower-house-description input {
+    background: rgba(217, 217, 217, 0.04);
+    width: 96.5%;
+    height: 58.5%;
+    bottom: 0;
+    left: 0;
+    border: .1vh solid #434343;
+    outline: none;
+    color: #A1A1A1;
+    font-size: 1.2vh;
+    font-weight: 600;
+    padding-left: 1.3vh;
+    border-radius: .4vh;
+    position: absolute;
+}
+
+.house-settings-save {
+    background-color: #3779D8;
+    width: 10vh;
+    height: 4vh;
+    right: 5vh;
+    top: 1.5vh;
+    border-radius: .4vh;
+    cursor: pointer;
+    color: white;
+    font-size: 1.3vh;
+    letter-spacing: .1vh;
+    font-weight: 600;
+    position: absolute;
+}
