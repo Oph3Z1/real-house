@@ -14,36 +14,10 @@ function StartScript()
             Friends = {}
         }
 
-        if Config.Mysql == 'mysql-async' or Config.Mysql == 'oxmysql' then
-            local HouseData = MySQL.Sync.fetchAll('SELECT * FROM `oph3z_housev2` WHERE id = @id', {["@id"] = k})
-        else if Config.Mysql == 'ghmattimysql' then
-            local HouseData = exports.ghmattimysql:executeSync('SELECT * FROM `oph3z_housev2` WHERE id = @id', {["@id"] = k})
-        else
-            print("There is a problem with your MySQL. Please check 'Config.Mysql'")
-        end
+        local HouseData = ExecuteSql("SELECT * FROM `real_house` WHERE id = '"..k.."'")
 
         if #HouseData == 0 then
-            if Config.Mysql == 'mysql-async' or Config.Mysql == 'oxmysql' then
-                MySQL.Async.execute('INSERT INTO `oph3z_housev2` (id, houseinformation, owner, keydata, rentowner, allowrent, friends) VALUES (@id, @houseinformation, @owner, @keydata, @rentowner, @allowrent, @friends)', {
-                    ["@id"] = k,
-                    ["@houseinformation"] = json.encode(Def.HouseInformation),
-                    ["@owner"] = Def.Owner,
-                    ["@keydata"] = Def.KeyData,
-                    ["@rentowner"] = Def.RentOwner,
-                    ["@allowrent"] = Def.AllowRent,
-                    ["@friends"] = json.encode(Def.Friends)
-                })
-            else if Config.Mysql == 'ghmattimysql' then
-                exports.ghmattimysql:execute('INSERT INTO `oph3z_housev2` (id, houseinformation, owner, keydata, rentowner, allowrent, friends) VALUES (@id, @houseinformation, @owner, @keydata, @rentowner, @allowrent, @friends)', {
-                    ["@id"] = k,
-                    ["@houseinformation"] = json.encode(Def.HouseInformation),
-                    ["@owner"] = Def.Owner,
-                    ["@keydata"] = Def.KeyData,
-                    ["@rentowner"] = Def.RentOwner,
-                    ["@allowrent"] = Def.AllowRent,
-                    ["@friends"] = json.encode(Def.Friends)
-                })
-            end
+            ExecuteSql("INSERT INTO `real_house` (id, owner, houseinfo, keydata, rentowner, allowrent, friends) VALUES ('"..k.."', '"..Def.Owner.."', '"..json.encode(Def.HouseInformation).."', '"..Def.KeyData.."', '"..Def.RentOwner.."', '"..tostring(Def.AllowRent).."', '"..json.encode(Def.Friends).."')")
         end
         LoadAllHouses()
     end
@@ -52,22 +26,16 @@ end
 function RequestNewData()
     local source = source
     LoadAllHouses()
-    TriggerClientEvent('oph3z-housev2:Update', source, Config.Houses, ScriptLoaded)
+    TriggerClientEvent('real-house:Update', source, Config.Houses, ScriptLoaded)
 end
 
-RegisterNetEvent("oph3z-housev2:ReqData", RequestNewData)
+RegisterNetEvent("real-house:ReqData", RequestNewData)
 
 function LoadAllHouses()
-    if Config.Mysql == 'mysql-async' or Config.Mysql == 'oxmysql' then
-        local HouseData = MySQL.Sync.fetchAll('SELECT * FROM `oph3z_housev2`')
-    else if Config.Mysql == 'ghmattimysql' then
-        local HouseData = exports.ghmattimysql:executeSync('SELECT * FROM `oph3z_housev2`')
-    else
-        print("There is a problem with your MySQL. Please check 'Config.Mysql'")
-    end
+    local HouseData = ExecuteSql("SELECT * FROM `real_house`")
 
     for k,v in pairs(HouseData) do 
-        local info = json.decode(v.houseinformation)
+        local info = json.decode(v.houseinfo)
         Config.Houses[k].Owner = v.owner
         Config.Houses[k].KeyData = v.keydata
         Config.Houses[k].RentOwner = v.rentowner
