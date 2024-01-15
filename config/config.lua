@@ -1,6 +1,6 @@
 Config = {}
 
-Config.Framework = 'autodetect' -- newesx, oldesx, newqb, oldqb, autodetect
+Config.Framework = 'newqb' -- newesx, oldesx, newqb, oldqb
 Config.MySQL = 'oxmysql' -- oxmysql, ghamattimysql, mysql-async | Don't forget to edit fxmanifest.lua
 Config.Drawtext = 'qb-target' -- qb-target, drawtext
 

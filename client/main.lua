@@ -13,11 +13,11 @@ Citizen.CreateThread(function()
         local Player = PlayerPedId()
         local PlayerCoords = GetEntityCoords(Player)
         for k, v in pairs(Config.Houses) do
-            if v.Owner == nil then
+            if v.Owner == "" then
                 local Distance = GetDistanceBetweenCoords(PlayerCoords, v.HouseCoords.x, v.HouseCoords.y, v.HouseCoords.z, true)
                 if Distance < 2 then
                     sleep = 4
-                    DrawText3D('Open House Menu', v.HouseCoords)
+                    DrawText3D('~INPUT_PICKUP~ - Open House Menu', v.HouseCoords)
                     if IsControlJustReleased(0, 38) then
                         OpenBuyMenu(k)
                     end
@@ -29,14 +29,27 @@ Citizen.CreateThread(function()
 end)
 
 function OpenBuyMenu(k)
-    local data
-
     if Config.Framework == 'newqb' or Config.Framework == 'oldqb' then
-        data = Callback('real-house:GetHouseAndPlayerData', k)
+        local data = Callback('real-house:GetHouseAndPlayerData', k)
+        SendNUIMessage({
+            action = 'OpenBuyMenu',
+            houseinfo = data.houseinfo,
+            houseprice = data.houseprice,
+            houserentprice = data.houserenprice,
+            playername = data.playername,
+            pfp = data.pfp,
+            playerbank = data.playerbank,
+            playercash = data.playercash
+        })
+        SetNuiFocus(true, true)
     else
         data = Callback('real-house:ESX:GetHouseAndPlayerData', k)
     end
 end
+
+RegisterNUICallback('CloseUI', function()
+    SetNuiFocus(false, false)
+end)
 
 function Callback(name, payload)
     if Config.Framework == "newesx" or Config.Framework == "oldesx" then
