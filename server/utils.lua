@@ -1,3 +1,5 @@
+ScriptLoaded = false
+
 function StartScript()
     for k,v in pairs(Config.Houses) do
         Def = {
@@ -31,6 +33,10 @@ function RequestNewData()
 end
 
 RegisterNetEvent("real-house:ReqData", RequestNewData)
+
+RegisterNetEvent('real-house:RefreshHouses', function()
+    TriggerClientEvent('real-house:Update', -1, Config.Houses, ScriptLoaded)
+end)
 
 function LoadAllHouses()
     local HouseData = ExecuteSql("SELECT * FROM `real_house`")

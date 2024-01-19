@@ -5,6 +5,9 @@ Config.MySQL = 'oxmysql' -- oxmysql, ghamattimysql, mysql-async | Don't forget t
 Config.Drawtext = 'qb-target' -- qb-target, drawtext
 
 Config.Metadata = true -- If 'true', system will use metadata
+Config.AllowToBuyMoreThanOne = true
+Config.GiveRentSystem = true
+Config.AllowBuyHouseWhenRented = true
 
 Config.Houses = {
     [1] = {
@@ -31,8 +34,9 @@ Config.Houses = {
             Out = vector3(1, 1, 1),
         },
 
-        DoorCords = { -- If you dont use MLO then this is not important!
-            {DoorHash = 'v_ilev_fa_frontdoor', DoorCoords = vector3(1301.01, -574.51, 71.73)},
+        DoorCoords = { -- If you dont use MLO then this is not important!
+            {DoorHash = 'v_ilev_fa_frontdoor', Coords = vector3(1323.41, -583.14, 73.25), LockStatus = true},
+            {DoorHash = 'v_ilev_bk_door2', Coords = vector3(1316.24, -597.99, 73.25), LockStatus = true}
         },
 
         Stash = {

@@ -83,7 +83,7 @@
                             <span> {{housedescription}} </span>
                         </div>
                     </div>
-                    <div class="buy-house-button"> BUY HOUSE </div>
+                    <div class="buy-house-button" @click="BuyNormalHouse()"> BUY HOUSE </div>
                     <div class="rent-house-button" v-if="!rented"> RENT HOUSE</div>
                     <div class="house-rented-container" v-else>
                         <div class="rented-player-information">

@@ -25,6 +25,7 @@ const app = Vue.createApp({
 
         // Other informations
 
+        houseid: null,
         playername: '',
         pfp: '',
         playerbank: 0,
@@ -74,10 +75,23 @@ const app = Vue.createApp({
             const NearbyPlayer = this.nerabyplayers.find(data => data.id === id);
             this.nerabyplayers.splice(this.nerabyplayers.indexOf(NearbyPlayer), 1);
         }, 
+
+        BuyNormalHouse() {
+            if (this.playerbank >= this.houseprice) {
+                postNUI('BuyNormalHouse', this.houseid)
+                this.CloseUI()
+            } else if (this.playercash >= this.houseprice) {
+                postNUI('BuyNormalHouse', this.houseid)
+                this.CloseUI()
+            } else {
+                console.log("You don't have enough money to buy house")
+            }
+        },
         
         CloseUI() {
             this.Show = false
             this.page = ''
+            this.houseid = null
             this.rented = false
             this.popupscreen = false
             this.rentsellhouseoption = false
@@ -92,6 +106,7 @@ const app = Vue.createApp({
             this.housedescription = ''
             this.garageslot = 0
             this.allowgarage = null
+            postNUI('CloseUI')
         },
     },
 
@@ -114,6 +129,7 @@ const app = Vue.createApp({
             if (data.action == 'OpenBuyMenu') {
                 this.Show = true
                 this.page = 'buyhouse'
+                this.houseid = data.houseid
                 this.housename = data.houseinfo.HouseName
                 this.housedescription = data.houseinfo.HouseDescription
                 this.allowgarage = data.houseinfo.AllowGarage
@@ -131,7 +147,6 @@ const app = Vue.createApp({
             if (event.key == 'Escape') {
                 if (this.Show) {
                     this.CloseUI()
-                    postNUI('CloseUI')
                 }
             }
         });
