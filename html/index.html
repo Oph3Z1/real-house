@@ -84,12 +84,12 @@
                         </div>
                     </div>
                     <div class="buy-house-button" @click="BuyNormalHouse()"> BUY HOUSE </div>
-                    <div class="rent-house-button" v-if="!rented"> RENT HOUSE</div>
+                    <div class="rent-house-button" v-if="!rented" @click="RentHouse()"> RENT HOUSE</div>
                     <div class="house-rented-container" v-else>
                         <div class="rented-player-information">
-                            <img src="img/rentpp.png">
-                            <span class="rpi-name">Oph3Z HouseV2</span>
-                            <span class="rpi-mini-text">Rented: 20/10/2023</span>
+                            <img :src="renterpp">
+                            <span class="rpi-name">{{ rentername }}</span>
+                            <span class="rpi-mini-text">{{'Rented: ' + rentedtime}}</span>
                         </div>
                         <div class="rented-buttom">
                             RENTED BY USER

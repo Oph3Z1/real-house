@@ -11,12 +11,9 @@ local function StartScript()
     end
 end 
 
-RegisterNetEvent('real-house:Update', function (table, loaded, table2)
+RegisterNetEvent('real-house:Update', function (table, loaded)
     Config.Houses = table
     ScriptLoaded = loaded
-    if not table2 then 
-        return
-    end
 end)
 
 Citizen.CreateThread(StartScript)

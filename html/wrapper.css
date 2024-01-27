@@ -451,7 +451,7 @@ input[type=number]::-webkit-outer-spin-button {
 
 .rpi-mini-text {
     color: #bfbfbfcb;
-    font-size: .95vh;
+    font-size: .85vh;
     font-weight: 600;
     left: 5vh;
     bottom: 1vh;

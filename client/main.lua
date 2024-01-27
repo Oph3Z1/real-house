@@ -16,14 +16,14 @@ Citizen.CreateThread(function()
         local Player = PlayerPedId()
         local PlayerCoords = GetEntityCoords(Player)
         for k, v in pairs(Config.Houses) do
-            if v.Owner == "" then
+            if v.Owner == "" and v.RentOwner == "" then
                 local Distance = GetDistanceBetweenCoords(PlayerCoords, v.HouseCoords.x, v.HouseCoords.y, v.HouseCoords.z, true)
                 if Distance < 2 then
                     if not MenuStatus then
                         sleep = 4
                         DrawText3D('~INPUT_PICKUP~ - Open House Menu', v.HouseCoords)
                         if IsControlJustReleased(0, 38) then
-                            OpenBuyMenu(k)
+                            OpenBuyMenu(k, false)
                             MenuStatus = true
                         end
                     end
@@ -34,7 +34,19 @@ Citizen.CreateThread(function()
     end
 end)
 
-function OpenBuyMenu(k)
+RegisterCommand('CheckHouseStatus', function()
+    local PlayerCoords = GetEntityCoords(PlayerPedId())
+    for k, v in pairs(Config.Houses) do
+        local Distance = GetDistanceBetweenCoords(PlayerCoords, v.HouseCoords.x, v.HouseCoords.y, v.HouseCoords.z, true)
+        if Distance < 2 then
+            if v.Owner == "" and v.RentOwner ~= "" then
+                OpenBuyMenu(k, true)
+            end
+        end
+    end
+end)
+
+function OpenBuyMenu(k, rentedstatus)
     local data = Callback('real-house:GetHouseAndPlayerData', k)
     SendNUIMessage({
         action = 'OpenBuyMenu',
@@ -45,7 +57,11 @@ function OpenBuyMenu(k)
         playername = data.playername,
         pfp = data.pfp,
         playerbank = data.playerbank,
-        playercash = data.playercash
+        playercash = data.playercash,
+        rented = rentedstatus,
+        rentername = data.rentername,
+        renterpp = data.renterpp,
+        rentedtime = data.rentedtime
     })
     SetNuiFocus(true, true)
 end
@@ -89,11 +105,13 @@ Citizen.CreateThread(function()
                     local DoorStatusText = ''
                     DoorStatus = DoorSystemGetDoorState(newvalue) == 0 and 1 or 0
                     if DoorStatus == 0 then
-                        DoorStatusText = 'Closed'
+                        DoorStatusText = 'Locked'
                     else 
-                        DoorStatusText = 'Opened'
+                        DoorStatusText = 'Unlocked'
                     end
                     if v.Owner ~= "" then
+                        DrawText3D(DoorStatusText, b.Coords)
+                    elseif v.RentOwner ~= "" then
                         DrawText3D(DoorStatusText, b.Coords)
                     end
                 end
@@ -103,14 +121,61 @@ Citizen.CreateThread(function()
     end
 end)
 
+RegisterNetEvent('real-house:OpenHouseDoors', function(house, keydata)
+    local PlayerCoords = GetEntityCoords(PlayerPedId())
+
+    for k, v in pairs(Config.Houses) do
+        for a, b in pairs(v.DoorCoords) do
+            local Distance = #(PlayerCoords - b.Coords)
+            local value = k * 1000
+            local newvalue = a + value
+            if Distance < 1 then
+                if k == house and v.KeyData == keydata then
+                    UnlockAnim()
+                    DoorStatus = DoorSystemGetDoorState(newvalue) == 0 and 1 or 0
+                    if DoorStatus == 1 then
+                        DoorStatusText = 'Locked'
+                        print('Door locked')
+                    else
+                        DoorStatusText = 'Unlocked'
+                        print('Door unlocked')
+                    end
+                    TriggerServerEvent('real-house:ChangeDoorStatus', b, DoorStatus, newvalue)
+                else
+                    print("Wrong keys")
+                end
+            end
+        end
+    end
+end)
+
+RegisterNetEvent('real-house:Client:ChangeDoorStatus', function(house, status, number)
+    DoorSystemSetDoorState(number, status.status, 0, 1)
+    SetStateOfClosestDoorOfType(number, house.DoorCoords, 1, 0.0, true)
+end)
+
 RegisterNUICallback('BuyNormalHouse', function(data)
     TriggerServerEvent('real-house:BuyHouse', data)
+end)
+
+RegisterNUICallback('RentHouse', function(data)
+    TriggerServerEvent('real-house:RentHouse', data)
 end)
 
 RegisterNUICallback('CloseUI', function()
     SetNuiFocus(false, false)
     MenuStatus = false
 end)
+
+function UnlockAnim()
+    RequestAnimDict("anim@mp_player_intmenu@key_fob@")
+    while not HasAnimDictLoaded("anim@mp_player_intmenu@key_fob@") do
+        Citizen.Wait(1)
+    end
+    TaskPlayAnim(PlayerPedId(), "anim@mp_player_intmenu@key_fob@", "fob_click", 8.0, 8.0, 1000, 1, 1, 0, 0, 0)
+    Citizen.Wait(500)
+    ClearPedTasks(PlayerPedId())
+end
 
 function Callback(name, payload)
     if Config.Framework == "newesx" or Config.Framework == "oldesx" then

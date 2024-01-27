@@ -36,6 +36,12 @@ const app = Vue.createApp({
         housedescription: '',
         allowgarage: null,
         garageslot: 0,
+
+        // Important Informations
+
+        rentername: '',
+        renterpp: '',
+        rentedtime: '',
     }),
 
     methods: {    
@@ -82,6 +88,18 @@ const app = Vue.createApp({
                 this.CloseUI()
             } else if (this.playercash >= this.houseprice) {
                 postNUI('BuyNormalHouse', this.houseid)
+                this.CloseUI()
+            } else {
+                console.log("You don't have enough money to buy house")
+            }
+        },
+
+        RentHouse() {
+            if (this.playerbank >= this.houseprice) {
+                postNUI('RentHouse', this.houseid)
+                this.CloseUI()
+            } else if (this.playercash >= this.houseprice) {
+                postNUI('RentHouse', this.houseid)
                 this.CloseUI()
             } else {
                 console.log("You don't have enough money to buy house")
@@ -140,6 +158,10 @@ const app = Vue.createApp({
                 this.playercash = data.playercash
                 this.houseprice = data.houseprice
                 this.houserentprice = data.houserentprice
+                this.rented = data.rented
+                this.rentername = data.rentername
+                this.renterpp = data.renterpp
+                this.rentedtime = data.rentedtime
             }
         });
 

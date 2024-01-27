@@ -34,24 +34,33 @@ end
 
 RegisterNetEvent("real-house:ReqData", RequestNewData)
 
-RegisterNetEvent('real-house:RefreshHouses', function()
-    TriggerClientEvent('real-house:Update', -1, Config.Houses, ScriptLoaded)
-end)
-
 function LoadAllHouses()
     local HouseData = ExecuteSql("SELECT * FROM `real_house`")
 
     for k,v in pairs(HouseData) do 
         local info = json.decode(v.houseinfo)
-        Config.Houses[k].Owner = v.owner
-        Config.Houses[k].KeyData = v.keydata
-        Config.Houses[k].RentOwner = v.rentowner
-        Config.Houses[k].AllowRent = v.AllowRent
-        Config.Houses[k].Friends = json.decode(v.friends)
-        Config.Houses[k].HouseInformation.HouseName = info.HouseName
-        Config.Houses[k].HouseInformation.Description = info.Description
-        Config.Houses[k].Garages.AvailableSlot = info.AvailableSlot
-        Config.Houses[k].Garages.AllowGarage = info.AllowGarage
+        local rentowner = json.decode(v.rentowner)
+        if rentowner then
+            Config.Houses[k].Owner = v.owner
+            Config.Houses[k].KeyData = v.keydata
+            Config.Houses[k].RentOwner = rentowner.owner
+            Config.Houses[k].AllowRent = v.AllowRent
+            Config.Houses[k].Friends = json.decode(v.friends)
+            Config.Houses[k].HouseInformation.HouseName = info.HouseName
+            Config.Houses[k].HouseInformation.Description = info.Description
+            Config.Houses[k].Garages.AvailableSlot = info.AvailableSlot
+            Config.Houses[k].Garages.AllowGarage = info.AllowGarage
+        else
+            Config.Houses[k].Owner = v.owner
+            Config.Houses[k].KeyData = v.keydata
+            Config.Houses[k].RentOwner = ""
+            Config.Houses[k].AllowRent = v.AllowRent
+            Config.Houses[k].Friends = json.decode(v.friends)
+            Config.Houses[k].HouseInformation.HouseName = info.HouseName
+            Config.Houses[k].HouseInformation.Description = info.Description
+            Config.Houses[k].Garages.AvailableSlot = info.AvailableSlot
+            Config.Houses[k].Garages.AllowGarage = info.AllowGarage
+        end
     end
     ScriptLoaded = true
 end
