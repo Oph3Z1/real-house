@@ -175,7 +175,7 @@ RegisterNetEvent('real-house:RentHouse', function(data)
                         RenterTable = {
                             owner = Identifier,
                             name = PlayerName,
-                            date = os.time(),
+                            date = os.time() + (1 * 60),
                             pp = DiscordProfilePicture
                         }
                         Config.Houses[data].RentOwner = Identifier
@@ -195,6 +195,7 @@ RegisterNetEvent('real-house:RentHouse', function(data)
             end
         end
     else
+        -- ESX
     end
 end)
 
@@ -206,6 +207,106 @@ RegisterNetEvent('real-house:ChangeDoorStatus', function(housevalue, status, num
     end
 end)
 
+function CheckRentStatus()
+    local GetPlayerBill = ExecuteSql("SELECT * FROM `phone_invoices` WHERE society = '"..CodeReal.Bill.."'")
+    if #GetPlayerBill > 0 then
+        local PlayerHouse = ExecuteSql("SELECT * FROM `real_house` WHERE id = '"..GetPlayerBill[1].sendercitizenid.."'")
+        if #PlayerHouse > 0 then
+            local Owner = PlayerHouse[1].owner
+            local RentOwner = PlayerHouse[1].rentowner.owner
+            if Config.SendMailToPlayer then
+                TriggerEvent('real-house:SendMailToPlayerHouseExpired', RentOwner)
+            end
+            if Owner then
+                if Config.SendMailToPlayer then
+                    TriggerEvent('real-house:SendMailToRealOwner', Owner)
+                end
+                ExecuteSql("UPDATE `real_house` SET `keydata` = '', `rentowner` = '', `friends` = '{}' WHERE id = '"..GetPlayerBill[1].sendercitizenid.."'")
+                local House = tonumber(GetPlayerBill[1].sendercitizenid)
+                Config.Houses[House].KeyData = ""
+                Config.Houses[House].RentOwner = ""
+                Config.Houses[House].Friends = {}
+                TriggerClientEvent('real-house:Update', -1, Config.Houses, ScriptLoaded)
+            else
+                ExecuteSql("UPDATE `real_house` SET `owner` = '"..nil.."', `keydata` = '"..nil.."', `rentowner` = '"..nil.."', `allowrent` = '"..false.."', `friends` = '"..{}.."' WHERE id = '"..GetPlayerBill[1].sendercitizenid.."'")
+                local House = tonumber(GetPlayerBill[1].sendercitizenid)
+                Config.Houses[House].Owner = ""
+                Config.Houses[House].KeyData = ""
+                Config.Houses[House].RentOwner = ""
+                Config.Houses[House].Friends = {}
+                TriggerClientEvent('real-house:Update', -1, Config.Houses, ScriptLoaded) 
+            end
+        end
+    end
+end
+
+RegisterNetEvent('real-house:CheckPayment', function()
+    local Houses = ExecuteSql("SELECT * FROM `real_house`")
+    if #Houses > 0 then
+        for k, v in pairs(Houses) do
+            local rentowner = v.rentowner
+            if rentowner ~= "" then
+                local jsonknk = json.decode(rentowner)
+                if Config.Framework == 'newqb' or Config.Framework == 'oldqb' then
+                    local Renter = frameworkObject.Functions.GetPlayerByCitizenId(tostring(jsonknk.owner))
+                    if v.payment == 0 then
+                        local todayStart = os.time({year=os.date("%Y"), month=os.date("%m"), day=os.date("%d")})
+                        if tonumber(jsonknk.date) >= todayStart then
+                            ExecuteSql("UPDATE `real_house` SET payment = '"..tonumber(1).."' WHERE id = '"..v.id.."'")
+                            ExecuteSql("INSERT INTO `phone_invoices` (citizenid, amount, society, sender, sendercitizenid) VALUES ('"..Renter.PlayerData.citizenid.."', '"..Config.Houses[v.id].RentPrice.."', '"..CodeReal.Bill.."', '"..CodeReal.Bill.."', '"..v.id.."')")
+                            TriggerEvent('real-house:RefreshPhone', Renter.PlayerData.source)
+                        end
+                    end
+                else
+                    local Renter = frameworkObject.GetPlayerFromIdentifier(tostring(jsonknk.owner))
+                    if v.payment == 0 then
+                        if (os.time() - tonumber(jsonknk.date)) > (Config.RentTime * 24 * 60 * 60) then
+                            ExecuteSql("INSERT INTO `billing` (identifier, sender, target_type, target, label, amount) VALUES ('"..Renter.getIdentifier().."', '"..CodeReal.Bill.."', 'player', '"..Renter.getIdentifier().."', 'HouseBill', '"..Config.Houses[v.id].RentPrice.."')")
+                            ExecuteSql("UPDATE `real_house` SET payment = '"..tonumber(1).."' WHERE id = '"..v.id.."'")
+                        end
+                    end
+                end
+            end
+        end
+    end
+end)
+
+function GetName(source)
+    if Config.Framework == "newesx" or Config.Framework == "oldesx" then
+        local xPlayer = frameworkObject.GetPlayerFromId(tonumber(source))
+        if xPlayer then
+            return xPlayer.getName()
+        else
+            return "0"
+        end
+    else
+        local Player = frameworkObject.Functions.GetPlayer(tonumber(source))
+        if Player then
+            return Player.PlayerData.charinfo.firstname .. ' ' .. Player.PlayerData.charinfo.lastname
+        else
+            return "0"
+        end
+    end
+end
+
+function GetPlayerMoneyOnline(source, type)
+    if Config.Framework == 'newqb' or Config.Framework == 'oldqb' then
+        local Player = frameworkObject.Functions.GetPlayer(tonumber(source))
+        if type == 'bank' then
+            return tonumber(Player.PlayerData.money.bank)
+        elseif type == 'cash' then
+            return tonumber(Player.PlayerData.money.cash)
+        end
+    elseif Config.Framework == 'newesx' or Config.Framework == 'oldesx' then
+        local Player = frameworkObject.GetPlayerFromId(tonumber(source))
+        if type == 'bank' then
+            return tonumber(Player.getAccount('bank').money)
+        elseif type == 'cash' then
+            return tonumber(Player.getMoney())
+        end
+    end
+end
+
 function LoadFramework()
     if Config.Framework == 'newqb' or Config.Framework == 'oldqb' then
         frameworkObject.Functions.CreateUseableItem('housekeys', function(source, itemData)
@@ -213,6 +314,7 @@ function LoadFramework()
             TriggerClientEvent('real-house:Update', -1, Config.Houses, ScriptLoaded)
         end)
     else
+        -- ESX
     end
 end
 
@@ -296,3 +398,5 @@ function ExecuteSql(query)
     end
     return result
 end
+
+TriggerEvent('cron:runAt', Config.CheckRentStatus.Hour, Config.CheckRentStatus.Minute, CheckRentStatus)

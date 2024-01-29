@@ -34,6 +34,13 @@ Citizen.CreateThread(function()
     end
 end)
 
+Citizen.CreateThread(function()
+    while true do
+        Citizen.Wait(5000)
+        TriggerServerEvent('real-house:CheckPayment')
+    end
+end)
+
 RegisterCommand('CheckHouseStatus', function()
     local PlayerCoords = GetEntityCoords(PlayerPedId())
     for k, v in pairs(Config.Houses) do

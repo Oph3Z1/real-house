@@ -1,4 +1,5 @@
 Config = {}
+CodeReal = {}
 
 Config.Framework = 'newqb' -- newesx, oldesx, newqb, oldqb
 Config.MySQL = 'oxmysql' -- oxmysql, ghamattimysql, mysql-async | Don't forget to edit fxmanifest.lua
@@ -8,6 +9,14 @@ Config.Metadata = true -- If 'true', system will use metadata
 Config.AllowToBuyMoreThanOne = true
 Config.GiveRentSystem = true
 Config.AllowBuyHouseWhenRented = true
+Config.RentTime = 7 -- Days
+Config.SendMailToPlayer = false
+CodeReal.Bill = 'SwedenEstate'
+
+Config.CheckRentStatus = {
+    Hour = 22,
+    Minute = 37
+}
 
 Config.Houses = {
     [1] = {

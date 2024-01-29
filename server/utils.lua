@@ -14,13 +14,14 @@ function StartScript()
             KeyData = v.KeyData,
             RentOwner = v.RentOwner,
             AllowRent = v.AllowRent,
-            Friends = {}
+            Friends = {},
+            Payment = 0
         }
 
         local HouseData = ExecuteSql("SELECT * FROM `real_house` WHERE id = '"..k.."'")
 
         if #HouseData == 0 then
-            ExecuteSql("INSERT INTO `real_house` (id, owner, houseinfo, keydata, rentowner, allowrent, friends) VALUES ('"..k.."', '"..Def.Owner.."', '"..json.encode(Def.HouseInformation).."', '"..Def.KeyData.."', '"..Def.RentOwner.."', '"..tostring(Def.AllowRent).."', '"..json.encode(Def.Friends).."')")
+            ExecuteSql("INSERT INTO `real_house` (id, owner, houseinfo, keydata, rentowner, allowrent, friends, payment) VALUES ('"..k.."', '"..Def.Owner.."', '"..json.encode(Def.HouseInformation).."', '"..Def.KeyData.."', '"..Def.RentOwner.."', '"..tostring(Def.AllowRent).."', '"..json.encode(Def.Friends).."', '"..Def.Payment.."')")
         end
         LoadAllHouses()
     end
