@@ -7,7 +7,6 @@ function StartScript()
                 HouseName = v.HouseInformation.HouseName,
                 HouseDescription = v.HouseInformation.Description,
                 AvailableSlot = v.Garages.AvailableSlot,
-                AllowGarage = v.Garages.AllowGarage,
             },
 
             Owner = v.Owner,
@@ -50,7 +49,6 @@ function LoadAllHouses()
             Config.Houses[k].HouseInformation.HouseName = info.HouseName
             Config.Houses[k].HouseInformation.Description = info.Description
             Config.Houses[k].Garages.AvailableSlot = info.AvailableSlot
-            Config.Houses[k].Garages.AllowGarage = info.AllowGarage
         else
             Config.Houses[k].Owner = v.owner
             Config.Houses[k].KeyData = v.keydata
@@ -60,7 +58,6 @@ function LoadAllHouses()
             Config.Houses[k].HouseInformation.HouseName = info.HouseName
             Config.Houses[k].HouseInformation.Description = info.Description
             Config.Houses[k].Garages.AvailableSlot = info.AvailableSlot
-            Config.Houses[k].Garages.AllowGarage = info.AllowGarage
         end
     end
     ScriptLoaded = true

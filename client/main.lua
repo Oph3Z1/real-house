@@ -8,6 +8,7 @@ Citizen.CreateThread(function()
     end
     Citizen.Wait(1500)
     LoadDoorStatus()
+    WhenReady()
 end)
 
 Citizen.CreateThread(function()
@@ -34,22 +35,67 @@ Citizen.CreateThread(function()
     end
 end)
 
+function WhenReady()
+    Citizen.CreateThread(function()
+        while true do
+            local sleep = 2000
+            local Player = PlayerPedId()
+            local PlayerCoords = GetEntityCoords(Player)
+            for k, v in pairs(Config.Houses) do
+                for a, b in pairs(v.Garages.Coords) do
+                    local Distance = GetDistanceBetweenCoords(PlayerCoords, b.OpenGarageCoords, true)
+                    local playeridentity = ""
+                    if v.Garages.AllowGarage then
+                        if Distance < v.Garages.Distance then
+                            sleep = 4
+                            if Config.Framework == 'newqb' or Config.Framework == 'oldqb' then
+                                playeridentity = frameworkObject.Functions.GetPlayerData().citizenid
+                            else
+                                playeridentity = frameworkObject.PlayerData.identifier
+                            end
+                            if v.Owner == playeridentity or v.RentOwner.owner == playeridentity or v.Friends.owner then
+                                if IsPedInAnyVehicle(Player, false) then
+                                    local PlayerVehicle = GetVehiclePedIsIn(Player, false)
+                                    local VehiclePlate = GetVehicleNumberPlateText(PlayerVehicle)
+                                    local GetVehicle = GetVehicleProps(PlayerVehicle)
+                                    DrawText3D('~INPUT_PICKUP~ - Put car in to garage', b.OpenGarageCoords)
+                                    if IsControlJustReleased(0, 38) then
+                                        local CheckVehicleOwner = Callback('real-house:CheckVehicleOwner', VehiclePlate)
+                                        if CheckVehicleOwner then
+                                            local CheckGarageSlot = Callback('real-house:CheckGarageSlot', k)
+                                            if not CheckGarageSlot then
+                                                print("Successfuly parked vehicle")
+                                                TriggerServerEvent('real-house:PutVehicleToGarage', GetVehicle, k)
+                                                TaskLeaveVehicle(Player, PlayerVehicle, 64)
+                                                Citizen.Wait(2000)
+                                                DeleteVehicle(PlayerVehicle)
+                                            else
+                                                print("Garage is full")
+                                            end
+                                        else
+                                            print("This is not your vehicle")
+                                        end
+                                    end
+                                else
+                                    DrawText3D('~INPUT_PICKUP~ - Open Garage Menu', b.OpenGarageCoords)
+                                    if IsControlJustReleased(0, 38) then
+                                        OpenGarageMenu(k)
+                                    end
+                                end
+                            end
+                        end
+                    end
+                end
+            end
+            Citizen.Wait(sleep)
+        end
+    end)
+end
+
 Citizen.CreateThread(function()
     while true do
         Citizen.Wait(5000)
         TriggerServerEvent('real-house:CheckPayment')
-    end
-end)
-
-RegisterCommand('CheckHouseStatus', function()
-    local PlayerCoords = GetEntityCoords(PlayerPedId())
-    for k, v in pairs(Config.Houses) do
-        local Distance = GetDistanceBetweenCoords(PlayerCoords, v.HouseCoords.x, v.HouseCoords.y, v.HouseCoords.z, true)
-        if Distance < 2 then
-            if v.Owner == "" and v.RentOwner ~= "" then
-                OpenBuyMenu(k, true)
-            end
-        end
     end
 end)
 
@@ -65,10 +111,25 @@ function OpenBuyMenu(k, rentedstatus)
         pfp = data.pfp,
         playerbank = data.playerbank,
         playercash = data.playercash,
-        rented = rentedstatus,
-        rentername = data.rentername,
-        renterpp = data.renterpp,
-        rentedtime = data.rentedtime
+    })
+    SetNuiFocus(true, true)
+end
+
+function OpenGarageMenu(k)
+    local data = Callback('real-house:GetGarageVehicles', k)
+    SendNUIMessage({
+        action = 'OpenGarage',
+        name = data.name,
+        pp = data.pp,
+        data = data.data,
+        currentslot = Config.Houses[k].Garages.AvailableSlot,
+        maxslot = Config.Houses[k].Garages.MaxSlot,
+        slotprice = Config.Houses[k].Garages.GarageSlotPrice,
+        playerbank = data.playerbank,
+        playercash = data.playercash,
+        vehicleowner = data.vehicleowner,
+        vehicleownerpp = data.vehicleownerpp,
+        house = k
     })
     SetNuiFocus(true, true)
 end
@@ -167,6 +228,10 @@ end)
 
 RegisterNUICallback('RentHouse', function(data)
     TriggerServerEvent('real-house:RentHouse', data)
+end)
+
+RegisterNUICallback('BuyRentedHouse', function(data)
+    TriggerServerEvent('real-house:BuyRentedHouse', data)
 end)
 
 RegisterNUICallback('CloseUI', function()

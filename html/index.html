@@ -83,7 +83,7 @@
                             <span> {{housedescription}} </span>
                         </div>
                     </div>
-                    <div class="buy-house-button" @click="BuyNormalHouse()"> BUY HOUSE </div>
+                    <div class="buy-house-button" @click="BuyHouse()"> BUY HOUSE </div>
                     <div class="rent-house-button" v-if="!rented" @click="RentHouse()"> RENT HOUSE</div>
                     <div class="house-rented-container" v-else>
                         <div class="rented-player-information">
@@ -100,40 +100,40 @@
             <div class="garage-container" v-if="page == 'garage'">
                 <div class="garage-upper">
                     <div class="garage-player-information">
-                        <img class="garage-pfp" src="img/ursupp.png">
+                        <img class="garage-pfp" :src="pfp">
                         <span class="garage-welcome-text">Welcome To The Home Menu</span>
-                        <span class="garage-player-name">Oph3Z HouseV2</span>
+                        <span class="garage-player-name">{{ playername }}</span>
                     </div>
                     <div class="garage-slot-container">
                         <img src="img/houseslot.png" class="garage-slot-icon">
-                        <span>10/20</span>
+                        <span>{{ currentslot + '/' + maxslot }}</span>
                         <div class="line"></div>
                         <div class="garage-add-slot-button" @click="popupscreen = 'add-slot'"> ADD SLOT </div>
                     </div>
                     <div class="garage-player-money">
                         <div class="gpm-left">
                             <img src="img/bank.png" class="gbankmoneyimg">
-                            <span class="gplayer-bank-balance">$ 100.000.000</span>
+                            <span class="gplayer-bank-balance">{{'$ ' + playerbank}}</span>
                         </div>
                         <div class="gpm-right">
                             <img src="img/cash.png" class="gcashmoneyimg">
-                            <span class="gplayer-cash-balance">$ 100.000.000</span>
+                            <span class="gplayer-cash-balance">{{'$ ' + playercash}}</span>
                         </div>
                     </div>
                 </div>
                 <div class="garage-lower">
-                    <div class="garage-item">
+                    <div class="garage-item" v-for="(v, k) in garagetable" :key="k">
                         <div class="gi-slot">
-                            1/10
+                            {{ k + 1 + '/' + currentslot }}
                         </div>
-                        <img src="img/garagecar.png" class="garage-car-icon">
+                        <img :src="'https://docs.fivem.net/vehicles/'+v.vehicle+'.webp'" class="garage-car-icon">
                         <div class="garage-car-information">
-                            <span>NISSAN SKYLINE R42</span>
-                            <p>99 AA 454</p>
+                            <span>{{ v.vehicle.toUpperCase() }}</span>
+                            <p>{{ v.plate }}</p>
                         </div>
                         <div class="garage-car-owner">
-                            <img src="img/rentpp.png">
-                            <span>Oph3Z HouseV2</span>
+                            <img :src="vehicleownerpp">
+                            <span>{{ vehicleowner }}</span>
                             <p>Vehicle Owner</p>
                         </div>
                         <div class="take-out-vehicle"> TAKE OUT </div>

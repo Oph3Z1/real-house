@@ -59,6 +59,76 @@ Citizen.CreateThread(function()
     RegisterCallback('real-house:DoorStatus', function(source, cb)
         cb(DoorStatus)
     end)
+
+    RegisterCallback('real-house:CheckVehicleOwner', function(source, cb, plate)
+        if Config.Framework == 'newqb' or Config.Framework == 'oldqb' then
+            local Player = frameworkObject.Functions.GetPlayer(source)
+            local PlayerVehicle = ExecuteSql("SELECT * FROM `player_vehicles` WHERE plate = '"..plate.."'")
+            if #PlayerVehicle > 0 then
+                if Player.PlayerData.citizenid == PlayerVehicle[1].citizenid then
+                    cb(true)
+                else
+                    cb(false)
+                end
+            else
+                cb(false)
+            end
+        else
+            -- ESX codes
+        end
+    end)
+
+    RegisterCallback('real-house:CheckGarageSlot', function(source, cb, house)
+        if Config.Framework == 'newqb' or Config.Framework == 'oldqb' then
+            local slot = ExecuteSql("SELECT * FROM `player_vehicles` WHERE garage = '"..house.."'")
+            if #slot >= Config.Houses[house].Garages.AvailableSlot then
+                cb(true)
+            else
+                cb(false)
+            end
+        else
+            -- ESX codes
+        end
+    end)
+
+    RegisterCallback('real-house:GetGarageVehicles', function(source, cb, house)
+        local src = source
+        if Config.Framework == 'newqb' or Config.Framework == 'oldqb' then
+            local data = ExecuteSql("SELECT * FROM `player_vehicles` WHERE garage = '"..house.."'")
+            local DiscordProfilePicture = GetDiscordAvatar(src)
+            local PlayerName = GetName(src)
+            local PlayerBank = GetPlayerMoneyOnline(src, 'cash')
+            local PlayerCash = GetPlayerMoneyOnline(src, 'bank')
+            local DataTable = {}
+            local vehicleowneridentifier = ""
+            local vehicleownerstatus = nil
+            if #data > 0 then
+                for k, v in pairs(data) do
+                    vehicleowneridentifier = v.citizenid
+                end
+                if Config.Framework == 'newqb' or Config.Framework == 'oldqb' then
+                    local Player = frameworkObject.Functions.GetPlayerByCitizenId(vehicleowneridentifier)
+                    vehicleownerstatus = Player.PlayerData.source
+                else
+                    vehicleownerstatus = frameworkObject.GetPlayerFromIdentifier(vehicleowneridentifier)
+                end
+                DataTable = {
+                    name = PlayerName,
+                    pp = DiscordProfilePicture,
+                    vehicleowner = GetOfflinePlayerName(vehicleowneridentifier),
+                    vehicleownerpp = GetDiscordAvatar(vehicleownerstatus),
+                    playerbank = PlayerBank,
+                    playercash = PlayerCash,
+                    data = data
+                }
+                cb(DataTable)
+            else
+                print("Data not found")
+            end
+        else
+            -- ESX codes
+        end
+    end)
 end)
 
 RegisterNetEvent('real-house:BuyHouse', function(data)
@@ -106,6 +176,8 @@ RegisterNetEvent('real-house:BuyHouse', function(data)
                             print("Not enough money")
                         end
                     end
+                else
+                    print("Data not found")
                 end
             end
         else
@@ -142,6 +214,8 @@ RegisterNetEvent('real-house:BuyHouse', function(data)
                         print("Not enough money")
                     end
                 end
+            else
+                print("Data not found")
             end
         end                    
     else
@@ -174,9 +248,7 @@ RegisterNetEvent('real-house:RentHouse', function(data)
                         Player.Functions.AddItem('housekeys', 1, false, keydata) 
                         RenterTable = {
                             owner = Identifier,
-                            name = PlayerName,
-                            date = os.time() + (1 * 60),
-                            pp = DiscordProfilePicture
+                            date = os.time() + (Config.RentTime * 24 * 60 * 60 * 1000),
                         }
                         Config.Houses[data].RentOwner = Identifier
                         Config.Houses[data].KeyData = key
@@ -193,9 +265,11 @@ RegisterNetEvent('real-house:RentHouse', function(data)
                     print("Not enough money")
                 end
             end
+        else
+            print("Data not found")
         end
     else
-        -- ESX
+        -- ESX codes
     end
 end)
 
@@ -221,14 +295,14 @@ function CheckRentStatus()
                 if Config.SendMailToPlayer then
                     TriggerEvent('real-house:SendMailToRealOwner', Owner)
                 end
-                ExecuteSql("UPDATE `real_house` SET `keydata` = '', `rentowner` = '', `friends` = '{}' WHERE id = '"..GetPlayerBill[1].sendercitizenid.."'")
+                ExecuteSql("UPDATE `real_house` SET `keydata` = '', `rentowner` = '', `payment` = '"..tonumber(0).."', `friends` = '{}' WHERE id = '"..GetPlayerBill[1].sendercitizenid.."'")
                 local House = tonumber(GetPlayerBill[1].sendercitizenid)
                 Config.Houses[House].KeyData = ""
                 Config.Houses[House].RentOwner = ""
                 Config.Houses[House].Friends = {}
                 TriggerClientEvent('real-house:Update', -1, Config.Houses, ScriptLoaded)
             else
-                ExecuteSql("UPDATE `real_house` SET `owner` = '"..nil.."', `keydata` = '"..nil.."', `rentowner` = '"..nil.."', `allowrent` = '"..false.."', `friends` = '"..{}.."' WHERE id = '"..GetPlayerBill[1].sendercitizenid.."'")
+                ExecuteSql("UPDATE `real_house` SET `owner` = '', `keydata` = '', `payment` = '"..tonumber(0).."', `rentowner` = '', `allowrent` = '"..false.."', `friends` = '"..{}.."' WHERE id = '"..GetPlayerBill[1].sendercitizenid.."'")
                 local House = tonumber(GetPlayerBill[1].sendercitizenid)
                 Config.Houses[House].Owner = ""
                 Config.Houses[House].KeyData = ""
@@ -237,6 +311,8 @@ function CheckRentStatus()
                 TriggerClientEvent('real-house:Update', -1, Config.Houses, ScriptLoaded) 
             end
         end
+    else
+        print("Data not found")
     end
 end
 
@@ -261,15 +337,49 @@ RegisterNetEvent('real-house:CheckPayment', function()
                     local Renter = frameworkObject.GetPlayerFromIdentifier(tostring(jsonknk.owner))
                     if v.payment == 0 then
                         if (os.time() - tonumber(jsonknk.date)) > (Config.RentTime * 24 * 60 * 60) then
-                            ExecuteSql("INSERT INTO `billing` (identifier, sender, target_type, target, label, amount) VALUES ('"..Renter.getIdentifier().."', '"..CodeReal.Bill.."', 'player', '"..Renter.getIdentifier().."', 'HouseBill', '"..Config.Houses[v.id].RentPrice.."')")
                             ExecuteSql("UPDATE `real_house` SET payment = '"..tonumber(1).."' WHERE id = '"..v.id.."'")
+                            ExecuteSql("INSERT INTO `billing` (identifier, sender, target_type, target, label, amount) VALUES ('"..Renter.getIdentifier().."', '"..CodeReal.Bill.."', 'player', '"..Renter.getIdentifier().."', 'HouseBill', '"..Config.Houses[v.id].RentPrice.."')")
                         end
                     end
                 end
             end
         end
+    else
+        print("Data not found")
     end
 end)
+
+RegisterNetEvent('real-house:PutVehicleToGarage', function(vehicle, house)
+    if Config.Framework == 'newqb' or Config.Framework == 'oldqb' then
+        local data = ExecuteSql("SELECT * FROM `real_house` WHERE `id` = '"..house.."'")
+        if #data > 0 then
+            ExecuteSql("UPDATE `player_vehicles` SET `garage` = '"..house.."', `mods` = '"..json.encode(vehicle).."', state = '"..tonumber(1).."' WHERE plate = '"..vehicle.plate.."'")
+        else
+            print("Data not found")
+        end
+    else
+        -- ESX codes
+    end
+end)
+
+function GetOfflinePlayerName(identifier)
+    if Config.Framework == 'newqb' or Config.Framework == 'oldqb' then
+        local data = ExecuteSql("SELECT `charinfo` FROM `players` WHERE `citizenid` = '"..identifier.."'")
+        if data then
+            local player = json.decode(data[1].charinfo)
+            return player.firstname .. ' ' .. player.lastname
+        else
+            print("Data not found")
+        end
+    else
+        local data = ExecuteSql("SELECT * FROM `users` WHERE `identifier` = '"..identifier.."'")
+        if data then
+            return data.firstname .. ' ' .. data.lastname
+        else
+            print("Data not found")
+        end
+    end
+end
 
 function GetName(source)
     if Config.Framework == "newesx" or Config.Framework == "oldesx" then
@@ -314,7 +424,7 @@ function LoadFramework()
             TriggerClientEvent('real-house:Update', -1, Config.Houses, ScriptLoaded)
         end)
     else
-        -- ESX
+        -- ESX codes
     end
 end
 

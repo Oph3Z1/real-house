@@ -14,8 +14,8 @@ Config.SendMailToPlayer = false
 CodeReal.Bill = 'SwedenEstate'
 
 Config.CheckRentStatus = {
-    Hour = 22,
-    Minute = 37
+    Hour = 13,
+    Minute = 41
 }
 
 Config.Houses = {
@@ -61,10 +61,10 @@ Config.Houses = {
             AvailableSlot = 2,
             MaxSlot = 20,
             GarageSlotPrice = 1000,
-            Distance = 10.0,
+            Distance = 4,
 
             Coords = {
-                {SpawnCoords = vector3(1, 1, 1), OpenGarageCoords = vector3(1, 1, 1)}
+                {SpawnCoords = vector3(1315.81, -582.77, 72.44), OpenGarageCoords = vector3(1312.9, -589.33, 72.93)}
             }
         },
     }

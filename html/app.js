@@ -22,6 +22,14 @@ const app = Vue.createApp({
             {id: 5, firstname: 'Ebenin', lastname: 'Blip', img: 'img/ursupp.png'},
             {id: 6, firstname: 'Teyzenin', lastname: 'Blip', img: 'img/ursupp.png'},
         ],
+        garagetable: [],
+
+        // Garage informations
+        currentslot: 0,
+        maxslot: 0,
+        vehicleowner: '',
+        vehicleownerpp: '',
+        slotprice: 0,
 
         // Other informations
 
@@ -82,7 +90,7 @@ const app = Vue.createApp({
             this.nerabyplayers.splice(this.nerabyplayers.indexOf(NearbyPlayer), 1);
         }, 
 
-        BuyNormalHouse() {
+        BuyHouse() {
             if (this.playerbank >= this.houseprice) {
                 postNUI('BuyNormalHouse', this.houseid)
                 this.CloseUI()
@@ -124,6 +132,11 @@ const app = Vue.createApp({
             this.housedescription = ''
             this.garageslot = 0
             this.allowgarage = null
+            this.currentslot = 0
+            this.maxslot = 0
+            this.vehicleowner = ''
+            this.slotprice = 0
+            this.vehicleownerpp = ''
             postNUI('CloseUI')
         },
     },
@@ -158,10 +171,20 @@ const app = Vue.createApp({
                 this.playercash = data.playercash
                 this.houseprice = data.houseprice
                 this.houserentprice = data.houserentprice
-                this.rented = data.rented
-                this.rentername = data.rentername
-                this.renterpp = data.renterpp
-                this.rentedtime = data.rentedtime
+            } else if (data.action == 'OpenGarage') {
+                this.Show = true
+                this.page = 'garage'
+                this.garagetable = data.data
+                this.houseid = data.house
+                this.playerbank = data.playerbank
+                this.playercash = data.playercash
+                this.pfp = data.pp
+                this.currentslot = data.currentslot
+                this.maxslot = data.maxslot
+                this.slotprice = data.slotprice
+                this.vehicleowner = data.vehicleowner
+                this.playername = data.name
+                this.vehicleownerpp = data.vehicleownerpp
             }
         });
 
