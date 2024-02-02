@@ -136,7 +136,7 @@
                             <span>{{ vehicleowner }}</span>
                             <p>Vehicle Owner</p>
                         </div>
-                        <div class="take-out-vehicle"> TAKE OUT </div>
+                        <div class="take-out-vehicle" @click="GetOutVehicle(v.plate)"> TAKE OUT </div>
                     </div>
                 </div>
                 <div class="garage-add-slot-container" v-if="popupscreen == 'add-slot'">
@@ -145,14 +145,14 @@
                             <h1>GARAGE ADD SLOT</h1>
                             <div class="as-slot-quantity">
                                 <span>SLOT QUANTITY</span>
-                                <input type="number">
+                                <input type="number" v-model="slotinput" pattern="/^-?\d+\.?\d*$/">
                             </div>
                             <div class="as-slot-price">
                                 <span>SLOT PRICE</span>
                                 <div> <span>$ 100.000</span> </div>
                             </div>
-                            <div class="add-slot-pay-with-cash">PAY WITH CASH</div>
-                            <div class="add-slot-pay-with-bank">PAY WITH CARD</div>
+                            <div class="add-slot-pay-with-cash" @click="BuySlot('cash')">PAY WITH CASH</div>
+                            <div class="add-slot-pay-with-bank" @click="BuySlot('card')">PAY WITH CARD</div>
                             <div class="close-add-slot-screen" @click="popupscreen = false">CANCEL</div>
                         </div>
                     </div>

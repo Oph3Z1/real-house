@@ -234,6 +234,36 @@ RegisterNUICallback('BuyRentedHouse', function(data)
     TriggerServerEvent('real-house:BuyRentedHouse', data)
 end)
 
+RegisterNUICallback('GetOutVehicle', function(data)
+    local cb = Callback('real-house:GetOutVehicle', data.plate)
+    if cb then
+        RequestModel(cb.model)
+        while not HasModelLoaded(cb.model) do
+            Wait(1000)
+        end
+        for a, b in pairs(Config.Houses[data.house].Garages.Coords) do
+            local Car = CreateVehicle(cb.model, b.SpawnCoords, true, true)
+            SetVehicleLivery(Car, cb.livery)
+            SetVehicleProps(Car, cb)
+            if cb.tint then
+                SetVehicleModKit(Car, 0)
+                SetVehicleWindowTint(Car, cb.tint)
+            end
+            SetPedIntoVehicle(PlayerPedId(), Car, -1)
+            TriggerServerEvent('real-house:UpdatePlayerGarage', 0, data.plate)
+            print("Successfully got the car")
+            if Config.GiveVehicleKeys then
+                GiveVehicleKeys(data.plate, Car)
+            end
+        end
+    end
+    SetNuiFocus(false, false)
+end)
+
+RegisterNUICallback('AddSlot', function(data)
+    TriggerServerEvent('real-house:AddGarageSlot', data)
+end)
+
 RegisterNUICallback('CloseUI', function()
     SetNuiFocus(false, false)
     MenuStatus = false

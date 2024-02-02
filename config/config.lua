@@ -13,6 +13,9 @@ Config.RentTime = 7 -- Days
 Config.SendMailToPlayer = false
 CodeReal.Bill = 'SwedenEstate'
 
+Config.GiveVehicleKeys = true
+Config.VehicleKeySystem = 'qb-vehiclekeys' -- qb-vehiclekeys, qs-vehiclekeys, wasabi-carlock, cd_garage, custom | If you choose 'custom' you need to edit config/client_config.lua
+
 Config.CheckRentStatus = {
     Hour = 13,
     Minute = 41
@@ -64,7 +67,7 @@ Config.Houses = {
             Distance = 4,
 
             Coords = {
-                {SpawnCoords = vector3(1315.81, -582.77, 72.44), OpenGarageCoords = vector3(1312.9, -589.33, 72.93)}
+                {SpawnCoords = vector4(1315.69, -582.98, 72.43, 333.2), OpenGarageCoords = vector3(1312.9, -589.33, 72.93)}
             }
         },
     }

@@ -23,6 +23,7 @@ const app = Vue.createApp({
             {id: 6, firstname: 'Teyzenin', lastname: 'Blip', img: 'img/ursupp.png'},
         ],
         garagetable: [],
+        slotinput: '',
 
         // Garage informations
         currentslot: 0,
@@ -112,6 +113,24 @@ const app = Vue.createApp({
             } else {
                 console.log("You don't have enough money to buy house")
             }
+        },
+
+        GetOutVehicle(plate) {
+            postNUI('GetOutVehicle', {
+                plate: plate,
+                house: this.houseid
+            })
+            this.CloseUI()
+        },
+
+        BuySlot(type) {
+            postNUI('AddSlot', {
+                type: type,
+                house: this.houseid,
+                slot: this.slotinput,
+                price: this.slotinput * this.slotprice
+            })
+            this.CloseUI()
         },
         
         CloseUI() {

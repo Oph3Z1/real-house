@@ -123,6 +123,29 @@ Citizen.CreateThread(function()
                 }
                 cb(DataTable)
             else
+                DataTable = {
+                    name = PlayerName,
+                    pp = DiscordProfilePicture,
+                    vehicleowner = "",
+                    vehicleownerpp = "",
+                    playerbank = PlayerBank,
+                    playercash = PlayerCash,
+                    data = {}
+                }
+                cb(DataTable)
+            end
+        else
+            -- ESX codes
+        end
+    end)
+
+    RegisterCallback('real-house:GetOutVehicle', function(source, cb, data)
+        local src = source
+        if Config.Framework == 'newqb' or Config.Framework == 'oldqb' then
+            local database = ExecuteSql("SELECT * FROM `player_vehicles` WHERE `plate` = '"..data.."'")
+            if #database >= 1 then
+                cb(json.decode(database[1].mods))
+            else
                 print("Data not found")
             end
         else
@@ -359,6 +382,91 @@ RegisterNetEvent('real-house:PutVehicleToGarage', function(vehicle, house)
         end
     else
         -- ESX codes
+    end
+end)
+
+RegisterNetEvent('real-house:UpdatePlayerGarage', function(index, plate)
+    if Config.Framework == 'newqb' or Config.Framework == 'oldqb' then
+        ExecuteSql("UPDATE `player_vehicles` SET `state` = '"..tonumber(index).."', garage = 'null' WHERE plate = '"..plate.."'")
+    else
+        -- ESX codes
+    end
+end)
+
+RegisterNetEvent('real-house:AddGarageSlot', function(data)
+    local src = source
+    if Config.Framework == 'newqb' or Config.Framework == 'oldqb' then
+        local Player = frameworkObject.Functions.GetPlayer(src)
+        local PlayerCash = Player.PlayerData.money.cash
+        local PlayerBank = Player.PlayerData.money.bank
+        if Config.Houses[data.house].Garages.AvailableSlot <= Config.Houses[data.house].Garages.MaxSlot then
+            local database = ExecuteSql("SELECT `houseinfo` FROM `real_house` WHERE id = '"..tonumber(data.house).."'")
+            if #database > 0 then
+                if data.type == 'cash' then
+                    if tonumber(PlayerCash) >= tonumber(data.price) then
+                        local slot = json.decode(database[1].houseinfo)
+                        Config.Houses[data.house].Garages.AvailableSlot += data.slot
+                        slot.AvailableSlot += tonumber(data.slot)
+                        ExecuteSql("UPDATE `real_house` SET `houseinfo` = '"..json.encode(slot).."' WHERE id = '"..tonumber(data.house).."'")
+                        TriggerClientEvent('real-house:Update', -1, Config.Houses, ScriptLoaded)
+                        Player.Functions.RemoveMoney('cash', tonumber(data.price))
+                    else
+                        print("Not enough money")
+                    end
+                else
+                    if tonumber(PlayerBank) >= tonumber(data.price) then
+                        local slot = json.decode(database[1].houseinfo)
+                        Config.Houses[data.house].Garages.AvailableSlot += data.slot
+                        slot.AvailableSlot += tonumber(data.slot)
+                        ExecuteSql("UPDATE `real_house` SET `houseinfo` = '"..json.encode(slot).."' WHERE id = '"..tonumber(data.house).."'")
+                        TriggerClientEvent('real-house:Update', -1, Config.Houses, ScriptLoaded)
+                        Player.Functions.RemoveMoney('bank', tonumber(data.price))
+                    else
+                        print("Not enough money")
+                    end
+                end
+            else
+                print("Data not found")
+            end
+        else
+            print("You'r slot is max")
+        end
+    else
+        local Player = frameworkObject.GetPlayerFromId(src)
+        local PlayerCash = Player.getMoney()
+        local PlayerBank = Player.getAccount("bank").amount
+        if Config.Houses[data.house].Garages.AvailableSlot <= Config.Houses[data.house].Garages.MaxSlot then
+            local database = ExecuteSql("SELECT `houseinfo` FROM `real_house` WHERE id = '"..tonumber(data.house).."'")
+            if #database > 0 then
+                if data.type == 'cash' then
+                    if tonumber(PlayerCash) >= tonumber(data.price) then
+                        local slot = json.decode(database[1].houseinfo)
+                        Config.Houses[data.house].Garages.AvailableSlot += data.slot
+                        slot.AvailableSlot += tonumber(data.slot)
+                        ExecuteSql("UPDATE `real_house` SET `houseinfo` = '"..json.encode(slot).."' WHERE id = '"..tonumber(data.house).."'")
+                        TriggerClientEvent('real-house:Update', -1, Config.Houses, ScriptLoaded)
+                        Player.RemoveMoney(tonumber(data.price))
+                    else
+                        print("Not enough money")
+                    end
+                else
+                    if tonumber(PlayerBank) >= tonumber(data.price) then
+                        local slot = json.decode(database[1].houseinfo)
+                        Config.Houses[data.house].Garages.AvailableSlot += data.slot
+                        slot.AvailableSlot += tonumber(data.slot)
+                        ExecuteSql("UPDATE `real_house` SET `houseinfo` = '"..json.encode(slot).."' WHERE id = '"..tonumber(data.house).."'")
+                        TriggerClientEvent('real-house:Update', -1, Config.Houses, ScriptLoaded)
+                        Player.removeAccountMoney("bank", tonumber(data.price))
+                    else
+                        print("Not enough money")
+                    end
+                end
+            else
+                print("Data not found")
+            end
+        else
+            print("You'r slot is max")
+        end
     end
 end)
 
