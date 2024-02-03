@@ -38,7 +38,7 @@
                 <div class="wrapper-lower">
                     <img src="img/background-effect.png" class="wrapper-lower-background">
                     <div class="house-img-container">
-                        <img src="img/house-background.png">
+                        <img :src="housebg">
                     </div>
                     <div class="house-name-contianer">
                         <span>HOUSE NAME</span>
@@ -149,7 +149,7 @@
                             </div>
                             <div class="as-slot-price">
                                 <span>SLOT PRICE</span>
-                                <div> <span>$ 100.000</span> </div>
+                                <div> <span>{{'$ ' + CalculateTotalSlotPrice()}}</span> </div>
                             </div>
                             <div class="add-slot-pay-with-cash" @click="BuySlot('cash')">PAY WITH CASH</div>
                             <div class="add-slot-pay-with-bank" @click="BuySlot('card')">PAY WITH CARD</div>
@@ -161,26 +161,25 @@
             <div class="house-management-container" v-if="page == 'house-management'">
                 <div class="management-upper">
                     <div class="management-player-information">
-                        <img class="management-pfp" src="img/ursupp.png">
+                        <img class="management-pfp" :src="pfp">
                         <span class="management-welcome-text">Welcome To The Home Menu</span>
-                        <span class="management-player-name">Oph3Z HouseV2</span>
+                        <span class="management-player-name">{{ playername }}</span>
                     </div>
                     <div class="management-player-money">
                         <div class="mpm-left">
                             <img src="img/bank.png" class="mbankmoneyimg">
-                            <span class="mplayer-bank-balance">$ 100.000.000</span>
+                            <span class="mplayer-bank-balance">{{'$ ' + playerbank}}</span>
                         </div>
                         <div class="mpm-right">
                             <img src="img/cash.png" class="mcashmoneyimg">
-                            <span class="mplayer-cash-balance">$ 100.000.000</span>
+                            <span class="mplayer-cash-balance">{{'$ ' + playercash}}</span>
                         </div>
                     </div>
                     <div class="management-extend-time" @click="ChangeScreens(false, 'rent-settings')" v-if="rented == true"> RENT SETTINGS </div>
-                    <div class="management-housesettings" @click="ChangeScreens(false, 'house-settings')" v-if="rented == false"> HOUSE SETTINGS </div>
                 </div>
                 <div class="management-lower">
                     <div class="mhouse-img-container">
-                        <img src="img/management-housebg.png"> <!-- 966 x 252 -->
+                        <img :src="housemngimg"> <!-- 966 x 252 -->
                     </div>
                     <div class="house-friends">
                         <span>HOUSE FRIENDS</span>
@@ -188,7 +187,7 @@
                         <div class="hf-container">
                             <div class="friends-item" v-for="(data, index) in friends">
                                 <img :src="data.img" class="fi-icon">
-                                <span>{{data.firstname + ' ' + data.lastname}}</span>
+                                <span>{{ data.name }}</span>
                                 <img src="img/kick-icon.png" class="fi-kick-icon" @click="RemoveFromFriends(data.id)">
                             </div>
                         </div>
@@ -198,22 +197,22 @@
                         <div class="srh-header"> <span>Nearby Players</span> </div>
                         <div class="srh-container">
                             <div class="nearby-players" v-for="data in nerabyplayers">
-                                <img src="img/ursupp.png" class="np-icon">
-                                <span>{{data.firstname + ' ' + data.lastname}}</span>
-                                <img src="img/green-tik-icon.png" class="tik-icon" @click="popupscreen = 'sellrenthouse'">
-                                <img src="img/green-add-friend-icon.png" class="add-friend-icon" @click="AddToFriends(data.id, data.firstname, data.lastname, data.img); RemoveFromNearbyPlayers(data.id)">
+                                <img :src="data.pp" class="np-icon">
+                                <span>{{ data.name }}</span>
+                                <img src="img/green-tik-icon.png" class="tik-icon" @click="ChangeScreens(false, 'sellrenthouse')">
+                                <img src="img/green-add-friend-icon.png" class="add-friend-icon" @click="AddToFriends(data.id, data.name, data.pp); RemoveFromNearbyPlayers(data.id)">
                             </div>
                         </div>
                     </div>
                     <div class="allow-rent-container">
                         <span>ALLOW RENT? YES/NO</span>
                         <div class="arc-header"> <span>Do you agree to rent out?</span> </div>
-                        <div class="allow-rent-button" @click="rentallowed = true" :style=" {border: rentallowed == true ? '1px solid white' : '',} "> YES </div>
-                            <div class="dont-allow-rent" @click="rentallowed = false" :style=" {border: rentallowed == false ? '1px solid white' : '',} "> NO </div>
+                        <div class="allow-rent-button" @click="ChangeRentallowStatus(true)" :style=" {border: rentallowed == true ? '1px solid white' : '',} "> YES </div>
+                        <div class="dont-allow-rent" @click="ChangeRentallowStatus(false)" :style=" {border: rentallowed == false ? '1px solid white' : '',} "> NO </div>
                         <div v-if="rentallowed">
-                            <input type="number" class="rent-price" placeholder="$1000">
-                            <input type="number" class="rent-time" placeholder="24 (Hours)">
-                            <div class="allow-rent-save-button"> SAVE </div>
+                            <input type="number" class="rent-price" placeholder="$1000" v-model="allowrentprice">
+                            <input type="number" class="rent-time" placeholder="24 (Hours)" v-model="allowrenttime">
+                            <div class="allow-rent-save-button" @click="SaveAllowrentSettings()"> SAVE </div>
                         </div>
                     </div>
                 </div>
@@ -242,23 +241,23 @@
             <div class="rent-settings" v-if="popupscreen == 'rent-settings'">
                 <div class="rent-upper">
                     <div class="rent-player-information">
-                        <img class="rent-pfp" src="img/ursupp.png">
+                        <img class="rent-pfp" :src="pfp">
                         <span class="rent-welcome-text">Welcome To The Home Menu</span>
-                        <span class="rent-player-name">Oph3Z HouseV2</span>
+                        <span class="rent-player-name">{{ playername }}</span>
                     </div>
                     <div class="rent-player-money">
                         <div class="rpm-left">
                             <img src="img/bank.png" class="rbankmoneyimg">
-                            <span class="rplayer-bank-balance">$ 100.000.000</span>
+                            <span class="rplayer-bank-balance">{{'$ ' + playerbank}}</span>
                         </div>
                         <div class="rpm-right">
                             <img src="img/cash.png" class="rcashmoneyimg">
-                            <span class="rplayer-cash-balance">$ 100.000.000</span>
+                            <span class="rplayer-cash-balance">{{'$ ' + playercash}}</span>
                         </div>
                     </div>
                 </div>
                 <div class="rent-lower">
-                    <img src="img/rent-settings-background.png">
+                    <img :src="housesecondimg">
                     <div class="rl-housename">
                         <span>HOUSE NAME</span>
                         <div> <span>My New Home</span> </div>
@@ -312,51 +311,6 @@
                     </div>
                     <div class="sr-accept">Accept</div>
                     <div class="sr-decline">Decline</div>
-                </div>
-            </div>
-            <div class="house-settings" v-if="popupscreen == 'house-settings'">
-                <div class="house-settings-upper">
-                    <div class="house-settings-player-information">
-                        <img class="house-settings-pfp" src="img/ursupp.png">
-                        <span class="house-settings-welcome-text">Welcome To The Home Menu</span>
-                        <span class="house-settings-player-name">Oph3Z HouseV2</span>
-                    </div>
-                    <div class="house-settings-player-money">
-                        <div class="house-settings-rpm-left">
-                            <img src="img/bank.png" class="house-settings-rbankmoneyimg">
-                            <span class="house-settings-rplayer-bank-balance">$ 100.000.000</span>
-                        </div>
-                        <div class="house-settings-rpm-right">
-                            <img src="img/cash.png" class="house-settings-rcashmoneyimg">
-                            <span class="house-settings-rplayer-cash-balance">$ 100.000.000</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="house-settings-lower">
-                    <div class="house-settings-save" @click="ChangeScreens('house-management', false)"> SAVE </div>
-                    <img src="img/house-settings-img-example.png">
-                    <h1>HOUSE SETTINGS</h1>
-                    <p>Here you can change information about your house.</p>
-                    <div class="house-settings-lower-house-name">
-                        <span>HOUSE NAME</span>
-                        <input type="text" placeholder="Enter House Name">
-                    </div>
-                    <div class="house-settings-lower-house-value">
-                        <span>HOUSE VALUE/PRICE</span>
-                        <input type="number" placeholder="Enter House Price">
-                    </div>
-                    <div class="house-settings-lower-house-garage-slot">
-                        <span>HOUSE GARAGE SLOT</span>
-                        <input type="number" placeholder="Enter Garage Slot">
-                    </div>
-                    <div class="house-settings-lower-house-img">
-                        <span>HOUSE IMAGE</span>
-                        <input type="text" placeholder="Enter Image URL">
-                    </div>
-                    <div class="house-settings-lower-house-description">
-                        <span>HOUSE DESCRIPTION</span>
-                        <input type="text" placeholder="Enter House Description">
-                    </div>
                 </div>
             </div>
         </div>

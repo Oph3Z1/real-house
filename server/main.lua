@@ -152,6 +152,56 @@ Citizen.CreateThread(function()
             -- ESX codes
         end
     end)
+
+    RegisterCallback('real-house:GetHouseData', function(source, cb, house)
+        local src = source
+        local data = ExecuteSql("SELECT * FROM `real_house` WHERE id = '"..house.."'")
+        local DiscordProfilePicture = GetDiscordAvatar(src)
+        local PlayerName = GetName(src)
+        local PlayerBank = GetPlayerMoneyOnline(src, 'cash')
+        local PlayerCash = GetPlayerMoneyOnline(src, 'bank')
+        local allowrent = json.decode(data[1].allowrent)
+        if #data > 0 then
+            local SendTable = {
+                name = PlayerName,
+                playerbank = PlayerBank,
+                playercash = PlayerCash,
+                pp = DiscordProfilePicture,
+                friends = data[1].Friends,
+                rentstatus = allowrent.status,
+                rentprice = allowrent.price,
+                renttime = allowrent.time,
+            }
+            cb(SendTable)
+        end
+    end)
+
+    RegisterCallback('real-house:GetClosestPlayersInformation', function(source, cb, targetplayer)
+        local src = targetplayer
+        local DiscordProfilePicture = GetDiscordAvatar(src)
+        local PlayerName = GetName(src)
+        if Config.Framework == 'newqb' or Config.Framework == 'oldqb' then
+            local Player = frameworkObject.Functions.GetPlayer(src)
+            if Player then
+                local SendData = {
+                    id = src,
+                    name = PlayerName,
+                    pp = DiscordProfilePicture,
+                }
+                cb(SendData)
+            end
+        else
+            local Player = frameworkObject.GetPlayerFromId(src)
+            if Player then
+                local SendData = {
+                    id = src,
+                    name = PlayerName,
+                    pp = DiscordProfilePicture,
+                }
+                cb(SendData)
+            end
+        end
+    end)
 end)
 
 RegisterNetEvent('real-house:BuyHouse', function(data)
@@ -325,7 +375,12 @@ function CheckRentStatus()
                 Config.Houses[House].Friends = {}
                 TriggerClientEvent('real-house:Update', -1, Config.Houses, ScriptLoaded)
             else
-                ExecuteSql("UPDATE `real_house` SET `owner` = '', `keydata` = '', `payment` = '"..tonumber(0).."', `rentowner` = '', `allowrent` = '"..false.."', `friends` = '"..{}.."' WHERE id = '"..GetPlayerBill[1].sendercitizenid.."'")
+                local allowrenttable = {
+                    status = false,
+                    price = 0,
+                    time = 0
+                }
+                ExecuteSql("UPDATE `real_house` SET `owner` = '', `keydata` = '', `payment` = '"..tonumber(0).."', `rentowner` = '', `allowrent` = '"..json.encode(allowrenttable).."', `friends` = '"..{}.."' WHERE id = '"..GetPlayerBill[1].sendercitizenid.."'")
                 local House = tonumber(GetPlayerBill[1].sendercitizenid)
                 Config.Houses[House].Owner = ""
                 Config.Houses[House].KeyData = ""
@@ -399,7 +454,7 @@ RegisterNetEvent('real-house:AddGarageSlot', function(data)
         local Player = frameworkObject.Functions.GetPlayer(src)
         local PlayerCash = Player.PlayerData.money.cash
         local PlayerBank = Player.PlayerData.money.bank
-        if Config.Houses[data.house].Garages.AvailableSlot <= Config.Houses[data.house].Garages.MaxSlot then
+        if Config.Houses[data.house].Garages.AvailableSlot <= Config.Houses[data.house].Garages.MaxSlot and tonumber(data.slot) > 0 then
             local database = ExecuteSql("SELECT `houseinfo` FROM `real_house` WHERE id = '"..tonumber(data.house).."'")
             if #database > 0 then
                 if data.type == 'cash' then
@@ -435,7 +490,7 @@ RegisterNetEvent('real-house:AddGarageSlot', function(data)
         local Player = frameworkObject.GetPlayerFromId(src)
         local PlayerCash = Player.getMoney()
         local PlayerBank = Player.getAccount("bank").amount
-        if Config.Houses[data.house].Garages.AvailableSlot <= Config.Houses[data.house].Garages.MaxSlot then
+        if Config.Houses[data.house].Garages.AvailableSlot <= Config.Houses[data.house].Garages.MaxSlot and tonumber(data.slot) > 0 then
             local database = ExecuteSql("SELECT `houseinfo` FROM `real_house` WHERE id = '"..tonumber(data.house).."'")
             if #database > 0 then
                 if data.type == 'cash' then
@@ -467,6 +522,17 @@ RegisterNetEvent('real-house:AddGarageSlot', function(data)
         else
             print("You'r slot is max")
         end
+    end
+end)
+
+RegisterNetEvent('real-house:SaveAllowrentSettings', function(cb)
+    local data = ExecuteSql("SELECT `allowrent` FROM `real_house` WHERE id = '"..tonumber(cb.house).."'")
+    if #data > 0 then
+        local allowrent = json.decode(data[1].allowrent)
+        allowrent.status = cb.status
+        allowrent.price = cb.price
+        allowrent.time = cb.time
+        ExecuteSql("UPDATE `real_house` SET `allowrent` = '"..json.encode(allowrent).."' WHERE id = '"..tonumber(cb.house).."'")
     end
 end)
 

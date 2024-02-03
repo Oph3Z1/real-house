@@ -20,7 +20,7 @@ function StartScript()
         local HouseData = ExecuteSql("SELECT * FROM `real_house` WHERE id = '"..k.."'")
 
         if #HouseData == 0 then
-            ExecuteSql("INSERT INTO `real_house` (id, owner, houseinfo, keydata, rentowner, allowrent, friends, payment) VALUES ('"..k.."', '"..Def.Owner.."', '"..json.encode(Def.HouseInformation).."', '"..Def.KeyData.."', '"..Def.RentOwner.."', '"..tostring(Def.AllowRent).."', '"..json.encode(Def.Friends).."', '"..Def.Payment.."')")
+            ExecuteSql("INSERT INTO `real_house` (id, owner, houseinfo, keydata, rentowner, allowrent, friends, payment) VALUES ('"..k.."', '"..Def.Owner.."', '"..json.encode(Def.HouseInformation).."', '"..Def.KeyData.."', '"..Def.RentOwner.."', '"..json.encode(Def.AllowRent).."', '"..json.encode(Def.Friends).."', '"..Def.Payment.."')")
         end
         LoadAllHouses()
     end

@@ -90,6 +90,38 @@ function WhenReady()
             Citizen.Wait(sleep)
         end
     end)
+
+    Citizen.CreateThread(function()
+        while true do
+            local sleep = 2000
+            local Player = PlayerPedId()
+            local PlayerCoords = GetEntityCoords(Player)
+            for k, v in pairs(Config.Houses) do
+                local Distance = #(PlayerCoords - Config.Houses[k].ManagementCoords)
+                if Distance < 3 then
+                    sleep = 4
+                    if Config.Houses[k].Owner ~= "" or Config.Houses[k].RentOwner.owner ~= "" then
+                        if Config.Framework == 'newqb' or Config.Framework == 'oldqb' then
+                            if Config.Houses[k].Owner == frameworkObject.Functions.GetPlayerData().citizenid or Config.Houses[k].RentOwner.owner == frameworkObject.Functions.GetPlayerData().citizenid or Config.Houses[k].Friends.owner == frameworkObject.Functions.GetPlayerData().citizenid then
+                                DrawText3D("~INPUT_PICKUP~ - Open Management", Config.Houses[k].ManagementCoords)
+                                if IsControlJustReleased(0, 38) then
+                                    OpenManagementMenu(k)
+                                end
+                            end
+                        else
+                            if Config.Houses[k].Owner == frameworkObject.PlayerData.identifier or Config.Houses[k].RentOwner.owner == frameworkObject.PlayerData.identifier or Config.Houses[k].Friends.owner == frameworkObject.PlayerData.identifier then
+                                DrawText3D("~INPUT_PICKUP~ - Open Management", Config.Houses[k].ManagementCoords)
+                                if IsControlJustReleased(0, 38) then
+                                    OpenManagementMenu(k)
+                                end
+                            end
+                        end
+                    end
+                end
+            end
+            Citizen.Wait(sleep)
+        end
+    end)
 end
 
 Citizen.CreateThread(function()
@@ -111,8 +143,26 @@ function OpenBuyMenu(k, rentedstatus)
         pfp = data.pfp,
         playerbank = data.playerbank,
         playercash = data.playercash,
+        houseimg = Config.Houses[k].HouseInformation.housebackgroundimg
     })
     SetNuiFocus(true, true)
+end
+
+function GetNearbyPlayers()
+    if Config.Framework == 'newqb' or Config.Framework == 'oldqb' then
+        local player, distance = frameworkObject.Functions.GetClosestPlayer()
+        if player ~= -1 and Distance <= 2.0 then
+            local data = Callback('real-house:GetClosestPlayersInformation', GetPlayerServerId(player))
+            return data
+        end
+    else
+        local player, distance = frameworkObject.Game.GetClosestPlayer()
+        local data = Callback('real-house:GetClosestPlayersInformation', GetPlayerServerId(player))
+        SendNUIMessage({
+            action = 'LoadNearbyPlayers',
+            data = data
+        })
+    end
 end
 
 function OpenGarageMenu(k)
@@ -130,6 +180,26 @@ function OpenGarageMenu(k)
         vehicleowner = data.vehicleowner,
         vehicleownerpp = data.vehicleownerpp,
         house = k
+    })
+    SetNuiFocus(true, true)
+end
+
+function OpenManagementMenu(k)
+    local data = Callback('real-house:GetHouseData', k)
+    SendNUIMessage({
+        action = 'OpenManagement',
+        name = data.name,
+        playerbank = data.playerbank,
+        playercash = data.playercash,
+        pp = data.pp,
+        friends = data.friends,
+        allowrent = data.rentstatus,
+        rentprice = data.rentprice,
+        renttime = data.renttime,
+        nearbyplayers = GetNearbyPlayers(),
+        house = k,
+        houseimg = Config.Houses[k].HouseInformation.housemanagementimg,
+        housesecondimg = Config.Houses[k].HouseInformation.rentsettingsbackground
     })
     SetNuiFocus(true, true)
 end
@@ -228,6 +298,10 @@ end)
 
 RegisterNUICallback('RentHouse', function(data)
     TriggerServerEvent('real-house:RentHouse', data)
+end)
+
+RegisterNUICallback('SaveAllowrentSettings', function(data)
+    TriggerServerEvent('real-house:SaveAllowrentSettings', data)
 end)
 
 RegisterNUICallback('BuyRentedHouse', function(data)

@@ -47,7 +47,7 @@
     color: #C7C5C5;
     font-size: 1.3vh;
     font-weight: 600;
-    top: 2.6vh;
+    top: 2.3vh;
     left: 7vh;
     position: absolute;
 }
@@ -380,7 +380,7 @@
 
 .rent-price {
     background: rgba(217, 217, 217, 0.04);
-    width: 93.6%;
+    width: 99.6%;
     height: 12%;
     left: 0;
     top: 12.5vh;
@@ -390,12 +390,13 @@
     color: #A1A1A1;
     font-size: 1.3vh;
     padding-left: 1.5vh;
+    padding-right: 1.5vh;
     position: absolute;
 }
 
 .rent-time {
     background: rgba(217, 217, 217, 0.04);
-    width: 93.6%;
+    width: 99.6%;
     height: 12%;
     left: 0;
     top: 17.3vh;
@@ -405,6 +406,7 @@
     color: #A1A1A1;
     font-size: 1.3vh;
     padding-left: 1.5vh;
+    padding-right: 1.5vh;
     position: absolute;
 }
 
@@ -1011,8 +1013,8 @@
     color: #BABABA;
     font-weight: 600;
     font-size: 3vh;
-    top: -1.4vh;
-    left: 32.7vh;
+    top: 0vh;
+    left: 32vh;
     position: absolute;
 }
 

@@ -12,6 +12,7 @@ const app = Vue.createApp({
         popupscreen: false, // 'add-slot' - 'rent-settings' - 'request-screen' - 'sellrenthouse' - 'house-settings'
         rentsellhouseoption: false, // 'sell' - 'rent'
         rentallowed: false,
+        lastpage: '',
         friends: [
             {id: 1, firstname: 'Oph3Z', lastname: 'HouseV2', img: 'img/ursupp.png'},
             {id: 2, firstname: 'Yusuf', lastname: 'Karacolak', img: 'https://cdn.discordapp.com/attachments/936406344515350538/1151901225508425840/image.png'},
@@ -45,12 +46,22 @@ const app = Vue.createApp({
         housedescription: '',
         allowgarage: null,
         garageslot: 0,
+        housebg: '',
+        housemngimg: '',
+        housesecondimg: '',
 
         // Important Informations
 
         rentername: '',
         renterpp: '',
         rentedtime: '',
+
+        // None of your business mate
+
+        allowrentprice: '',
+        allowrenttime: '',
+        allowrentcheck: false,
+        allowrentcheckedafter: '',
     }),
 
     methods: {    
@@ -60,21 +71,22 @@ const app = Vue.createApp({
         },
 
         ChangeScreens(page, popupscreen) {
-            if(page != null) {
+            this.lastpage = this.page
+            if (page != null) {
                 this.page = page
             }
-            if(popupscreen != null) {
+
+            if (popupscreen != null) {
                 this.popupscreen = popupscreen
             }
         },
 
-        AddToFriends(id, firstname, lastname, img) {
-            const CheckFriendsExistens = this.friends.find(marketitem => marketitem.firstname === firstname)
+        AddToFriends(id, name, img) {
+            const CheckFriendsExistens = this.friends.find(data => data.name === name)
             if (!CheckFriendsExistens) {
                 var data = {
                     id,
-                    firstname,
-                    lastname,
+                    name,
                     img
                 }
                 this.friends.push(data)
@@ -82,8 +94,8 @@ const app = Vue.createApp({
         },
 
         RemoveFromFriends(id) {
-            const BasketItem = this.friends.find(data => data.id === id)
-            this.friends.splice(this.friends.indexOf(BasketItem), 1)
+            const data = this.friends.find(v => v.id === id)
+            this.friends.splice(this.friends.indexOf(data), 1)
         },
 
         RemoveFromNearbyPlayers(id) {
@@ -123,6 +135,10 @@ const app = Vue.createApp({
             this.CloseUI()
         },
 
+        CalculateTotalSlotPrice() {
+            return this.slotinput * this.slotprice
+        },
+
         BuySlot(type) {
             postNUI('AddSlot', {
                 type: type,
@@ -131,6 +147,28 @@ const app = Vue.createApp({
                 price: this.slotinput * this.slotprice
             })
             this.CloseUI()
+        },
+
+        SaveAllowrentSettings() {
+            postNUI('SaveAllowrentSettings', {
+                house: this.houseid,
+                status: this.rentallowed,
+                price: this.allowrentprice,
+                time: this.allowrenttime
+            })
+        },
+
+        ChangeRentallowStatus(type) {
+            this.rentallowed = type
+            this.allowrentcheckedafter = type
+            this.allowrentcheck = true
+        },
+
+        GoBackToMain(type) {
+            this.popupscreen = false
+            if (type == 'house') {
+                this.page = 'house-management'
+            }
         },
         
         CloseUI() {
@@ -161,7 +199,6 @@ const app = Vue.createApp({
     },
 
     computed: {
-        
     },
 
     watch: {
@@ -190,6 +227,7 @@ const app = Vue.createApp({
                 this.playercash = data.playercash
                 this.houseprice = data.houseprice
                 this.houserentprice = data.houserentprice
+                this.housebg = data.houseimg
             } else if (data.action == 'OpenGarage') {
                 this.Show = true
                 this.page = 'garage'
@@ -204,13 +242,42 @@ const app = Vue.createApp({
                 this.vehicleowner = data.vehicleowner
                 this.playername = data.name
                 this.vehicleownerpp = data.vehicleownerpp
+            } else if (data.action == 'OpenManagement') {
+                this.Show = true
+                this.page = 'house-management'
+                this.houseid = data.house
+                this.playerbank = data.playerbank
+                this.playercash = data.playercash
+                this.pfp = data.pp
+                this.playername = data.name
+                this.friends = data.friends
+                this.rentallowed = data.allowrent
+                this.allowrentprice = data.rentprice
+                this.allowrenttime = data.renttime
+                this.nerabyplayers = data.nearbyplayers
+                this.housemngimg = data.houseimg
+                this.housesecondimg = data.housesecondimg
             }
         });
 
         window.addEventListener('keydown', (event) => {
             if (event.key == 'Escape') {
-                if (this.Show) {
+                if (this.Show && !this.popupscreen) {
+                    if (this.allowrentcheck) {
+                        if (!this.allowrentcheckedafter) {
+                            postNUI('SaveAllowrentSettings', {
+                                house: this.houseid,
+                                status: false,
+                                price: 0,
+                                time: 0
+                            })
+                        }
+                    }
                     this.CloseUI()
+                } else if (this.Show && this.popupscreen != false) {
+                    if (this.lastpage == 'house-management') {
+                        this.GoBackToMain('house')
+                    }
                 }
             }
         });
