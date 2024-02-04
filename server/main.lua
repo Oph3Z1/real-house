@@ -100,23 +100,10 @@ Citizen.CreateThread(function()
             local PlayerBank = GetPlayerMoneyOnline(src, 'cash')
             local PlayerCash = GetPlayerMoneyOnline(src, 'bank')
             local DataTable = {}
-            local vehicleowneridentifier = ""
-            local vehicleownerstatus = nil
             if #data > 0 then
-                for k, v in pairs(data) do
-                    vehicleowneridentifier = v.citizenid
-                end
-                if Config.Framework == 'newqb' or Config.Framework == 'oldqb' then
-                    local Player = frameworkObject.Functions.GetPlayerByCitizenId(vehicleowneridentifier)
-                    vehicleownerstatus = Player.PlayerData.source
-                else
-                    vehicleownerstatus = frameworkObject.GetPlayerFromIdentifier(vehicleowneridentifier)
-                end
                 DataTable = {
                     name = PlayerName,
                     pp = DiscordProfilePicture,
-                    vehicleowner = GetOfflinePlayerName(vehicleowneridentifier),
-                    vehicleownerpp = GetDiscordAvatar(vehicleownerstatus),
                     playerbank = PlayerBank,
                     playercash = PlayerCash,
                     data = data
@@ -126,8 +113,6 @@ Citizen.CreateThread(function()
                 DataTable = {
                     name = PlayerName,
                     pp = DiscordProfilePicture,
-                    vehicleowner = "",
-                    vehicleownerpp = "",
                     playerbank = PlayerBank,
                     playercash = PlayerCash,
                     data = {}
@@ -137,14 +122,24 @@ Citizen.CreateThread(function()
         else
             -- ESX codes
         end
-    end)
+    end) 
 
     RegisterCallback('real-house:GetOutVehicle', function(source, cb, data)
         local src = source
+        local identifier = GetIdentifier(src)
         if Config.Framework == 'newqb' or Config.Framework == 'oldqb' then
             local database = ExecuteSql("SELECT * FROM `player_vehicles` WHERE `plate` = '"..data.."'")
             if #database >= 1 then
-                cb(json.decode(database[1].mods))
+                local citizenid = json.encode(database[1].citizenid)
+                if Config.CheckVehicleOwner then
+                    if citizenid == identifier then
+                        cb(json.decode(database[1].mods))
+                    else
+                        print("This is not your vehicle")
+                    end
+                else
+                    cb(json.decode(database[1].mods))
+                end
             else
                 print("Data not found")
             end
@@ -167,7 +162,7 @@ Citizen.CreateThread(function()
                 playerbank = PlayerBank,
                 playercash = PlayerCash,
                 pp = DiscordProfilePicture,
-                friends = data[1].Friends,
+                friends = json.decode(data[1].friends),
                 rentstatus = allowrent.status,
                 rentprice = allowrent.price,
                 renttime = allowrent.time,
@@ -176,29 +171,67 @@ Citizen.CreateThread(function()
         end
     end)
 
-    RegisterCallback('real-house:GetClosestPlayersInformation', function(source, cb, targetplayer)
-        local src = targetplayer
+    RegisterCallback('real-house:GetClosestPlayersInformation', function(source, cb, v)
+        local src = v.player
         local DiscordProfilePicture = GetDiscordAvatar(src)
         local PlayerName = GetName(src)
+        local Identifier = GetIdentifier(src)
+        local SendData = {}
         if Config.Framework == 'newqb' or Config.Framework == 'oldqb' then
-            local Player = frameworkObject.Functions.GetPlayer(src)
-            if Player then
-                local SendData = {
-                    id = src,
-                    name = PlayerName,
-                    pp = DiscordProfilePicture,
-                }
-                cb(SendData)
+            local data = ExecuteSql("SELECT `friends` FROM `real_house` WHERE id = '"..v.house.."'")
+            if #data > 0 then
+                local Player = frameworkObject.Functions.GetPlayer(src)
+                if Player then
+                    for k, v in pairs(data) do
+                        local info = json.decode(v.friends)
+                        if next(info) then
+                            for a, b in pairs(info) do
+                                if b.owner ~= Identifier then
+                                    table.insert(SendData, {
+                                        id = src,
+                                        name = PlayerName,
+                                        pp = DiscordProfilePicture,
+                                    })
+                                end
+                            end
+                        else
+                            table.insert(SendData, {
+                                id = src,
+                                name = PlayerName,
+                                pp = DiscordProfilePicture,
+                            })
+                        end
+                    end                    
+                    cb(SendData)
+                end
             end
         else
-            local Player = frameworkObject.GetPlayerFromId(src)
-            if Player then
-                local SendData = {
-                    id = src,
-                    name = PlayerName,
-                    pp = DiscordProfilePicture,
-                }
-                cb(SendData)
+            local data = ExecuteSql("SELECT `friends` FROM `real_house` WHERE id = '"..v.house.."'")
+            if #data > 0 then
+                local Player = frameworkObject.GetPlayerFromId(src)
+                if Player then
+                    for k, v in pairs(data) do
+                        local info = json.decode(v.friends)
+                        if next(info) then
+                            for a, b in pairs(info) do
+                                if b.owner ~= Identifier then
+                                    table.insert(SendData, {
+                                        id = src,
+                                        name = PlayerName,
+                                        pp = DiscordProfilePicture,
+                                    })
+                                end
+                            end
+                        else
+                            table.insert(SendData, {
+                                id = src,
+                                name = PlayerName,
+                                pp = DiscordProfilePicture,
+                            })
+                        end
+                    end                    
+                    cb(SendData)
+                end
             end
         end
     end)
@@ -428,10 +461,13 @@ RegisterNetEvent('real-house:CheckPayment', function()
 end)
 
 RegisterNetEvent('real-house:PutVehicleToGarage', function(vehicle, house)
+    local src = source
+    local PlayerName = GetName(src)
+    local pfp = GetDiscordAvatar(src)
     if Config.Framework == 'newqb' or Config.Framework == 'oldqb' then
         local data = ExecuteSql("SELECT * FROM `real_house` WHERE `id` = '"..house.."'")
         if #data > 0 then
-            ExecuteSql("UPDATE `player_vehicles` SET `garage` = '"..house.."', `mods` = '"..json.encode(vehicle).."', state = '"..tonumber(1).."' WHERE plate = '"..vehicle.plate.."'")
+            ExecuteSql("UPDATE `player_vehicles` SET `garage` = '"..house.."', `mods` = '"..json.encode(vehicle).."', `state` = '"..tonumber(1).."', `ownername` = '"..PlayerName.."', `ownerpfp` = '"..pfp.."' WHERE plate = '"..vehicle.plate.."'")
         else
             print("Data not found")
         end
@@ -533,6 +569,55 @@ RegisterNetEvent('real-house:SaveAllowrentSettings', function(cb)
         allowrent.price = cb.price
         allowrent.time = cb.time
         ExecuteSql("UPDATE `real_house` SET `allowrent` = '"..json.encode(allowrent).."' WHERE id = '"..tonumber(cb.house).."'")
+    end
+end)
+
+RegisterNetEvent('real-house:AddFriend', function(cb)
+    local src = source
+    local data = ExecuteSql("SELECT * FROM `real_house` WHERE id = '"..tonumber(cb.house).."'")
+    if #data > 0 then
+        local friendstable = json.decode(data[1].friends)
+        local ExecuteTable = {
+            owner = GetIdentifier(cb.playerid),
+            name = cb.playername,
+            pp = cb.playerpp
+        }
+        table.insert(friendstable, ExecuteTable)
+        table.insert(Config.Houses[tonumber(cb.house)].Friends, json.encode(ExecuteTable))
+        ExecuteSql("UPDATE `real_house` SET `friends` = '"..json.encode(friendstable).."' WHERE id = '"..tonumber(cb.house).."'")
+        TriggerClientEvent('real-house:Update', -1, Config.Houses, ScriptLoaded)
+        TriggerClientEvent('real-house:Event:OpenManagementMenu', src, tonumber(cb.house))
+        if Config.Framework == 'newqb' or Config.Framework == 'oldqb' then
+            local Player = frameworkObject.Functions.GetPlayer(cb.playerid)
+            local keydata = {
+                house = tonumber(cb.house),
+                keydata = Config.Houses[tonumber(cb.house)].KeyData
+            }
+            Player.Functions.AddItem('housekeys', 1, false, keydata) 
+        else
+            -- ESX codes
+        end
+    end
+end)
+
+RegisterNetEvent('real-house:RemoveFriend', function(cb)
+    local src = source
+    local data = ExecuteSql("SELECT * FROM `real_house` WHERE id = '"..tonumber(cb.house).."'")
+    if #data > 0 then
+        local friendstable = json.decode(data[1].friends)
+
+        for k, v in pairs(friendstable) do
+            if v.name == cb.player then
+                table.remove(friendstable, k)
+                table.remove(Config.Houses[tonumber(cb.house)].Friends, k)
+                break
+            end
+        end
+
+        --ExecuteSql("UPDATE `player_vehicles` SET `garage` = 'pillboxgarage', `state` = '"..tonumber(1).."', `ownername` = '', `ownerpfp` = '' WHERE garage = '"..tonumber(cb.house).."'")
+        ExecuteSql("UPDATE `real_house` SET `friends` = '"..json.encode(friendstable).."' WHERE id = '"..tonumber(cb.house).."'")
+        TriggerClientEvent('real-house:Update', -1, Config.Houses, ScriptLoaded)
+        TriggerClientEvent('real-house:Event:OpenManagementMenu', src, tonumber(cb.house))
     end
 end)
 

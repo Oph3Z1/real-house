@@ -13,24 +13,14 @@ const app = Vue.createApp({
         rentsellhouseoption: false, // 'sell' - 'rent'
         rentallowed: false,
         lastpage: '',
-        friends: [
-            {id: 1, firstname: 'Oph3Z', lastname: 'HouseV2', img: 'img/ursupp.png'},
-            {id: 2, firstname: 'Yusuf', lastname: 'Karacolak', img: 'https://cdn.discordapp.com/attachments/936406344515350538/1151901225508425840/image.png'},
-            {id: 3, firstname: 'Test', lastname: 'Falan', img: 'img/ursupp.png'},
-        ],
-        nerabyplayers: [
-            {id: 4, firstname: 'Ananın', lastname: 'Blip', img: 'img/ursupp.png'},
-            {id: 5, firstname: 'Ebenin', lastname: 'Blip', img: 'img/ursupp.png'},
-            {id: 6, firstname: 'Teyzenin', lastname: 'Blip', img: 'img/ursupp.png'},
-        ],
+        friends: [],
+        nerabyplayers: [],
         garagetable: [],
         slotinput: '',
 
         // Garage informations
         currentslot: 0,
         maxslot: 0,
-        vehicleowner: '',
-        vehicleownerpp: '',
         slotprice: 0,
 
         // Other informations
@@ -82,24 +72,36 @@ const app = Vue.createApp({
         },
 
         AddToFriends(id, name, img) {
-            const CheckFriendsExistens = this.friends.find(data => data.name === name)
-            if (!CheckFriendsExistens) {
-                var data = {
-                    id,
-                    name,
-                    img
-                }
-                this.friends.push(data)
+            var data = {
+              id,
+              name,
+              img
+            };
+          
+            if (!this.friends) {
+              this.friends = []
             }
+          
+            this.friends.push(data);
+            postNUI('AddFriend', {
+              house: this.houseid,
+              playerid: id,
+              playername: name,
+              playerpp: img
+            });
         },
 
-        RemoveFromFriends(id) {
-            const data = this.friends.find(v => v.id === id)
+        RemoveFromFriends(name) {
+            const data = this.friends.find(v => v.name == name)
             this.friends.splice(this.friends.indexOf(data), 1)
+            postNUI('RemoveFriend', {
+                house: this.houseid,
+                player: name
+            })
         },
 
-        RemoveFromNearbyPlayers(id) {
-            const NearbyPlayer = this.nerabyplayers.find(data => data.id === id);
+        RemoveFromNearbyPlayers(name) {
+            const NearbyPlayer = this.nerabyplayers.find(data => data.name == name);
             this.nerabyplayers.splice(this.nerabyplayers.indexOf(NearbyPlayer), 1);
         }, 
 
@@ -191,9 +193,7 @@ const app = Vue.createApp({
             this.allowgarage = null
             this.currentslot = 0
             this.maxslot = 0
-            this.vehicleowner = ''
             this.slotprice = 0
-            this.vehicleownerpp = ''
             postNUI('CloseUI')
         },
     },
@@ -239,9 +239,7 @@ const app = Vue.createApp({
                 this.currentslot = data.currentslot
                 this.maxslot = data.maxslot
                 this.slotprice = data.slotprice
-                this.vehicleowner = data.vehicleowner
                 this.playername = data.name
-                this.vehicleownerpp = data.vehicleownerpp
             } else if (data.action == 'OpenManagement') {
                 this.Show = true
                 this.page = 'house-management'

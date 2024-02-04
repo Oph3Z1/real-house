@@ -43,43 +43,137 @@ function WhenReady()
             local PlayerCoords = GetEntityCoords(Player)
             for k, v in pairs(Config.Houses) do
                 for a, b in pairs(v.Garages.Coords) do
-                    local Distance = GetDistanceBetweenCoords(PlayerCoords, b.OpenGarageCoords, true)
-                    local playeridentity = ""
-                    if v.Garages.AllowGarage then
-                        if Distance < v.Garages.Distance then
-                            sleep = 4
-                            if Config.Framework == 'newqb' or Config.Framework == 'oldqb' then
-                                playeridentity = frameworkObject.Functions.GetPlayerData().citizenid
-                            else
-                                playeridentity = frameworkObject.PlayerData.identifier
-                            end
-                            if v.Owner == playeridentity or v.RentOwner.owner == playeridentity or v.Friends.owner then
-                                if IsPedInAnyVehicle(Player, false) then
-                                    local PlayerVehicle = GetVehiclePedIsIn(Player, false)
-                                    local VehiclePlate = GetVehicleNumberPlateText(PlayerVehicle)
-                                    local GetVehicle = GetVehicleProps(PlayerVehicle)
-                                    DrawText3D('~INPUT_PICKUP~ - Put car in to garage', b.OpenGarageCoords)
-                                    if IsControlJustReleased(0, 38) then
-                                        local CheckVehicleOwner = Callback('real-house:CheckVehicleOwner', VehiclePlate)
-                                        if CheckVehicleOwner then
-                                            local CheckGarageSlot = Callback('real-house:CheckGarageSlot', k)
-                                            if not CheckGarageSlot then
-                                                print("Successfuly parked vehicle")
-                                                TriggerServerEvent('real-house:PutVehicleToGarage', GetVehicle, k)
-                                                TaskLeaveVehicle(Player, PlayerVehicle, 64)
-                                                Citizen.Wait(2000)
-                                                DeleteVehicle(PlayerVehicle)
+                    if next(v.Friends) then
+                        for c, d in pairs(v.Friends) do
+                            if type(v.RentOwner) == "table" then
+                                for e, f in pairs(v.RentOwner) do
+                                    local Distance = GetDistanceBetweenCoords(PlayerCoords, b.OpenGarageCoords, true)
+                                    local playeridentity = ""
+                                    if v.Garages.AllowGarage then
+                                        if Distance < v.Garages.Distance then
+                                            sleep = 4
+                                            if Config.Framework == 'newqb' or Config.Framework == 'oldqb' then
+                                                playeridentity = frameworkObject.Functions.GetPlayerData().citizenid
                                             else
-                                                print("Garage is full")
+                                                playeridentity = frameworkObject.PlayerData.identifier
                                             end
-                                        else
-                                            print("This is not your vehicle")
+                                            if v.RentOwner.owner == playeridentity or d.owner == playeridentity then
+                                                if IsPedInAnyVehicle(Player, false) then
+                                                    local PlayerVehicle = GetVehiclePedIsIn(Player, false)
+                                                    local VehiclePlate = GetVehicleNumberPlateText(PlayerVehicle)
+                                                    local GetVehicle = GetVehicleProps(PlayerVehicle)
+                                                    DrawText3D('~INPUT_PICKUP~ - Put car in to garage', b.OpenGarageCoords)
+                                                    if IsControlJustReleased(0, 38) then
+                                                        local CheckVehicleOwner = Callback('real-house:CheckVehicleOwner', VehiclePlate)
+                                                        if CheckVehicleOwner then
+                                                            local CheckGarageSlot = Callback('real-house:CheckGarageSlot', k)
+                                                            if not CheckGarageSlot then
+                                                                print("Successfuly parked vehicle")
+                                                                TriggerServerEvent('real-house:PutVehicleToGarage', GetVehicle, k)
+                                                                TaskLeaveVehicle(Player, PlayerVehicle, 64)
+                                                                Citizen.Wait(2000)
+                                                                DeleteVehicle(PlayerVehicle)
+                                                            else
+                                                                print("Garage is full")
+                                                            end
+                                                        else
+                                                            print("This is not your vehicle")
+                                                        end
+                                                    end
+                                                else
+                                                    DrawText3D('~INPUT_PICKUP~ - Open Garage Menu', b.OpenGarageCoords)
+                                                    if IsControlJustReleased(0, 38) then
+                                                        OpenGarageMenu(k)
+                                                    end
+                                                end
+                                            end
                                         end
                                     end
+                                end
+                            else
+                                local Distance = GetDistanceBetweenCoords(PlayerCoords, b.OpenGarageCoords, true)
+                                local playeridentity = ""
+                                if v.Garages.AllowGarage then
+                                    if Distance < v.Garages.Distance then
+                                        sleep = 4
+                                        if Config.Framework == 'newqb' or Config.Framework == 'oldqb' then
+                                            playeridentity = frameworkObject.Functions.GetPlayerData().citizenid
+                                        else
+                                            playeridentity = frameworkObject.PlayerData.identifier
+                                        end
+                                        if v.Owner == playeridentity or d.owner == playeridentity then
+                                            if IsPedInAnyVehicle(Player, false) then
+                                                local PlayerVehicle = GetVehiclePedIsIn(Player, false)
+                                                local VehiclePlate = GetVehicleNumberPlateText(PlayerVehicle)
+                                                local GetVehicle = GetVehicleProps(PlayerVehicle)
+                                                DrawText3D('~INPUT_PICKUP~ - Put car in to garage', b.OpenGarageCoords)
+                                                if IsControlJustReleased(0, 38) then
+                                                    local CheckVehicleOwner = Callback('real-house:CheckVehicleOwner', VehiclePlate)
+                                                    if CheckVehicleOwner then
+                                                        local CheckGarageSlot = Callback('real-house:CheckGarageSlot', k)
+                                                        if not CheckGarageSlot then
+                                                            print("Successfuly parked vehicle")
+                                                            TriggerServerEvent('real-house:PutVehicleToGarage', GetVehicle, k)
+                                                            TaskLeaveVehicle(Player, PlayerVehicle, 64)
+                                                            Citizen.Wait(2000)
+                                                            DeleteVehicle(PlayerVehicle)
+                                                        else
+                                                            print("Garage is full")
+                                                        end
+                                                    else
+                                                        print("This is not your vehicle")
+                                                    end
+                                                end
+                                            else
+                                                DrawText3D('~INPUT_PICKUP~ - Open Garage Menu', b.OpenGarageCoords)
+                                                if IsControlJustReleased(0, 38) then
+                                                    OpenGarageMenu(k)
+                                                end
+                                            end
+                                        end
+                                    end
+                                end
+                            end
+                        end
+                    else
+                        local Distance = GetDistanceBetweenCoords(PlayerCoords, b.OpenGarageCoords, true)
+                        local playeridentity = ""
+                        if v.Garages.AllowGarage then
+                            if Distance < v.Garages.Distance then
+                                sleep = 4
+                                if Config.Framework == 'newqb' or Config.Framework == 'oldqb' then
+                                    playeridentity = frameworkObject.Functions.GetPlayerData().citizenid
                                 else
-                                    DrawText3D('~INPUT_PICKUP~ - Open Garage Menu', b.OpenGarageCoords)
-                                    if IsControlJustReleased(0, 38) then
-                                        OpenGarageMenu(k)
+                                    playeridentity = frameworkObject.PlayerData.identifier
+                                end
+                                if v.Owner == playeridentity then
+                                    if IsPedInAnyVehicle(Player, false) then
+                                        local PlayerVehicle = GetVehiclePedIsIn(Player, false)
+                                        local VehiclePlate = GetVehicleNumberPlateText(PlayerVehicle)
+                                        local GetVehicle = GetVehicleProps(PlayerVehicle)
+                                        DrawText3D('~INPUT_PICKUP~ - Put car in to garage', b.OpenGarageCoords)
+                                        if IsControlJustReleased(0, 38) then
+                                            local CheckVehicleOwner = Callback('real-house:CheckVehicleOwner', VehiclePlate)
+                                            if CheckVehicleOwner then
+                                                local CheckGarageSlot = Callback('real-house:CheckGarageSlot', k)
+                                                if not CheckGarageSlot then
+                                                    print("Successfuly parked vehicle")
+                                                    TriggerServerEvent('real-house:PutVehicleToGarage', GetVehicle, k)
+                                                    TaskLeaveVehicle(Player, PlayerVehicle, 64)
+                                                    Citizen.Wait(2000)
+                                                    DeleteVehicle(PlayerVehicle)
+                                                else
+                                                    print("Garage is full")
+                                                end
+                                            else
+                                                print("This is not your vehicle")
+                                            end
+                                        end
+                                    else
+                                        DrawText3D('~INPUT_PICKUP~ - Open Garage Menu', b.OpenGarageCoords)
+                                        if IsControlJustReleased(0, 38) then
+                                            OpenGarageMenu(k)
+                                        end
                                     end
                                 end
                             end
@@ -102,17 +196,39 @@ function WhenReady()
                     sleep = 4
                     if Config.Houses[k].Owner ~= "" or Config.Houses[k].RentOwner.owner ~= "" then
                         if Config.Framework == 'newqb' or Config.Framework == 'oldqb' then
-                            if Config.Houses[k].Owner == frameworkObject.Functions.GetPlayerData().citizenid or Config.Houses[k].RentOwner.owner == frameworkObject.Functions.GetPlayerData().citizenid or Config.Houses[k].Friends.owner == frameworkObject.Functions.GetPlayerData().citizenid then
-                                DrawText3D("~INPUT_PICKUP~ - Open Management", Config.Houses[k].ManagementCoords)
-                                if IsControlJustReleased(0, 38) then
-                                    OpenManagementMenu(k)
+                            if type(Config.Houses[k].RentOwner) == "table" then
+                                for k, v in pairs(Config.Houses[k].RentOwner) do
+                                    if v.owner == frameworkObject.Functions.GetPlayerData().citizenid then
+                                        DrawText3D("~INPUT_PICKUP~ - Open Management", Config.Houses[k].ManagementCoords)
+                                        if IsControlJustReleased(0, 38) then
+                                            OpenManagementMenu(k)
+                                        end
+                                    end
+                                end
+                            else
+                                if Config.Houses[k].Owner == frameworkObject.Functions.GetPlayerData().citizenid then
+                                    DrawText3D("~INPUT_PICKUP~ - Open Management", Config.Houses[k].ManagementCoords)
+                                    if IsControlJustReleased(0, 38) then
+                                        OpenManagementMenu(k)
+                                    end
                                 end
                             end
                         else
-                            if Config.Houses[k].Owner == frameworkObject.PlayerData.identifier or Config.Houses[k].RentOwner.owner == frameworkObject.PlayerData.identifier or Config.Houses[k].Friends.owner == frameworkObject.PlayerData.identifier then
-                                DrawText3D("~INPUT_PICKUP~ - Open Management", Config.Houses[k].ManagementCoords)
-                                if IsControlJustReleased(0, 38) then
-                                    OpenManagementMenu(k)
+                            if type(Config.Houses[k].RentOwner) == "table" then
+                                for k, v in pairs(Config.Houses[k].RentOwner) do
+                                    if v.owner == frameworkObject.PlayerData.identifier then
+                                        DrawText3D("~INPUT_PICKUP~ - Open Management", Config.Houses[k].ManagementCoords)
+                                        if IsControlJustReleased(0, 38) then
+                                            OpenManagementMenu(k)
+                                        end
+                                    end
+                                end
+                            else
+                                if Config.Houses[k].Owner == frameworkObject.PlayerData.identifier then
+                                    DrawText3D("~INPUT_PICKUP~ - Open Management", Config.Houses[k].ManagementCoords)
+                                    if IsControlJustReleased(0, 38) then
+                                        OpenManagementMenu(k)
+                                    end
                                 end
                             end
                         end
@@ -148,11 +264,11 @@ function OpenBuyMenu(k, rentedstatus)
     SetNuiFocus(true, true)
 end
 
-function GetNearbyPlayers()
+function GetNearbyPlayers(k)
     if Config.Framework == 'newqb' or Config.Framework == 'oldqb' then
         local player, distance = frameworkObject.Functions.GetClosestPlayer()
-        if player ~= -1 and Distance <= 2.0 then
-            local data = Callback('real-house:GetClosestPlayersInformation', GetPlayerServerId(player))
+        if player ~= -1 and distance <= 2.0 then
+            local data = Callback('real-house:GetClosestPlayersInformation', {player = GetPlayerServerId(player), house = k})
             return data
         end
     else
@@ -177,8 +293,6 @@ function OpenGarageMenu(k)
         slotprice = Config.Houses[k].Garages.GarageSlotPrice,
         playerbank = data.playerbank,
         playercash = data.playercash,
-        vehicleowner = data.vehicleowner,
-        vehicleownerpp = data.vehicleownerpp,
         house = k
     })
     SetNuiFocus(true, true)
@@ -196,7 +310,7 @@ function OpenManagementMenu(k)
         allowrent = data.rentstatus,
         rentprice = data.rentprice,
         renttime = data.renttime,
-        nearbyplayers = GetNearbyPlayers(),
+        nearbyplayers = GetNearbyPlayers(k),
         house = k,
         houseimg = Config.Houses[k].HouseInformation.housemanagementimg,
         housesecondimg = Config.Houses[k].HouseInformation.rentsettingsbackground
@@ -292,6 +406,10 @@ RegisterNetEvent('real-house:Client:ChangeDoorStatus', function(house, status, n
     SetStateOfClosestDoorOfType(number, house.DoorCoords, 1, 0.0, true)
 end)
 
+RegisterNetEvent('real-house:Event:OpenManagementMenu', function(k)
+    OpenManagementMenu(k)
+end)
+
 RegisterNUICallback('BuyNormalHouse', function(data)
     TriggerServerEvent('real-house:BuyHouse', data)
 end)
@@ -302,6 +420,14 @@ end)
 
 RegisterNUICallback('SaveAllowrentSettings', function(data)
     TriggerServerEvent('real-house:SaveAllowrentSettings', data)
+end)
+
+RegisterNUICallback('AddFriend', function(data)
+    TriggerServerEvent('real-house:AddFriend', data)
+end)
+
+RegisterNUICallback('RemoveFriend', function(data)
+    TriggerServerEvent('real-house:RemoveFriend', data)
 end)
 
 RegisterNUICallback('BuyRentedHouse', function(data)

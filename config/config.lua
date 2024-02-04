@@ -16,6 +16,8 @@ CodeReal.Bill = 'SwedenEstate'
 Config.GiveVehicleKeys = true
 Config.VehicleKeySystem = 'qb-vehiclekeys' -- qb-vehiclekeys, qs-vehiclekeys, wasabi-carlock, cd_garage, custom | If you choose 'custom' you need to edit config/client_config.lua
 
+Config.CheckVehicleOwner = true
+
 Config.CheckRentStatus = {
     Hour = 12,
     Minute = 00

@@ -132,8 +132,8 @@
                             <p>{{ v.plate }}</p>
                         </div>
                         <div class="garage-car-owner">
-                            <img :src="vehicleownerpp">
-                            <span>{{ vehicleowner }}</span>
+                            <img :src="v.ownerpfp">
+                            <span>{{ v.ownername }}</span>
                             <p>Vehicle Owner</p>
                         </div>
                         <div class="take-out-vehicle" @click="GetOutVehicle(v.plate)"> TAKE OUT </div>
@@ -185,10 +185,10 @@
                         <span>HOUSE FRIENDS</span>
                         <div class="hf-header"> <span>Friends List</span> </div>
                         <div class="hf-container">
-                            <div class="friends-item" v-for="(data, index) in friends">
-                                <img :src="data.img" class="fi-icon">
+                            <div class="friends-item" v-for="(data, index) in friends" :key="index">
+                                <img :src="data.pp" class="fi-icon">
                                 <span>{{ data.name }}</span>
-                                <img src="img/kick-icon.png" class="fi-kick-icon" @click="RemoveFromFriends(data.id)">
+                                <img src="img/kick-icon.png" class="fi-kick-icon" @click="RemoveFromFriends(data.name)">
                             </div>
                         </div>
                     </div>
@@ -196,11 +196,11 @@
                         <span>RENT/SELL HOUSE TO NEARBY PLAYERS</span>
                         <div class="srh-header"> <span>Nearby Players</span> </div>
                         <div class="srh-container">
-                            <div class="nearby-players" v-for="data in nerabyplayers">
+                            <div class="nearby-players" v-for="data in nerabyplayers" :key="data.id">
                                 <img :src="data.pp" class="np-icon">
                                 <span>{{ data.name }}</span>
                                 <img src="img/green-tik-icon.png" class="tik-icon" @click="ChangeScreens(false, 'sellrenthouse')">
-                                <img src="img/green-add-friend-icon.png" class="add-friend-icon" @click="AddToFriends(data.id, data.name, data.pp); RemoveFromNearbyPlayers(data.id)">
+                                <img src="img/green-add-friend-icon.png" class="add-friend-icon" @click="AddToFriends(data.id, data.name, data.pp); RemoveFromNearbyPlayers(data.name)">
                             </div>
                         </div>
                     </div>
