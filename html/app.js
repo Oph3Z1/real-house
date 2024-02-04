@@ -7,7 +7,7 @@ const store = Vuex.createStore({
 const app = Vue.createApp({
     data: () => ({
         Show: false,
-        page: 'house-management', // 'buyhouse' - 'garage' - 'house-management'
+        page: '', // 'buyhouse' - 'garage' - 'house-management'
         rented: false,
         popupscreen: false, // 'add-slot' - 'rent-settings' - 'request-screen' - 'sellrenthouse' - 'house-settings'
         rentsellhouseoption: false, // 'sell' - 'rent'
@@ -52,6 +52,22 @@ const app = Vue.createApp({
         allowrenttime: '',
         allowrentcheck: false,
         allowrentcheckedafter: '',
+        vmodel: '',
+        vmodeltwo: '',
+
+        // None of your business asshole
+
+        selectedid: null,
+        selectedname: '',
+        selectedpp: '',
+
+        // Still none of your business mate
+
+        selecteddata: null,
+        sendername: '',
+        senderpp: '',
+        targetname: '',
+        targetpp: '',
     }),
 
     methods: {    
@@ -166,6 +182,63 @@ const app = Vue.createApp({
             this.allowrentcheck = true
         },
 
+        ChangePopup(type) {
+            if (type == 'rent') {
+                this.rentsellhouseoption = 'rent'
+                this.vmodel = ''
+                this.vmodeltwo = ''
+            } else {
+                this.rentsellhouseoption = 'sell'
+                this.vmodel = ''
+                this.vmodeltwo = ''
+            }
+        },
+
+        SelectedTargetPlayer(id, name, pp) {
+            this.selectedid = id
+            this.selectedname = name
+            this.selectedpp = pp
+        },
+
+        SellRentHouse() {
+            if (this.rentsellhouseoption == 'sell') {
+                postNUI('SendSellRequest', {
+                    house: this.houseid,
+                    price: this.vmodeltwo,
+                    targetplayer: this.selectedid,
+                    targetname: this.selectedname,
+                    targetpp: this.selectedpp
+                })
+                this.ClosePopup()
+                this.CloseUI()
+            } else {
+                console.log("Tamam.")
+            }
+        },
+
+        AcceptedRequest() {
+            if (this.popupscreen == 'sell-request-screen') {
+                postNUI('AcceptedSellRequest', this.selecteddata)
+                this.selecteddata = null
+                this.CloseUI()
+            } else {
+                // Rent request
+            }
+        },
+
+        RejectRequest() {
+            postNUI('RequestRejected', this.selecteddata)
+            this.selecteddata = null
+            this.CloseUI()
+        },
+
+        ClosePopup() {
+            this.popupscreen = false 
+            this.rentsellhouseoption = false
+            this.vmodel = ''
+            this.vmodeltwo = ''
+        },
+
         GoBackToMain(type) {
             this.popupscreen = false
             if (type == 'house') {
@@ -255,6 +328,17 @@ const app = Vue.createApp({
                 this.nerabyplayers = data.nearbyplayers
                 this.housemngimg = data.houseimg
                 this.housesecondimg = data.housesecondimg
+            } else if (data.action == 'SellRequest') {
+                this.Show = true
+                this.popupscreen = 'sell-request-screen'
+                this.housename = data.data.housename
+                this.houseid = data.data.house
+                this.houseprice = data.data.price
+                this.sendername = data.data.playername
+                this.senderpp = data.data.playerpp
+                this.targetname = data.data.targetplayername
+                this.targetpp = data.data.targetpp
+                this.selecteddata = data.data
             }
         });
 

@@ -410,6 +410,14 @@ RegisterNetEvent('real-house:Event:OpenManagementMenu', function(k)
     OpenManagementMenu(k)
 end)
 
+RegisterNetEvent('real-house:Client:SendSellRequest', function(data)
+    SendNUIMessage({
+        action = 'SellRequest',
+        data = data
+    })
+    SetNuiFocus(true, true)
+end)
+
 RegisterNUICallback('BuyNormalHouse', function(data)
     TriggerServerEvent('real-house:BuyHouse', data)
 end)
@@ -432,6 +440,18 @@ end)
 
 RegisterNUICallback('BuyRentedHouse', function(data)
     TriggerServerEvent('real-house:BuyRentedHouse', data)
+end)
+
+RegisterNUICallback('SendSellRequest', function(data)
+    TriggerServerEvent('real-house:SendSellRequest', data)
+end)
+
+RegisterNUICallback('AcceptedSellRequest', function(data)
+    TriggerServerEvent('real-house:AcceptedSellRequest', data)
+end)
+
+RegisterNUICallback('RequestRejected', function(data)
+    TriggerServerEvent('real-house:RequestRejected', data)
 end)
 
 RegisterNUICallback('GetOutVehicle', function(data)

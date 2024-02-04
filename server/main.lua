@@ -413,7 +413,7 @@ function CheckRentStatus()
                     price = 0,
                     time = 0
                 }
-                ExecuteSql("UPDATE `real_house` SET `owner` = '', `keydata` = '', `payment` = '"..tonumber(0).."', `rentowner` = '', `allowrent` = '"..json.encode(allowrenttable).."', `friends` = '"..{}.."' WHERE id = '"..GetPlayerBill[1].sendercitizenid.."'")
+                ExecuteSql("UPDATE `real_house` SET `owner` = '', `keydata` = '', `payment` = '"..tonumber(0).."', `rentowner` = '', `allowrent` = '"..json.encode(allowrenttable).."', `friends` = '{}' WHERE id = '"..GetPlayerBill[1].sendercitizenid.."'")
                 local House = tonumber(GetPlayerBill[1].sendercitizenid)
                 Config.Houses[House].Owner = ""
                 Config.Houses[House].KeyData = ""
@@ -583,7 +583,11 @@ RegisterNetEvent('real-house:AddFriend', function(cb)
             pp = cb.playerpp
         }
         table.insert(friendstable, ExecuteTable)
-        table.insert(Config.Houses[tonumber(cb.house)].Friends, json.encode(ExecuteTable))
+        table.insert(Config.Houses[tonumber(cb.house)].Friends, {
+            owner = GetIdentifier(cb.playerid),
+            name = cb.playername,
+            pp = cb.playerpp
+        })
         ExecuteSql("UPDATE `real_house` SET `friends` = '"..json.encode(friendstable).."' WHERE id = '"..tonumber(cb.house).."'")
         TriggerClientEvent('real-house:Update', -1, Config.Houses, ScriptLoaded)
         TriggerClientEvent('real-house:Event:OpenManagementMenu', src, tonumber(cb.house))
@@ -605,20 +609,93 @@ RegisterNetEvent('real-house:RemoveFriend', function(cb)
     local data = ExecuteSql("SELECT * FROM `real_house` WHERE id = '"..tonumber(cb.house).."'")
     if #data > 0 then
         local friendstable = json.decode(data[1].friends)
+        local kickedfriends = ""
 
         for k, v in pairs(friendstable) do
             if v.name == cb.player then
                 table.remove(friendstable, k)
                 table.remove(Config.Houses[tonumber(cb.house)].Friends, k)
+                kickedfriends = v.owner
                 break
             end
         end
 
-        --ExecuteSql("UPDATE `player_vehicles` SET `garage` = 'pillboxgarage', `state` = '"..tonumber(1).."', `ownername` = '', `ownerpfp` = '' WHERE garage = '"..tonumber(cb.house).."'")
+        ExecuteSql("UPDATE `player_vehicles` SET `garage` = 'pillboxgarage', `state` = '"..tonumber(1).."', `ownername` = '', `ownerpfp` = '' WHERE citizenid = '"..kickedfriends.."'")
         ExecuteSql("UPDATE `real_house` SET `friends` = '"..json.encode(friendstable).."' WHERE id = '"..tonumber(cb.house).."'")
         TriggerClientEvent('real-house:Update', -1, Config.Houses, ScriptLoaded)
         TriggerClientEvent('real-house:Event:OpenManagementMenu', src, tonumber(cb.house))
     end
+end)
+
+RegisterNetEvent('real-house:SendSellRequest', function(data)
+    local src = source
+    local targetsrc = data.targetplayer
+    local database = ExecuteSql("SELECT `houseinfo`, `owner` FROM `real_house` WHERE id = '"..tonumber(data.house).."'")
+    if #database > 0 then
+        local houseinfo = json.decode(database[1].houseinfo)
+        local houseowner = database[1].owner
+        if houseowner == GetIdentifier(src) then
+            local SendData = {
+                house = tonumber(data.house),
+                housename = houseinfo.HouseName,
+                player = src,
+                playername = GetName(src),
+                playerpp = GetDiscordAvatar(src),
+                targetplayer = targetsrc,
+                targetplayername = data.targetname,
+                targetpp = data.targetpp,
+                price = tonumber(data.price)
+            }
+            TriggerClientEvent('real-house:Client:SendSellRequest', targetsrc, SendData)
+        else
+            print("You are not owner of this house")
+        end
+    end
+end)
+
+RegisterNetEvent('real-house:AcceptedSellRequest', function(data)
+    local database = ExecuteSql("SELECT * FROM `real_house` WHERE id = '"..tonumber(data.house).."'")
+    if #database > 0 then
+        local friends = json.decode(database[1].friends)
+        if Config.Framework == 'newqb' or Config.Framework == 'oldqb' then
+            local Player = frameworkObject.Functions.GetPlayer(tonumber(data.player))
+            local TargetPlayer = frameworkObject.Functions.GetPlayer(tonumber(data.targetplayer))
+            local TargetPlayerMoney = GetPlayerMoneyOnline(tonumber(data.targetplayer), 'bank')
+            if tonumber(TargetPlayerMoney) >= tonumber(data.price) then
+                TargetPlayer.Functions.RemoveMoney('bank', tonumber(data.price))
+                Player.Functions.AddMoney('bank', tonumber(data.price))
+                local NewKey = 'key_' ..math.random(10000, 99999)
+                if Player ~= nil and TargetPlayer ~= nil then
+                    for k, v in pairs(friends) do
+                        ExecuteSql("UPDATE `player_vehicles` SET `garage` = 'pillboxgarage', `state` = '"..tonumber(1).."', `ownername` = '', `ownerpfp` = '' WHERE citizenid = '"..v.owner.."'")
+                    end
+                    ExecuteSql("UPDATE `player_vehicles` SET `garage` = 'pillboxgarage', `state` = '"..tonumber(1).."', `ownername` = '', `ownerpfp` = '' WHERE citizenid = '"..GetIdentifier(tonumber(data.player)).."'")
+                    ExecuteSql("UPDATE `real_house` SET `owner` = '"..GetIdentifier(tonumber(data.targetplayer)).."', `keydata` = '"..NewKey.."', `friends` = '{}' WHERE id = '"..tonumber(data.house).."'")
+                    Config.Houses[tonumber(data.house)].Owner = GetIdentifier(tonumber(data.targetplayer))
+                    Config.Houses[tonumber(data.house)].KeyData = NewKey
+                    Config.Houses[tonumber(data.house)].Friends = {}
+                    local keydata = {
+                        house = tonumber(data.house),
+                        keydata = NewKey
+                    }
+                    TargetPlayer.Functions.AddItem('housekeys', 1, false, keydata) 
+                    TriggerClientEvent('real-house:Update', -1, Config.Houses, ScriptLoaded)
+                    print("You are the new owner of this house")
+                    print("Player accepted your request and you got the money. You are no longer owner of this house")
+                end
+            else
+                print("Not enough money")
+                print("Target player had no money")
+            end
+        else
+            -- ESX codes
+        end
+    end
+end)
+
+RegisterNetEvent('real-house:RequestRejected', function(data)
+    local sendersrc = tonumber(data.player)
+    print("Send notify to sender about rejected request")
 end)
 
 function GetOfflinePlayerName(identifier)
