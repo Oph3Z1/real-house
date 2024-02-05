@@ -193,7 +193,7 @@
                         </div>
                     </div>
                     <div class="sell-rent-house-nearby-players">
-                        <span>RENT/SELL HOUSE TO NEARBY PLAYERS</span>
+                        <span>NEARBY PLAYERS SETTINGS</span>
                         <div class="srh-header"> <span>Nearby Players</span> </div>
                         <div class="srh-container">
                             <div class="nearby-players" v-for="data in nerabyplayers" :key="data.id">
@@ -204,16 +204,16 @@
                             </div>
                         </div>
                     </div>
-                    <div class="allow-rent-container">
-                        <span>ALLOW RENT? YES/NO</span>
-                        <div class="arc-header"> <span>Do you agree to rent out?</span> </div>
-                        <div class="allow-rent-button" @click="ChangeRentallowStatus(true)" :style=" {border: rentallowed == true ? '1px solid white' : '',} "> YES </div>
+                    <div class="allow-rent-container">  <!-- DO NOT OPEN THIS -->
+                        <span>HOUSE SETTINGS</span>
+                        <div class="arc-header"> <span>Settings</span> </div>
+                        <!-- <div class="allow-rent-button" @click="ChangeRentallowStatus(true)" :style=" {border: rentallowed == true ? '1px solid white' : '',} "> YES </div>
                         <div class="dont-allow-rent" @click="ChangeRentallowStatus(false)" :style=" {border: rentallowed == false ? '1px solid white' : '',} "> NO </div>
                         <div v-if="rentallowed">
                             <input type="number" class="rent-price" placeholder="$1000" v-model="allowrentprice">
                             <input type="number" class="rent-time" placeholder="24 (Hours)" v-model="allowrenttime">
                             <div class="allow-rent-save-button" @click="SaveAllowrentSettings()"> SAVE </div>
-                        </div>
+                        </div> -->
                     </div>
                 </div>
                 <div class="sell-rent-house-popupscreen" v-if="page == 'house-management' && popupscreen == 'sellrenthouse'">
@@ -224,7 +224,7 @@
                             <div class="srhc-sell-option" @click="ChangePopup('sell')" :style="{ opacity: rentsellhouseoption == 'sell' ? 1 : 0.36 }">SELL HOUSE</div>
                             <div class="rent-option" v-if="rentsellhouseoption == 'rent'">
                                 <span class="ro-text1">RENT TIME</span>
-                                <input type="number" class="ro-time" placeholder="24 (Hours)" v-model="vmodel">
+                                <input type="number" class="ro-time" placeholder="1 (Days)" v-model="vmodel">
                                 <span class="ro-text2">RENT PRICE</span>
                                 <input type="number" class="ro-price" placeholder="$ 1.000" v-model="vmodeltwo">
                             </div>
@@ -301,16 +301,16 @@
                         <span>HOUSE NUMBER</span>
                         <div> <span>{{ houseid }}</span> </div>
                     </div>
-                    <div class="sr-housetime" v-if="rented == true">
+                    <div class="sr-housetime" v-if="popupscreen == 'request-screen'">
                         <span>HOUSE RENT TIME</span>
-                        <div> <span>17 DAYS</span> </div>
+                        <div> <span>{{selectedrenttime + ' DAYS'}}</span> </div>
                     </div>
-                    <div class="sr-houseprice" v-else>
+                    <div class="sr-houseprice" :style="{ width: popupscreen === 'request-screen' ? '45%' : '95%' }">
                         <span>HOUSE PRICE</span>
                         <div> <span>{{ '$ ' + houseprice }}</span> </div>
                     </div>
                     <div class="sr-accept" @click="AcceptedRequest()">Accept</div>
-                    <div class="sr-decline">Decline</div>
+                    <div class="sr-decline" @click="RejectRequest()">Decline</div>
                 </div>
             </div>
         </div>

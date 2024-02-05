@@ -145,7 +145,7 @@
     color: #A1A1A1;
     font-size: 1.3vh;
     left: 1.5vh;
-    top: 1.1vh;
+    top: .9vh;
     position: absolute;
 }
 
@@ -181,14 +181,15 @@
     color: #A1A1A1;
     font-size: 1.3vh;
     left: 1.5vh;
-    top: 1.1vh;
+    top: .9vh;
     position: absolute;
 }
 
 .sr-housetime {
-    width: 95%;
+    width: 45%;
     height: 17%;
     top: 19vh;
+    left: 2.16vh;
     position: absolute;
 }
 
@@ -216,14 +217,14 @@
     color: #A1A1A1;
     font-size: 1.3vh;
     left: 1.5vh;
-    top: 1.1vh;
+    top: .9vh;
     position: absolute;
 }
 
 .sr-houseprice {
     width: 95%;
     height: 17%;
-    left: 2.16vh;
+    right: 2.16vh;
     top: 19vh;
     position: absolute;
 }
@@ -252,7 +253,7 @@
     color: #A1A1A1;
     font-size: 1.3vh;
     left: 1.5vh;
-    top: 1.1vh;
+    top: .9vh;
     position: absolute;
 }
 

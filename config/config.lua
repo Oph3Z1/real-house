@@ -5,7 +5,6 @@ Config.Framework = 'newqb' -- newesx, oldesx, newqb, oldqb
 Config.MySQL = 'oxmysql' -- oxmysql, ghamattimysql, mysql-async | Don't forget to edit fxmanifest.lua
 Config.Drawtext = 'qb-target' -- qb-target, drawtext
 
-Config.Metadata = true -- If 'true', system will use metadata
 Config.AllowToBuyMoreThanOne = true
 Config.GiveRentSystem = true
 Config.AllowBuyHouseWhenRented = true

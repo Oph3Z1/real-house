@@ -41,139 +41,75 @@ function WhenReady()
             local sleep = 2000
             local Player = PlayerPedId()
             local PlayerCoords = GetEntityCoords(Player)
+            local playeridentity = ""
+            local garagestatus = false
             for k, v in pairs(Config.Houses) do
                 for a, b in pairs(v.Garages.Coords) do
-                    if next(v.Friends) then
-                        for c, d in pairs(v.Friends) do
+                    local Distance = GetDistanceBetweenCoords(PlayerCoords, b.OpenGarageCoords, true)
+                    if Config.Framework == 'newqb' or Config.Framework == 'oldqb' then
+                        playeridentity = frameworkObject.Functions.GetPlayerData().citizenid
+                    else
+                        playeridentity = frameworkObject.PlayerData.identifier
+                    end
+                    if v.Garages.AllowGarage then
+                        if Distance < v.Garages.Distance then
+                            sleep = 4
                             if type(v.RentOwner) == "table" then
                                 for e, f in pairs(v.RentOwner) do
-                                    local Distance = GetDistanceBetweenCoords(PlayerCoords, b.OpenGarageCoords, true)
-                                    local playeridentity = ""
-                                    if v.Garages.AllowGarage then
-                                        if Distance < v.Garages.Distance then
-                                            sleep = 4
-                                            if Config.Framework == 'newqb' or Config.Framework == 'oldqb' then
-                                                playeridentity = frameworkObject.Functions.GetPlayerData().citizenid
-                                            else
-                                                playeridentity = frameworkObject.PlayerData.identifier
-                                            end
-                                            if v.RentOwner.owner == playeridentity or d.owner == playeridentity then
-                                                if IsPedInAnyVehicle(Player, false) then
-                                                    local PlayerVehicle = GetVehiclePedIsIn(Player, false)
-                                                    local VehiclePlate = GetVehicleNumberPlateText(PlayerVehicle)
-                                                    local GetVehicle = GetVehicleProps(PlayerVehicle)
-                                                    DrawText3D('~INPUT_PICKUP~ - Put car in to garage', b.OpenGarageCoords)
-                                                    if IsControlJustReleased(0, 38) then
-                                                        local CheckVehicleOwner = Callback('real-house:CheckVehicleOwner', VehiclePlate)
-                                                        if CheckVehicleOwner then
-                                                            local CheckGarageSlot = Callback('real-house:CheckGarageSlot', k)
-                                                            if not CheckGarageSlot then
-                                                                print("Successfuly parked vehicle")
-                                                                TriggerServerEvent('real-house:PutVehicleToGarage', GetVehicle, k)
-                                                                TaskLeaveVehicle(Player, PlayerVehicle, 64)
-                                                                Citizen.Wait(2000)
-                                                                DeleteVehicle(PlayerVehicle)
-                                                            else
-                                                                print("Garage is full")
-                                                            end
-                                                        else
-                                                            print("This is not your vehicle")
-                                                        end
-                                                    end
-                                                else
-                                                    DrawText3D('~INPUT_PICKUP~ - Open Garage Menu', b.OpenGarageCoords)
-                                                    if IsControlJustReleased(0, 38) then
-                                                        OpenGarageMenu(k)
-                                                    end
+                                    if e == "owner" then
+                                        if next(v.Friends) then
+                                            for c, d in pairs(v.Friends) do
+                                                if f == playeridentity or d.owner == playeridentity then
+                                                    garagestatus = true
                                                 end
+                                            end
+                                        else
+                                            if f == playeridentity then
+                                                garagestatus = true
                                             end
                                         end
                                     end
                                 end
                             else
-                                local Distance = GetDistanceBetweenCoords(PlayerCoords, b.OpenGarageCoords, true)
-                                local playeridentity = ""
-                                if v.Garages.AllowGarage then
-                                    if Distance < v.Garages.Distance then
-                                        sleep = 4
-                                        if Config.Framework == 'newqb' or Config.Framework == 'oldqb' then
-                                            playeridentity = frameworkObject.Functions.GetPlayerData().citizenid
-                                        else
-                                            playeridentity = frameworkObject.PlayerData.identifier
-                                        end
+                                if next(v.Friends) then
+                                    for c, d in pairs(v.Friends) do
                                         if v.Owner == playeridentity or d.owner == playeridentity then
-                                            if IsPedInAnyVehicle(Player, false) then
-                                                local PlayerVehicle = GetVehiclePedIsIn(Player, false)
-                                                local VehiclePlate = GetVehicleNumberPlateText(PlayerVehicle)
-                                                local GetVehicle = GetVehicleProps(PlayerVehicle)
-                                                DrawText3D('~INPUT_PICKUP~ - Put car in to garage', b.OpenGarageCoords)
-                                                if IsControlJustReleased(0, 38) then
-                                                    local CheckVehicleOwner = Callback('real-house:CheckVehicleOwner', VehiclePlate)
-                                                    if CheckVehicleOwner then
-                                                        local CheckGarageSlot = Callback('real-house:CheckGarageSlot', k)
-                                                        if not CheckGarageSlot then
-                                                            print("Successfuly parked vehicle")
-                                                            TriggerServerEvent('real-house:PutVehicleToGarage', GetVehicle, k)
-                                                            TaskLeaveVehicle(Player, PlayerVehicle, 64)
-                                                            Citizen.Wait(2000)
-                                                            DeleteVehicle(PlayerVehicle)
-                                                        else
-                                                            print("Garage is full")
-                                                        end
-                                                    else
-                                                        print("This is not your vehicle")
-                                                    end
-                                                end
-                                            else
-                                                DrawText3D('~INPUT_PICKUP~ - Open Garage Menu', b.OpenGarageCoords)
-                                                if IsControlJustReleased(0, 38) then
-                                                    OpenGarageMenu(k)
-                                                end
-                                            end
+                                            garagestatus = true
                                         end
+                                    end
+                                else
+                                    if v.Owner == playeridentity then
+                                        garagestatus = true
                                     end
                                 end
                             end
-                        end
-                    else
-                        local Distance = GetDistanceBetweenCoords(PlayerCoords, b.OpenGarageCoords, true)
-                        local playeridentity = ""
-                        if v.Garages.AllowGarage then
-                            if Distance < v.Garages.Distance then
-                                sleep = 4
-                                if Config.Framework == 'newqb' or Config.Framework == 'oldqb' then
-                                    playeridentity = frameworkObject.Functions.GetPlayerData().citizenid
-                                else
-                                    playeridentity = frameworkObject.PlayerData.identifier
-                                end
-                                if v.Owner == playeridentity then
-                                    if IsPedInAnyVehicle(Player, false) then
-                                        local PlayerVehicle = GetVehiclePedIsIn(Player, false)
-                                        local VehiclePlate = GetVehicleNumberPlateText(PlayerVehicle)
-                                        local GetVehicle = GetVehicleProps(PlayerVehicle)
-                                        DrawText3D('~INPUT_PICKUP~ - Put car in to garage', b.OpenGarageCoords)
-                                        if IsControlJustReleased(0, 38) then
-                                            local CheckVehicleOwner = Callback('real-house:CheckVehicleOwner', VehiclePlate)
-                                            if CheckVehicleOwner then
-                                                local CheckGarageSlot = Callback('real-house:CheckGarageSlot', k)
-                                                if not CheckGarageSlot then
-                                                    print("Successfuly parked vehicle")
-                                                    TriggerServerEvent('real-house:PutVehicleToGarage', GetVehicle, k)
-                                                    TaskLeaveVehicle(Player, PlayerVehicle, 64)
-                                                    Citizen.Wait(2000)
-                                                    DeleteVehicle(PlayerVehicle)
-                                                else
-                                                    print("Garage is full")
-                                                end
+                            if garagestatus then
+                                if IsPedInAnyVehicle(Player, false) then
+                                    local PlayerVehicle = GetVehiclePedIsIn(Player, false)
+                                    local VehiclePlate = GetVehicleNumberPlateText(PlayerVehicle)
+                                    local GetVehicle = GetVehicleProps(PlayerVehicle)
+                                    DrawText3D('~INPUT_PICKUP~ - Put car in to garage', b.OpenGarageCoords)
+                                    if IsControlJustReleased(0, 38) then
+                                        local CheckVehicleOwner = Callback('real-house:CheckVehicleOwner', VehiclePlate)
+                                        if CheckVehicleOwner then
+                                            local CheckGarageSlot = Callback('real-house:CheckGarageSlot', k)
+                                            if not CheckGarageSlot then
+                                                print("Successfuly parked vehicle")
+                                                TriggerServerEvent('real-house:PutVehicleToGarage', GetVehicle, k)
+                                                TaskLeaveVehicle(Player, PlayerVehicle, 64)
+                                                Citizen.Wait(2000)
+                                                DeleteVehicle(PlayerVehicle)
                                             else
-                                                print("This is not your vehicle")
+                                                print("Garage is full")
                                             end
+                                        else
+                                            print("This is not your vehicle")
                                         end
-                                    else
-                                        DrawText3D('~INPUT_PICKUP~ - Open Garage Menu', b.OpenGarageCoords)
-                                        if IsControlJustReleased(0, 38) then
-                                            OpenGarageMenu(k)
-                                        end
+                                    end
+                                else
+                                    DrawText3D('~INPUT_PICKUP~ - Open Garage Menu', b.OpenGarageCoords)
+                                    if IsControlJustReleased(0, 38) then
+                                        OpenGarageMenu(k)
                                     end
                                 end
                             end
@@ -197,11 +133,13 @@ function WhenReady()
                     if Config.Houses[k].Owner ~= "" or Config.Houses[k].RentOwner.owner ~= "" then
                         if Config.Framework == 'newqb' or Config.Framework == 'oldqb' then
                             if type(Config.Houses[k].RentOwner) == "table" then
-                                for k, v in pairs(Config.Houses[k].RentOwner) do
-                                    if v.owner == frameworkObject.Functions.GetPlayerData().citizenid then
-                                        DrawText3D("~INPUT_PICKUP~ - Open Management", Config.Houses[k].ManagementCoords)
-                                        if IsControlJustReleased(0, 38) then
-                                            OpenManagementMenu(k)
+                                for a, b in pairs(Config.Houses[k].RentOwner) do                             
+                                    if a == "owner" then
+                                        if b == frameworkObject.Functions.GetPlayerData().citizenid then
+                                            DrawText3D("~INPUT_PICKUP~ - Open Management", Config.Houses[k].ManagementCoords)
+                                            if IsControlJustReleased(0, 38) then
+                                                OpenManagementMenu(k)
+                                            end
                                         end
                                     end
                                 end
@@ -215,11 +153,13 @@ function WhenReady()
                             end
                         else
                             if type(Config.Houses[k].RentOwner) == "table" then
-                                for k, v in pairs(Config.Houses[k].RentOwner) do
-                                    if v.owner == frameworkObject.PlayerData.identifier then
-                                        DrawText3D("~INPUT_PICKUP~ - Open Management", Config.Houses[k].ManagementCoords)
-                                        if IsControlJustReleased(0, 38) then
-                                            OpenManagementMenu(k)
+                                for a, b in pairs(Config.Houses[k].RentOwner) do
+                                    if a == "owner" then
+                                        if b == frameworkObject.PlayerData.identifier then
+                                            DrawText3D("~INPUT_PICKUP~ - Open Management", Config.Houses[k].ManagementCoords)
+                                            if IsControlJustReleased(0, 38) then
+                                                OpenManagementMenu(k)
+                                            end
                                         end
                                     end
                                 end
@@ -381,7 +321,7 @@ RegisterNetEvent('real-house:OpenHouseDoors', function(house, keydata)
             local Distance = #(PlayerCoords - b.Coords)
             local value = k * 1000
             local newvalue = a + value
-            if Distance < 1 then
+            if Distance < 2 then
                 if k == house and v.KeyData == keydata then
                     UnlockAnim()
                     DoorStatus = DoorSystemGetDoorState(newvalue) == 0 and 1 or 0
@@ -401,6 +341,31 @@ RegisterNetEvent('real-house:OpenHouseDoors', function(house, keydata)
     end
 end)
 
+RegisterCommand("CreateKey", function()
+    local Player = PlayerPedId()
+    local PlayerCoords = GetEntityCoords(Player)
+    local playeridentity = ""
+    if Config.Framework == 'newqb' or Config.Framework == 'oldqb' then
+        playeridentity = frameworkObject.Functions.GetPlayerData().citizenid
+    else
+        playeridentity = frameworkObject.PlayerData.identifier
+    end
+    for k, v in pairs(Config.Houses) do
+        for a, b in pairs(v.DoorCoords) do
+            local Distance = #(PlayerCoords - b.Coords)
+            if Distance < 2 then
+                if type(v.RentOwner) ~= "table" then
+                    if v.Owner == playeridentity then
+                        TriggerServerEvent('real-house:GetHouseKeys', k)
+                    else
+                        print("You are not owner of this house!")
+                    end
+                end
+            end
+        end
+    end
+end)
+
 RegisterNetEvent('real-house:Client:ChangeDoorStatus', function(house, status, number)
     DoorSystemSetDoorState(number, status.status, 0, 1)
     SetStateOfClosestDoorOfType(number, house.DoorCoords, 1, 0.0, true)
@@ -413,6 +378,14 @@ end)
 RegisterNetEvent('real-house:Client:SendSellRequest', function(data)
     SendNUIMessage({
         action = 'SellRequest',
+        data = data
+    })
+    SetNuiFocus(true, true)
+end)
+
+RegisterNetEvent('real-house:Client:SendRentRequest', function(data)
+    SendNUIMessage({
+        action = 'RentRequest',
         data = data
     })
     SetNuiFocus(true, true)
@@ -452,6 +425,14 @@ end)
 
 RegisterNUICallback('RequestRejected', function(data)
     TriggerServerEvent('real-house:RequestRejected', data)
+end)
+
+RegisterNUICallback('SendRentRequest', function(data)
+    TriggerServerEvent('real-house:SendRentRequest', data)
+end)
+
+RegisterNUICallback('AcceptedRentRequest', function(data)
+    TriggerServerEvent('real-house:AcceptedRentRequest', data)
 end)
 
 RegisterNUICallback('GetOutVehicle', function(data)

@@ -68,6 +68,7 @@ const app = Vue.createApp({
         senderpp: '',
         targetname: '',
         targetpp: '',
+        selectedrenttime: '',
     }),
 
     methods: {    
@@ -212,7 +213,16 @@ const app = Vue.createApp({
                 this.ClosePopup()
                 this.CloseUI()
             } else {
-                console.log("Tamam.")
+                postNUI('SendRentRequest', {
+                    house: this.houseid,
+                    time: this.vmodel,
+                    price: this.vmodeltwo,
+                    targetplayer: this.selectedid,
+                    targetname: this.selectedname,
+                    targetpp: this.selectedpp
+                })
+                this.ClosePopup()
+                this.CloseUI()
             }
         },
 
@@ -222,7 +232,9 @@ const app = Vue.createApp({
                 this.selecteddata = null
                 this.CloseUI()
             } else {
-                // Rent request
+                postNUI('AcceptedRentRequest', this.selecteddata)
+                this.selecteddata = null
+                this.CloseUI()
             }
         },
 
@@ -338,6 +350,18 @@ const app = Vue.createApp({
                 this.senderpp = data.data.playerpp
                 this.targetname = data.data.targetplayername
                 this.targetpp = data.data.targetpp
+                this.selecteddata = data.data
+            } else if (data.action == 'RentRequest') {
+                this.Show = true
+                this.popupscreen = 'request-screen'
+                this.housename = data.data.housename
+                this.houseid = data.data.house
+                this.houseprice = data.data.price
+                this.sendername = data.data.playername
+                this.senderpp = data.data.playerpp
+                this.targetname = data.data.targetplayername
+                this.targetpp = data.data.targetpp
+                this.selectedrenttime = data.data.time
                 this.selecteddata = data.data
             }
         });

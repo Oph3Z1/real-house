@@ -43,7 +43,7 @@ function LoadAllHouses()
         if rentowner then
             Config.Houses[k].Owner = v.owner
             Config.Houses[k].KeyData = v.keydata
-            Config.Houses[k].RentOwner = rentowner.owner
+            Config.Houses[k].RentOwner = rentowner
             Config.Houses[k].AllowRent = v.AllowRent
             Config.Houses[k].Friends = json.decode(v.friends)
             Config.Houses[k].HouseInformation.HouseName = info.HouseName
