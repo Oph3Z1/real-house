@@ -17,6 +17,7 @@ files {
 
 shared_script{
 	'config/config.lua',
+	'config/language.lua',
 	'GetFrameworkObject.lua',
 }
 

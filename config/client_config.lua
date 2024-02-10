@@ -19,3 +19,16 @@ function GiveVehicleKeys(plate, vehicle)
         -- Your code
     end
 end
+
+function OpenStash(house)
+    if Config.InventorySystem == 'qb-inventory' then
+        TriggerEvent("inventory:client:SetCurrentStash", 'HouseStash_' ..house)
+        TriggerServerEvent("inventory:server:OpenInventory", "stash", 'HouseStash_' ..house)
+    end
+end
+
+function OpenWardrobe()
+    if Config.WardrobeSystem == 'qb-clothing' then
+        TriggerEvent('qb-clothing:client:openOutfitMenu')
+    end
+end

@@ -74,6 +74,7 @@ const app = Vue.createApp({
         rentedtimeee: 0,
         sananemodel: '',
         adddayprice: 0,
+        language: '',
     }),
 
     methods: {    
@@ -263,12 +264,14 @@ const app = Vue.createApp({
         },
 
         ConfirmExtendTime() {
-            postNUI('ExtendTime', {
-                house: this.houseid,
-                time: this.sananemodel,
-                price: (this.sananemodel*this.adddayprice)
-            })
-            this.CloseUI()
+            if (this.sananemodel > 0) {
+                postNUI('ExtendTime', {
+                    house: this.houseid,
+                    time: this.sananemodel,
+                    price: (this.sananemodel*this.adddayprice)
+                })
+                this.CloseUI()
+            }
         },
 
         ClosePopup() {
@@ -398,6 +401,8 @@ const app = Vue.createApp({
                 this.targetpp = data.data.targetpp
                 this.selectedrenttime = data.data.time
                 this.selecteddata = data.data
+            } else if (data.action == 'setup') {
+                this.language = data.language
             }
         });
 

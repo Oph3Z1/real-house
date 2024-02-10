@@ -20,3 +20,18 @@ end)
 RegisterNetEvent('real-house:RefreshPhone', function(player) -- Refresh players phone
     TriggerClientEvent('qb-phone:RefreshPhone', player)
 end)
+
+function AddItem(Player, House, Key)
+    local keydata = {
+        house = House,
+        keydata = Key
+    }
+
+    if Config.Framework == 'newqb' or Config.Framework == 'oldqb' then
+        if Config.InventorySystem == 'qb-inventory' then
+            Player.Functions.AddItem('housekeys', 1, false, keydata)
+        end
+    else
+        -- ESX codes
+    end
+end

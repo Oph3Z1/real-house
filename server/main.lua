@@ -51,8 +51,6 @@ Citizen.CreateThread(function()
                 }
             end
             cb(DataTable)
-        else
-            print("Data not found")
         end
     end)
 
@@ -134,14 +132,10 @@ Citizen.CreateThread(function()
                 if Config.CheckVehicleOwner then
                     if citizenid == identifier then
                         cb(json.decode(database[1].mods))
-                    else
-                        print("This is not your vehicle")
                     end
                 else
                     cb(json.decode(database[1].mods))
                 end
-            else
-                print("Data not found")
             end
         else
             -- ESX codes
@@ -261,12 +255,8 @@ RegisterNetEvent('real-house:BuyHouse', function(data)
                     if HouseData[1].Owner ~= nil or HouseData[1].Owner ~= "" then
                         if PlayerBank >= Config.Houses[data].PurchasePrice or PlayerCash >= Config.Houses[data].PurchasePrice then
                             local key = 'key_' ..math.random(10000, 99999)
-                            ExecuteSql("UPDATE `real_house` SET `owner` = '"..Identifier.."', `keydata` = '"..key.."' WHERE id = '"..data.."'")
-                            local keydata = {
-                                house = data,
-                                keydata = key
-                            }
-                            Player.Functions.AddItem('housekeys', 1, false, keydata) 
+                            ExecuteSql("UPDATE `real_house` SET `owner` = '"..Identifier.."', `keydata` = '"..key.."' WHERE id = '"..data.."'")                            
+                            AddItem(Player, data, key)
                             Config.Houses[data].Owner = Identifier
                             Config.Houses[data].KeyData = key
                             if PlayerBank >= Config.Houses[data].PurchasePrice then
@@ -276,11 +266,9 @@ RegisterNetEvent('real-house:BuyHouse', function(data)
                             end
                             TriggerClientEvent('real-house:Update', -1, Config.Houses, ScriptLoaded)
                         else
-                            print("Not enough money")
+                            Config.Notification(Config.Language['not_enough_money'], 'error', true, src)
                         end
                     end
-                else
-                    print("Data not found")
                 end
             end
         else
@@ -289,11 +277,7 @@ RegisterNetEvent('real-house:BuyHouse', function(data)
                     if PlayerBank >= Config.Houses[data].PurchasePrice or PlayerCash >= Config.Houses[data].PurchasePrice then
                         local key = 'key_' ..math.random(10000, 99999)
                         ExecuteSql("UPDATE `real_house` SET `owner` = '"..Identifier.."', `keydata` = '"..key.."' WHERE id = '"..data.."'")
-                        local keydata = {
-                            house = data,
-                            keydata = key
-                        }
-                        Player.Functions.AddItem('housekeys', 1, false, keydata) 
+                        AddItem(Player, data, key)
                         Config.Houses[data].Owner = Identifier
                         Config.Houses[data].KeyData = key
                         if PlayerBank >= Config.Houses[data].PurchasePrice then
@@ -303,11 +287,9 @@ RegisterNetEvent('real-house:BuyHouse', function(data)
                         end
                         TriggerClientEvent('real-house:Update', -1, Config.Houses, ScriptLoaded)
                     else
-                        print("Not enough money")
+                        Config.Notification(Config.Language['not_enough_money'], 'error', true, src)
                     end
                 end
-            else
-                print("Data not found")
             end
         end                    
     else
@@ -332,11 +314,7 @@ RegisterNetEvent('real-house:RentHouse', function(data)
                 if PlayerBank >= Config.Houses[data].RentPrice or PlayerCash >= Config.Houses[data].RentPrice then
                     local key = 'key_' ..math.random(10000, 99999)
                     ExecuteSql("UPDATE `real_house` SET `keydata` = '"..key.."' WHERE id = '"..data.."'")
-                    local keydata = {
-                        house = data,
-                        keydata = key
-                    }
-                    Player.Functions.AddItem('housekeys', 1, false, keydata) 
+                    AddItem(Player, data, key)
                     RenterTable = {
                         owner = Identifier,
                         date = os.time() + (Config.RentTime * 24 * 60 * 60),
@@ -354,11 +332,9 @@ RegisterNetEvent('real-house:RentHouse', function(data)
                     end
                     TriggerClientEvent('real-house:Update', -1, Config.Houses, ScriptLoaded)
                 else
-                    print("Not enough money")
+                    Config.Notification(Config.Language['not_enough_money'], 'error', true, src)
                 end
             end
-        else
-            print("Data not found")
         end
     else
         -- ESX codes
@@ -479,8 +455,6 @@ RegisterNetEvent('real-house:CheckPayment', function()
                 end
             end
         end
-    else
-        print("Data not found")
     end
 end)
 
@@ -492,8 +466,6 @@ RegisterNetEvent('real-house:PutVehicleToGarage', function(vehicle, house)
         local data = ExecuteSql("SELECT * FROM `real_house` WHERE `id` = '"..house.."'")
         if #data > 0 then
             ExecuteSql("UPDATE `player_vehicles` SET `garage` = '"..house.."', `mods` = '"..json.encode(vehicle).."', `state` = '"..tonumber(1).."', `ownername` = '"..PlayerName.."', `ownerpfp` = '"..pfp.."' WHERE plate = '"..vehicle.plate.."'")
-        else
-            print("Data not found")
         end
     else
         -- ESX codes
@@ -526,7 +498,7 @@ RegisterNetEvent('real-house:AddGarageSlot', function(data)
                         TriggerClientEvent('real-house:Update', -1, Config.Houses, ScriptLoaded)
                         Player.Functions.RemoveMoney('cash', tonumber(data.price))
                     else
-                        print("Not enough money")
+                        Config.Notification(Config.Language['not_enough_money'], 'error', true, src)
                     end
                 else
                     if tonumber(PlayerBank) >= tonumber(data.price) then
@@ -537,14 +509,12 @@ RegisterNetEvent('real-house:AddGarageSlot', function(data)
                         TriggerClientEvent('real-house:Update', -1, Config.Houses, ScriptLoaded)
                         Player.Functions.RemoveMoney('bank', tonumber(data.price))
                     else
-                        print("Not enough money")
+                        Config.Notification(Config.Language['not_enough_money'], 'error', true, src)
                     end
                 end
-            else
-                print("Data not found")
             end
         else
-            print("You'r slot is max")
+            Config.Notification(Config.Language['maximum_slot'], 'error', true, src)
         end
     else
         local Player = frameworkObject.GetPlayerFromId(src)
@@ -562,7 +532,7 @@ RegisterNetEvent('real-house:AddGarageSlot', function(data)
                         TriggerClientEvent('real-house:Update', -1, Config.Houses, ScriptLoaded)
                         Player.RemoveMoney(tonumber(data.price))
                     else
-                        print("Not enough money")
+                        Config.Notification(Config.Language['not_enough_money'], 'error', true, src)
                     end
                 else
                     if tonumber(PlayerBank) >= tonumber(data.price) then
@@ -573,14 +543,12 @@ RegisterNetEvent('real-house:AddGarageSlot', function(data)
                         TriggerClientEvent('real-house:Update', -1, Config.Houses, ScriptLoaded)
                         Player.removeAccountMoney("bank", tonumber(data.price))
                     else
-                        print("Not enough money")
+                        Config.Notification(Config.Language['not_enough_money'], 'error', true, src)
                     end
                 end
-            else
-                print("Data not found")
             end
         else
-            print("You'r slot is max")
+            Config.Notification(Config.Language['maximum_slot'], 'error', true, src)
         end
     end
 end)
@@ -617,11 +585,7 @@ RegisterNetEvent('real-house:AddFriend', function(cb)
         TriggerClientEvent('real-house:Event:OpenManagementMenu', src, tonumber(cb.house))
         if Config.Framework == 'newqb' or Config.Framework == 'oldqb' then
             local Player = frameworkObject.Functions.GetPlayer(cb.playerid)
-            local keydata = {
-                house = tonumber(cb.house),
-                keydata = Config.Houses[tonumber(cb.house)].KeyData
-            }
-            Player.Functions.AddItem('housekeys', 1, false, keydata) 
+            AddItem(Player, tonumber(cb.house), Config.Houses[tonumber(cb.house)].KeyData)
         else
             -- ESX codes
         end
@@ -672,7 +636,7 @@ RegisterNetEvent('real-house:SendSellRequest', function(data)
             }
             TriggerClientEvent('real-house:Client:SendSellRequest', targetsrc, SendData)
         else
-            print("You are not owner of this house")
+            Config.Notification(Config.Language['not_owner'], 'error', true, src)
         end
     end
 end)
@@ -698,17 +662,13 @@ RegisterNetEvent('real-house:AcceptedSellRequest', function(data)
                     Config.Houses[tonumber(data.house)].Owner = GetIdentifier(tonumber(data.targetplayer))
                     Config.Houses[tonumber(data.house)].KeyData = NewKey
                     Config.Houses[tonumber(data.house)].Friends = {}
-                    local keydata = {
-                        house = tonumber(data.house),
-                        keydata = NewKey
-                    }
-                    TargetPlayer.Functions.AddItem('housekeys', 1, false, keydata) 
+                    AddItem(TargetPlayer, tonumber(data.house), NewKey)
                     TriggerClientEvent('real-house:Update', -1, Config.Houses, ScriptLoaded)
-                    print("You are the new owner of this house")
-                    print("Player accepted your request and you got the money. You are no longer owner of this house")
+                    Config.Notification(Config.Language['new_owner'], 'success', true, tonumber(data.targetplayer))
+                    Config.Notification(Config.Language['sold_house_to_player'], 'success', true, tonumber(data.player))
                 else
-                    print("Not enough money")
-                    print("Target player had no money")
+                    Config.Notification(Config.Language['not_enough_money'], 'error', true, tonumber(data.targetplayer))
+                    Config.Notification(Config.Language['targetplayer_not_enough_money'], 'error', true, tonumber(data.player))
                 end
             end
         else
@@ -739,14 +699,14 @@ RegisterNetEvent('real-house:SendRentRequest', function(data)
             }
             TriggerClientEvent('real-house:Client:SendRentRequest', targetsrc, SendData)
         else
-            print("You are not owner of this house")
+            Config.Notification(Config.Language['not_owner'], 'error', true, src)
         end
     end
 end)
 
 RegisterNetEvent('real-house:RequestRejected', function(data)
     local sendersrc = tonumber(data.player)
-    print("Send notify to sender about rejected request")
+    Config.Notification(Config.Language['request_rejected'], 'error', true, sendersrc)
 end)
 
 RegisterNetEvent('real-house:AcceptedRentRequest', function(data)
@@ -766,11 +726,6 @@ RegisterNetEvent('real-house:AcceptedRentRequest', function(data)
                         ExecuteSql("UPDATE `player_vehicles` SET `garage` = 'pillboxgarage', `state` = '"..tonumber(1).."', `ownername` = '', `ownerpfp` = '' WHERE citizenid = '"..v.owner.."'")
                     end
                     ExecuteSql("UPDATE `player_vehicles` SET `garage` = 'pillboxgarage', `state` = '"..tonumber(1).."', `ownername` = '', `ownerpfp` = '' WHERE citizenid = '"..GetIdentifier(tonumber(data.player)).."'")
-                    local keydata = {
-                        house = tonumber(data.house),
-                        keydata = NewKey
-                    }
-                    -- local sananeakplioc = os.time() + (tonumber(data.time) * 24 * 60 * 60) --> original
                     local sananeakplioc = os.time() + (tonumber(data.time) * 24 * 60 * 60)
                     local RenterTable = {
                         owner = GetIdentifier(tonumber(data.targetplayer)),
@@ -780,12 +735,13 @@ RegisterNetEvent('real-house:AcceptedRentRequest', function(data)
                     Config.Houses[tonumber(data.house)].KeyData = NewKey
                     Config.Houses[tonumber(data.house)].Friends = {}
                     ExecuteSql("UPDATE `real_house` SET `rentowner` = '"..json.encode(RenterTable).."', `keydata` = '"..NewKey.."', friends = '{}' WHERE id = '"..tonumber(data.house).."'")
-                    TargetPlayer.Functions.AddItem('housekeys', 1, false, keydata)
+                    AddItem(TargetPlayer, tonumber(data.house), NewKey)
                     TriggerClientEvent('real-house:Update', -1, Config.Houses, ScriptLoaded)
-                    print("ok")
+                    Config.Notification(Config.Language['new_renter'], 'success', true, tonumber(data.targetplayer))
+                    Config.Notification(Config.Language['rented_house_to_player'], 'success', true, tonumber(data.player))
                 else
-                    print("Not enough money")
-                    print("Target player had no money")
+                    Config.Notification(Config.Language['not_enough_money'], 'error', true, tonumber(data.targetplayer))
+                    Config.Notification(Config.Language['targetplayer_not_enough_money'], 'error', true, tonumber(data.player))
                 end
             end
         else
@@ -801,15 +757,11 @@ RegisterNetEvent('real-house:GetHouseKeys', function(house)
         local currentkeydata = data[1].keydata
         if currentkeydata == nil or currentkeydata == "" then
             local NewKey = 'key_' ..math.random(10000, 99999)
-            local keydata = {
-                house = tonumber(house),
-                keydata = NewKey
-            }
             Config.Houses[tonumber(house)].KeyData = NewKey
             ExecuteSql("UPDATE `real_house` SET `keydata` = '"..NewKey.."' WHERE id = '"..tonumber(house).."'")
             if Config.Framework == 'newqb' or Config.Framework == 'oldqb' then
                 local Player = frameworkObject.Functions.GetPlayer(src)
-                Player.Functions.AddItem('housekeys', 1, false, keydata)
+                AddItem(Player, tonumber(house), NewKey)
             else
                 -- ESX codes
             end
@@ -837,9 +789,9 @@ RegisterNetEvent('real-house:SellHouse', function(data)
             end
             TriggerClientEvent('real-house:Update', -1, Config.Houses, ScriptLoaded)
             TriggerClientEvent('real-house:TeleportPlayerOutside', src, tonumber(data.house))
-            print("Successfully sold the house")
+            Config.Notification(Config.Language['sold_house'], 'success', true, src)
         else
-            print("You are not owner of this house")
+            Config.Notification(Config.Language['not_owner'], 'error', true, src)
         end
     end
 end)
@@ -850,24 +802,53 @@ RegisterNetEvent('real-house:CopyHouseKeys', function(house)
     local PlayerMoney = GetPlayerMoneyOnline(src, 'bank')
     if #data > 0 then
         if PlayerMoney >= Config.CopyKeyPrice then
-            local keydata = {
-                house = house,
-                keydata = data[1].keydata
-            }
             if Config.Framework == 'newqb' or Config.Framework == 'oldqb' then
                 local Player = frameworkObject.Functions.GetPlayer(src)
                 Player.Functions.RemoveMoney('bank', Config.CopyKeyPrice)
                 Citizen.Wait(500)
-                Player.Functions.AddItem('housekeys', 1, false, keydata)
+                AddItem(Player, house, data[1].keydata)
             else
                 local Player = frameworkObject.GetPlayerFromId(scr)
                 Player.removeAccountMoney('bank', Config.CopyKeyPrice)
                 -- Add Item - ESX codes
             end        
-            print("Successfully copied house keys")
+            Config.Notification(Config.Language['copied_house_keys'], 'success', true, src)
         else
-            print("Not enough money")
+            Config.Notification(Config.Language['not_enough_money'], 'error', true, src)
         end
+    end
+end)
+
+RegisterNetEvent('real-house:ExtendTime', function(data)
+    local src = source
+    local database = ExecuteSql("SELECT * FROM `real_house` WHERE id = '"..data.house.."'")
+    local PlayerMoney = GetPlayerMoneyOnline(src, 'bank')
+    if #database > 0 then
+        if tonumber(PlayerMoney) >= tonumber(data.price) then
+            local rentowner = json.decode(database[1].rentowner)
+            rentowner.date += (tonumber(data.time) * 24 * 60 * 60)
+            ExecuteSql("UPDATE `real_house` SET `rentowner` = '"..json.encode(rentowner).."' WHERE id = '"..data.house.."'")
+            if Config.Framework == 'newqb' or Config.Framework == 'oldqb' then
+                local Player = frameworkObject.Functions.GetPlayer(src)
+                Player.Functions.RemoveMoney('bank', tonumber(data.price))
+            else
+                local Player = frameworkObject.GetPlayerFromId(scr)
+                Player.removeAccountMoney('bank', tonumber(data.price))
+            end
+        else
+            Config.Notification(Config.Language['not_enough_money'], 'error', true, src)
+        end
+    end
+end)
+
+RegisterNetEvent('real-house:StashLockStatus', function(house, v, state)
+    local src = source
+    Config.Houses[house].Stash[v].Lock = state
+    TriggerClientEvent('real-house:UpdateStashStatus', -1, house, v, state)
+    if state == not locked then
+        Config.Notification(Config.Language['locked_stash'], 'success', true, src)
+    else
+        Config.Notification(Config.Language['unlocked_stash'], 'success', true, src)
     end
 end)
 
@@ -877,15 +858,11 @@ function GetOfflinePlayerName(identifier)
         if data then
             local player = json.decode(data[1].charinfo)
             return player.firstname .. ' ' .. player.lastname
-        else
-            print("Data not found")
         end
     else
         local data = ExecuteSql("SELECT * FROM `users` WHERE `identifier` = '"..identifier.."'")
         if data then
             return data.firstname .. ' ' .. data.lastname
-        else
-            print("Data not found")
         end
     end
 end

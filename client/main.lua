@@ -9,6 +9,10 @@ Citizen.CreateThread(function()
     Citizen.Wait(1500)
     LoadDoorStatus()
     WhenReady()
+    SendNUIMessage({
+        action = 'setup',
+        language = Config.Language
+    })
 end)
 
 Citizen.CreateThread(function()
@@ -22,7 +26,7 @@ Citizen.CreateThread(function()
                 if Distance < 2 then
                     if not MenuStatus then
                         sleep = 4
-                        DrawText3D('~INPUT_PICKUP~ - Open House Menu', v.HouseCoords)
+                        DrawText3D(Config.Language['open_buy_menu'], v.HouseCoords)
                         if IsControlJustReleased(0, 38) then
                             OpenBuyMenu(k, false)
                             MenuStatus = true
@@ -88,26 +92,26 @@ function WhenReady()
                                     local PlayerVehicle = GetVehiclePedIsIn(Player, false)
                                     local VehiclePlate = GetVehicleNumberPlateText(PlayerVehicle)
                                     local GetVehicle = GetVehicleProps(PlayerVehicle)
-                                    DrawText3D('~INPUT_PICKUP~ - Put car in to garage', b.OpenGarageCoords)
+                                    DrawText3D(Config.Language['put_car_in_to_garage'], b.OpenGarageCoords)
                                     if IsControlJustReleased(0, 38) then
                                         local CheckVehicleOwner = Callback('real-house:CheckVehicleOwner', VehiclePlate)
                                         if CheckVehicleOwner then
                                             local CheckGarageSlot = Callback('real-house:CheckGarageSlot', k)
                                             if not CheckGarageSlot then
-                                                print("Successfuly parked vehicle")
+                                                Config.Notification(Config.Language['parked_vehicle'], 'success', false)
                                                 TriggerServerEvent('real-house:PutVehicleToGarage', GetVehicle, k)
                                                 TaskLeaveVehicle(Player, PlayerVehicle, 64)
                                                 Citizen.Wait(2000)
                                                 DeleteVehicle(PlayerVehicle)
                                             else
-                                                print("Garage is full")
+                                                Config.Notification(Config.Language['garage_is_full'], 'error', false)
                                             end
                                         else
-                                            print("This is not your vehicle")
+                                            Config.Notification(Config.Language['not_your_vehicle'], 'error', false)
                                         end
                                     end
                                 else
-                                    DrawText3D('~INPUT_PICKUP~ - Open Garage Menu', b.OpenGarageCoords)
+                                    DrawText3D(Config.Language['open_garage_menu'], b.OpenGarageCoords)
                                     if IsControlJustReleased(0, 38) then
                                         OpenGarageMenu(k)
                                     end
@@ -141,7 +145,7 @@ function WhenReady()
                             for a, b in pairs(Config.Houses[k].RentOwner) do                          
                                 if a == "owner" then
                                     if tostring(b) == tostring(playeridentity) then
-                                        DrawText3D("~INPUT_PICKUP~ - Open Management", Config.Houses[k].ManagementCoords)
+                                        DrawText3D(Config.Language['open_management_menu'], Config.Houses[k].ManagementCoords)
                                         if IsControlJustReleased(0, 38) then
                                             if Config.Houses[k].Owner == "" then
                                                 OpenManagementMenu(k, true)
@@ -154,7 +158,7 @@ function WhenReady()
                             end
                         else
                             if tostring(Config.Houses[k].Owner) == tostring(playeridentity) then
-                                DrawText3D("~INPUT_PICKUP~ - Open Management", Config.Houses[k].ManagementCoords)
+                                DrawText3D(Config.Language['open_management_menu'], Config.Houses[k].ManagementCoords)
                                 if IsControlJustReleased(0, 38) then
                                     OpenManagementMenu(k, false)
                                 end
@@ -290,9 +294,9 @@ Citizen.CreateThread(function()
                     local DoorStatusText = ''
                     DoorStatus = DoorSystemGetDoorState(newvalue) == 0 and 1 or 0
                     if DoorStatus == 0 then
-                        DoorStatusText = 'Locked'
+                        DoorStatusText = Config.Language['locked']
                     else 
-                        DoorStatusText = 'Unlocked'
+                        DoorStatusText = Config.Language['unlocked']
                     end
                     if v.Owner ~= "" then
                         DrawText3D(DoorStatusText, b.Coords)
@@ -319,18 +323,82 @@ RegisterNetEvent('real-house:OpenHouseDoors', function(house, keydata)
                     UnlockAnim()
                     DoorStatus = DoorSystemGetDoorState(newvalue) == 0 and 1 or 0
                     if DoorStatus == 1 then
-                        DoorStatusText = 'Locked'
-                        print('Door locked')
+                        DoorStatusText = Config.Language['locked']
+                        Config.Notification(Config.Language['locked_door'], 'success', false)
                     else
-                        DoorStatusText = 'Unlocked'
-                        print('Door unlocked')
+                        DoorStatusText = Config.Language['Unlocked']
+                        Config.Notification(Config.Language['unlocked_door'], 'success', false)
                     end
                     TriggerServerEvent('real-house:ChangeDoorStatus', b, DoorStatus, newvalue)
                 else
-                    print("Wrong keys")
+                    Config.Notification(Config.Language['wrong_key'], 'error', false)
                 end
             end
         end
+
+        for c, d in pairs(v.Stash) do
+            local Distance = #(PlayerCoords - d.Coords)
+            if Distance < 2 then
+                if k == house and v.KeyData == keydata then
+                    UnlockAnim()
+                    if not d.Lock then
+                        TriggerServerEvent('real-house:StashLockStatus', k, c, not d.Lock)
+                    else
+                        TriggerServerEvent('real-house:StashLockStatus', k, c, not d.Lock)
+                    end
+                else
+                    Config.Notification(Config.Language['wrong_key'], 'error', false)
+                end
+            end
+        end
+    end
+end)
+
+Citizen.CreateThread(function()
+    local text = ""
+    while true do
+        local sleep = 2000
+        local PlayerCoords = GetEntityCoords(PlayerPedId())
+        for k, v in pairs(Config.Houses) do
+            for a, b in pairs(v.Stash) do
+                local Distance = #(PlayerCoords - b.Coords)
+                if Distance < 2 then
+                    sleep = 4
+                    if b.Lock then
+                        text = Config.Language['locked']
+                    else
+                        text = Config.Language['unlocked']
+                    end
+                    DrawText3D(text, b.Coords)
+                    if IsControlJustReleased(0, 38) then
+                        if not b.Lock then
+                            OpenStash(k)
+                        end
+                    end
+                end
+            end
+        end
+        Citizen.Wait(sleep)
+    end
+end)
+
+Citizen.CreateThread(function()
+    while true do
+        local sleep = 2000
+        local PlayerCoords = GetEntityCoords(PlayerPedId())
+        for k, v in pairs(Config.Houses) do
+            for a, b in pairs(v.Wardrobe) do
+                local Distance = #(PlayerCoords - b.Coords)
+                if Distance < 2 then
+                    sleep = 4
+                    DrawText3D(Config.Language['open_wardrobe'], b.Coords)
+                    if IsControlJustReleased(0, 38) then
+                        OpenWardrobe()
+                    end
+                end
+            end
+        end
+        Citizen.Wait(sleep)
     end
 end)
 
@@ -351,7 +419,7 @@ RegisterCommand("CreateKey", function()
                     if v.Owner == playeridentity then
                         TriggerServerEvent('real-house:GetHouseKeys', k)
                     else
-                        print("You are not owner of this house!")
+                        Config.Notification(Config.Language['not_owner'], 'error', false)
                     end
                 end
             end
@@ -387,6 +455,10 @@ end)
 RegisterNetEvent('real-house:TeleportPlayerOutside', function(house)
     local Coords = Config.Houses[house].HouseCoords
     SetEntityCoords(PlayerPedId(), Coords.x, Coords.y, Coords.z, true, false, true, false)
+end)
+
+RegisterNetEvent('real-house:UpdateStashStatus', function(house, v, state)
+    Config.Houses[house].Stash[v].Lock = state
 end)
 
 RegisterNUICallback('BuyNormalHouse', function(data)
@@ -450,7 +522,7 @@ RegisterNUICallback('GetOutVehicle', function(data)
             end
             SetPedIntoVehicle(PlayerPedId(), Car, -1)
             TriggerServerEvent('real-house:UpdatePlayerGarage', 0, data.plate)
-            print("Successfully got the car")
+            Config.Notification(Config.Language['took_out_vehicle'], 'success', false)
             if Config.GiveVehicleKeys then
                 GiveVehicleKeys(data.plate, Car)
             end
@@ -472,7 +544,7 @@ RegisterNUICallback('CopyHouseKeys', function(data)
 end)
 
 RegisterNUICallback('ExtendTime', function(data)
-    -- Extend time codes
+    TriggerServerEvent('real-house:ExtendTime', data)
 end)
 
 RegisterNUICallback('CloseUI', function()

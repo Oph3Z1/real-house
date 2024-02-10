@@ -21,7 +21,7 @@
                 <div class="wrapper-upper">
                     <div class="player-information">
                         <img class="warpper-pfp" :src="pfp">
-                        <span class="wrapper-welcome-text">Welcome To The Home Menu</span>
+                        <span class="wrapper-welcome-text">{{ language['welcome'] }}</span>
                         <span class="wrapper-player-name">{{ playername }}</span>
                     </div>
                     <div class="player-money">
@@ -41,18 +41,18 @@
                         <img :src="housebg">
                     </div>
                     <div class="house-name-contianer">
-                        <span>HOUSE NAME</span>
+                        <span>{{ language['house_name'] }}</span>
                         <div class="hnc-container"> <span> {{ housename }} </span> </div>
                     </div>
                     <div class="house-price-container">
-                        <span>HOUSE PRICE</span>
+                        <span>{{ language['house_price'] }}</span>
                         <div class="hpc-container"> <span> {{'$' + PE3D(houseprice)}} </span> </div>
                     </div>
                     <div class="house-garage-container">
-                        <span>GARAGE</span>
+                        <span>{{ language['garage'] }}</span>
                         <div class="hgc-container">
                             <span> 
-                                Garage Available
+                                {{ language['garage_available'] }}
                                 <svg xmlns="http://www.w3.org/2000/svg" width="35" height="32" viewBox="0 0 35 32" fill="none">
                                     <g filter="url(#filter0_d_11_57)">
                                       <path d="M11.5782 16.771L15.122 20.3148L23.7284 11.7084" stroke="#9CFE6E" stroke-width="2.02503"/>
@@ -74,17 +74,17 @@
                         </div>
                     </div>
                     <div class="garage-amount-container">
-                        <span>GARAGE SLOT</span>
+                        <span>{{ language['garage_slot'] }}</span>
                         <div class="gac-container"> <span> {{garageslot + ' SLOT'}} </span> </div>
                     </div>
                     <div class="house-description-container"> 
-                        <span>HOUSE DESCRIPTION</span>
+                        <span>{{ language['house_description'] }}</span>
                         <div class="hdc-container">
                             <span> {{housedescription}} </span>
                         </div>
                     </div>
-                    <div class="buy-house-button" @click="BuyHouse()"> BUY HOUSE </div>
-                    <div class="rent-house-button" v-if="!rented" @click="RentHouse()"> RENT HOUSE</div>
+                    <div class="buy-house-button" @click="BuyHouse()"> {{ language['buy_house'] }} </div>
+                    <div class="rent-house-button" v-if="!rented" @click="RentHouse()"> {{ language['rent_house'] }}</div>
                     <div class="house-rented-container" v-else>
                         <div class="rented-player-information">
                             <img :src="renterpp">
@@ -101,14 +101,14 @@
                 <div class="garage-upper">
                     <div class="garage-player-information">
                         <img class="garage-pfp" :src="pfp">
-                        <span class="garage-welcome-text">Welcome To The Home Menu</span>
+                        <span class="garage-welcome-text">{{ language['welcome_to_garage'] }}</span>
                         <span class="garage-player-name">{{ playername }}</span>
                     </div>
                     <div class="garage-slot-container">
                         <img src="img/houseslot.png" class="garage-slot-icon">
                         <span>{{ currentslot + '/' + maxslot }}</span>
                         <div class="line"></div>
-                        <div class="garage-add-slot-button" @click="popupscreen = 'add-slot'"> ADD SLOT </div>
+                        <div class="garage-add-slot-button" @click="popupscreen = 'add-slot'"> {{ language['add_slot'] }} </div>
                     </div>
                     <div class="garage-player-money">
                         <div class="gpm-left">
@@ -134,26 +134,26 @@
                         <div class="garage-car-owner">
                             <img :src="v.ownerpfp">
                             <span>{{ v.ownername }}</span>
-                            <p>Vehicle Owner</p>
+                            <p>{{ language['vehicle_owner'] }}</p>
                         </div>
-                        <div class="take-out-vehicle" @click="GetOutVehicle(v.plate)"> TAKE OUT </div>
+                        <div class="take-out-vehicle" @click="GetOutVehicle(v.plate)"> {{ language['take_out'] }} </div>
                     </div>
                 </div>
                 <div class="garage-add-slot-container" v-if="popupscreen == 'add-slot'">
                     <div class="add-slot-container">
                         <div class="add-slot">
-                            <h1>GARAGE ADD SLOT</h1>
+                            <h1>{{ language['garage_add_slot'] }}</h1>
                             <div class="as-slot-quantity">
-                                <span>SLOT QUANTITY</span>
+                                <span>{{ language['slot_quantity'] }}</span>
                                 <input type="number" v-model="slotinput" pattern="/^-?\d+\.?\d*$/">
                             </div>
                             <div class="as-slot-price">
-                                <span>SLOT PRICE</span>
+                                <span>{{ language['slot_price'] }}</span>
                                 <div> <span>{{'$ ' + CalculateTotalSlotPrice()}}</span> </div>
                             </div>
-                            <div class="add-slot-pay-with-cash" @click="BuySlot('cash')">PAY WITH CASH</div>
-                            <div class="add-slot-pay-with-bank" @click="BuySlot('card')">PAY WITH CARD</div>
-                            <div class="close-add-slot-screen" @click="popupscreen = false">CANCEL</div>
+                            <div class="add-slot-pay-with-cash" @click="BuySlot('cash')">{{ language['pay_with_cash'] }}</div>
+                            <div class="add-slot-pay-with-bank" @click="BuySlot('card')">{{ language['pay_with_bank'] }}</div>
+                            <div class="close-add-slot-screen" @click="popupscreen = false">{{ language['cancel'] }}</div>
                         </div>
                     </div>
                 </div>
@@ -162,7 +162,7 @@
                 <div class="management-upper">
                     <div class="management-player-information">
                         <img class="management-pfp" :src="pfp">
-                        <span class="management-welcome-text">Welcome To The Home Menu</span>
+                        <span class="management-welcome-text">{{ language['welcome_to_management'] }}</span>
                         <span class="management-player-name">{{ playername }}</span>
                     </div>
                     <div class="management-player-money">
@@ -175,15 +175,15 @@
                             <span class="mplayer-cash-balance">{{'$ ' + playercash}}</span>
                         </div>
                     </div>
-                    <div class="management-extend-time" @click="ChangeScreens(false, 'rent-settings')" v-if="rented == true"> RENT SETTINGS </div>
+                    <div class="management-extend-time" @click="ChangeScreens(false, 'rent-settings')" v-if="rented == true"> {{ language['rent_settings'] }} </div>
                 </div>
                 <div class="management-lower">
                     <div class="mhouse-img-container">
                         <img :src="housemngimg"> <!-- 966 x 252 -->
                     </div>
                     <div class="house-friends">
-                        <span>HOUSE FRIENDS</span>
-                        <div class="hf-header"> <span>Friends List</span> </div>
+                        <span>{{ language['house_friends'] }}</span>
+                        <div class="hf-header"> <span>{{ language['friends_list'] }}</span> </div>
                         <div class="hf-container">
                             <div class="friends-item" v-for="(data, index) in friends" :key="index">
                                 <img :src="data.pp" class="fi-icon">
@@ -193,8 +193,8 @@
                         </div>
                     </div>
                     <div class="sell-rent-house-nearby-players">
-                        <span>NEARBY PLAYERS SETTINGS</span>
-                        <div class="srh-header"> <span>Nearby Players</span> </div>
+                        <span>{{ language['nearby_players'] }}</span>
+                        <div class="srh-header"> <span>{{ language['neraby_player'] }}</span> </div>
                         <div class="srh-container">
                             <div class="nearby-players" v-for="data in nerabyplayers" :key="data.id">
                                 <img :src="data.pp" class="np-icon">
@@ -205,10 +205,10 @@
                         </div>
                     </div>
                     <div class="allow-rent-container">  <!-- DO NOT OPEN THIS -->
-                        <span>HOUSE SETTINGS</span>
-                        <div class="arc-header"> <span>Settings</span> </div>
-                        <div class="arc-container" @click="SellHouse()"> <span>Sell house for - </span><span style="margin-left: 5.55vw; color: red;">{{ PE3D(sellhouseratioprice) }}</span> </div>
-                        <div class="arc-container2" @click="CopyHouseKeys()"> <span>Copy house keys for - </span><span style="margin-left: 7.8vw; color: red;">{{ PE3D(copykeyprice) }}</span> </div>
+                        <span>{{ language['hosue_settings'] }}</span>
+                        <div class="arc-header"> <span>{{ language['settings'] }}</span> </div>
+                        <div class="arc-container" @click="SellHouse()"> <span>{{ language['sell_house'] }} </span><span style="margin-left: 5.55vw; color: red;">{{ PE3D(sellhouseratioprice) }}</span> </div>
+                        <div class="arc-container2" @click="CopyHouseKeys()"> <span>{{ language['copy_house_keys'] }} </span><span style="margin-left: 7.8vw; color: red;">{{ PE3D(copykeyprice) }}</span> </div>
                         <!-- <div class="allow-rent-button" @click="ChangeRentallowStatus(true)" :style=" {border: rentallowed == true ? '1px solid white' : '',} "> YES </div>
                         <div class="dont-allow-rent" @click="ChangeRentallowStatus(false)" :style=" {border: rentallowed == false ? '1px solid white' : '',} "> NO </div>
                         <div v-if="rentallowed">
@@ -221,21 +221,21 @@
                 <div class="sell-rent-house-popupscreen" v-if="page == 'house-management' && popupscreen == 'sellrenthouse'">
                     <div class="sell-rent-house-container">
                         <div class="srhc">
-                            <h1>RENT OR SELL?</h1>
-                            <div class="srhc-rent-option" @click="ChangePopup('rent')" :style="{ opacity: rentsellhouseoption == 'rent' ? 1 : 0.36 }">RENT HOUSE</div>
-                            <div class="srhc-sell-option" @click="ChangePopup('sell')" :style="{ opacity: rentsellhouseoption == 'sell' ? 1 : 0.36 }">SELL HOUSE</div>
+                            <h1>{{ language['rent_or_sell'] }}</h1>
+                            <div class="srhc-rent-option" @click="ChangePopup('rent')" :style="{ opacity: rentsellhouseoption == 'rent' ? 1 : 0.36 }">{{ language['rent'] }}</div>
+                            <div class="srhc-sell-option" @click="ChangePopup('sell')" :style="{ opacity: rentsellhouseoption == 'sell' ? 1 : 0.36 }">{{ language['sell'] }}</div>
                             <div class="rent-option" v-if="rentsellhouseoption == 'rent'">
-                                <span class="ro-text1">RENT TIME</span>
+                                <span class="ro-text1">{{ language['rent_time'] }}</span>
                                 <input type="number" class="ro-time" placeholder="1 (Days)" v-model="vmodel">
-                                <span class="ro-text2">RENT PRICE</span>
+                                <span class="ro-text2">{{ language['rent_price'] }}</span>
                                 <input type="number" class="ro-price" placeholder="$ 1.000" v-model="vmodeltwo">
                             </div>
                             <div class="sell-option" v-if="rentsellhouseoption == 'sell'">
-                                <span class="so-text">HOUSE PRICE</span>
+                                <span class="so-text">{{ language['house_price'] }}</span>
                                 <input type="number" class="so-price" placeholder="$ 1.000" v-model="vmodeltwo">
                             </div>
-                            <div class="srhc-confirm" :style="{background: rentsellhouseoption === 'sell' ? '#D83771' : '#3778D6'}" @click="SellRentHouse()">CONFIRM</div>
-                            <div class="srhc-cancel" @click="ClosePopup()">CANCEL</div>
+                            <div class="srhc-confirm" :style="{background: rentsellhouseoption === 'sell' ? '#D83771' : '#3778D6'}" @click="SellRentHouse()">{{ language['confirm'] }}</div>
+                            <div class="srhc-cancel" @click="ClosePopup()">{{ language['cancel'] }}</div>
                         </div>
                     </div>
                 </div>
@@ -244,7 +244,7 @@
                 <div class="rent-upper">
                     <div class="rent-player-information">
                         <img class="rent-pfp" :src="pfp">
-                        <span class="rent-welcome-text">Welcome To The Home Menu</span>
+                        <span class="rent-welcome-text">{{ language['welcome_to_rentsettings'] }}</span>
                         <span class="rent-player-name">{{ playername }}</span>
                     </div>
                     <div class="rent-player-money">
@@ -261,19 +261,19 @@
                 <div class="rent-lower">
                     <img :src="housesecondimg">
                     <div class="rl-housename">
-                        <span>HOUSE NUMBER</span>
+                        <span>{{ language['house_number'] }}</span>
                         <div> <span>{{'House ' + houseid}}</span> </div>
                     </div>
                     <div class="rl-new-rent-time">
-                        <span>HOW LONG DO YOU WANT TO EXTEND THE TIME?</span>
+                        <span>{{ language['how_long'] }}</span>
                         <input type="number" placeholder="24 (DAYS)" v-model="sananemodel">
                     </div>
                     <div class="house-price">
-                        <span>HOUSE PRICE</span>
+                        <span>{{ language['house_price'] }}</span>
                         <div> <span>{{'$ ' + (adddayprice*sananemodel)}}</span> </div>
                     </div>
-                    <div class="extend-time" @click="ConfirmExtendTime()">EXTEND TIME</div>
-                    <div class="rent-settings-cancel" @click="ChangeScreens('house-management', false)">CANCEL</div>
+                    <div class="extend-time" @click="ConfirmExtendTime()">{{ language['extend_time'] }}</div>
+                    <div class="rent-settings-cancel" @click="ChangeScreens('house-management', false)">{{ language['cancel'] }}</div>
                     <span class="rent-time-remaining">{{'End date: ' + rentedtimeee}}</span>
                 </div>
             </div>
@@ -285,34 +285,34 @@
                             <span class="rs-welcome-text"></span>
                             <span class="rs-player-name">{{ sendername }}</span>
                         </div>
-                        <span class="ru-text">REQUEST</span>
+                        <span class="ru-text">{{ language['request'] }}</span>
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="20" viewBox="0 0 29 25" fill="none">
                             <path d="M14.5138 24.9959C14.1574 24.9968 13.8073 24.9025 13.4997 24.7228C13.192 24.543 12.9379 24.2843 12.7638 23.9734L0.762535 2.98468C0.591541 2.68312 0.501133 2.34259 0.500034 1.99593C0.500685 1.67624 0.577965 1.36136 0.725391 1.07769C0.872818 0.79402 1.0861 0.549826 1.34735 0.365575C1.60861 0.181325 1.91023 0.0623875 2.22693 0.0187332C2.54362 -0.0249212 2.86617 0.00797971 3.16753 0.114678L13.1613 3.53343C13.2602 3.56711 13.346 3.63092 13.4068 3.71589C13.4675 3.80086 13.5001 3.90272 13.5 4.00718L13.5 12.9959C13.4997 13.133 13.5276 13.2687 13.582 13.3946C13.6363 13.5204 13.716 13.6338 13.8159 13.7275C13.9159 13.8213 14.0341 13.8935 14.1632 13.9397C14.2923 13.9859 14.4295 14.005 14.5663 13.9959C14.8234 13.9733 15.0625 13.8543 15.2357 13.6628C15.4088 13.4714 15.5032 13.2216 15.5 12.9634L15.5 4.01593C15.4998 3.91163 15.5323 3.80988 15.5928 3.72492C15.6533 3.63997 15.7389 3.57608 15.8375 3.54218L25.8375 0.112179C26.2207 -0.0213933 26.6355 -0.0352424 27.0267 0.0724709C27.418 0.180184 27.7672 0.404363 28.028 0.715238C28.2888 1.02611 28.4489 1.40898 28.487 1.81298C28.5251 2.21699 28.4394 2.62303 28.2413 2.97718L16.255 23.9772C16.0811 24.2861 15.8282 24.5432 15.5223 24.7222C15.2163 24.9012 14.8683 24.9957 14.5138 24.9959Z" fill="#7C7C7C"/>
                         </svg>
                         <div class="request-receiver">
                             <img class="rr-pfp" :src="targetpp">
-                            <span class="rr-welcome-text">Welcome To Request Menu</span>
+                            <span class="rr-welcome-text">{{ language['welcome_to_requestmenu'] }}</span>
                             <span class="rr-player-name">{{ targetname }}</span>
                         </div>
                     </div>
                     <div class="sr-housename">
-                        <span>HOUSE NAME</span>
+                        <span>{{ language['house_name'] }}</span>
                         <div> <span>{{ housename }}</span> </div>
                     </div>
                     <div class="sr-housenumber">
-                        <span>HOUSE NUMBER</span>
+                        <span>{{ language['house_number'] }}</span>
                         <div> <span>{{ houseid }}</span> </div>
                     </div>
                     <div class="sr-housetime" v-if="popupscreen == 'request-screen'">
-                        <span>HOUSE RENT TIME</span>
+                        <span>{{ language['house_rent_time'] }}</span>
                         <div> <span>{{selectedrenttime + ' DAYS'}}</span> </div>
                     </div>
                     <div class="sr-houseprice" :style="{ width: popupscreen === 'request-screen' ? '45%' : '95%' }">
-                        <span>HOUSE PRICE</span>
+                        <span>{{ language['house_price'] }}</span>
                         <div> <span>{{ '$ ' + houseprice }}</span> </div>
                     </div>
-                    <div class="sr-accept" @click="AcceptedRequest()">Accept</div>
-                    <div class="sr-decline" @click="RejectRequest()">Decline</div>
+                    <div class="sr-accept" @click="AcceptedRequest()">{{ language['accept'] }}</div>
+                    <div class="sr-decline" @click="RejectRequest()">{{ language['decline'] }}</div>
                 </div>
             </div>
         </div>

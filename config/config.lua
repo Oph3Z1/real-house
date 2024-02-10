@@ -20,10 +20,30 @@ Config.VehicleKeySystem = 'qb-vehiclekeys' -- qb-vehiclekeys, qs-vehiclekeys, wa
 
 Config.CheckVehicleOwner = true
 
+Config.WardrobeSystem = 'qb-clothing'
+
+Config.InventorySystem = 'qb-inventory' -- qb-inventory,
+
 Config.CheckRentStatus = {
     Hour = 00,
     Minute = 42
 }
+
+Config.Notification = function(msg, type, server, src)
+    if server then
+        if Config.Framework == 'newqb' or Config.Framework == 'oldqb' then
+            TriggerClientEvent('QBCore:Notify', src, msg, type, 3000)
+        else
+            TriggerClientEvent('esx:showNotification', src, msg)
+        end
+    else
+        if Config.Framework == 'newqb' or Config.Framework == 'oldqb' then
+            TriggerEvent('QBCore:Notify', msg, type, 3000)
+        else
+            TriggerEvent('esx:showNotification', msg)
+        end
+    end
+end
 
 Config.Houses = {
     [1] = {
@@ -57,11 +77,11 @@ Config.Houses = {
         },
 
         Stash = {
-            {Coords = vector3(1, 1, 1), Lock = true}
+            {Coords = vector3(1320.85, -594.69, 76.63), Lock = true},
         },
 
         Wardrobe = {
-            {Coords =  vector3(1, 1, 1)}
+            {Coords =  vector3(1320.18, -584.32, 76.58)}
         },
         
         Garages = {

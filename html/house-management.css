@@ -625,7 +625,7 @@
 
 .rl-new-rent-time input {
     background: rgba(217, 217, 217, 0.04);
-    width: 94.5%;
+    width: 100%;
     height: 58.5%;
     bottom: 0;
     left: 0;
@@ -635,6 +635,7 @@
     font-size: 1.2vh;
     font-weight: 600;
     padding-left: 1.3vh;
+    padding-right: 1.3vh;
     border-radius: .4vh;
     position: absolute;
 }
