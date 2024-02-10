@@ -1,7 +1,7 @@
 Config = {}
 CodeReal = {}
 
-Config.Framework = 'newqb' -- newesx, oldesx, newqb, oldqb
+Config.Framework = 'newesx' -- newesx, oldesx, newqb, oldqb
 Config.MySQL = 'oxmysql' -- oxmysql, ghamattimysql, mysql-async | Don't forget to edit fxmanifest.lua
 Config.Drawtext = 'qb-target' -- qb-target, drawtext
 
@@ -22,7 +22,7 @@ Config.CheckVehicleOwner = true
 
 Config.WardrobeSystem = 'qb-clothing'
 
-Config.InventorySystem = 'qb-inventory' -- qb-inventory,
+Config.InventorySystem = 'ox_inventory' -- qb-inventory, ox_inventory
 
 Config.CheckRentStatus = {
     Hour = 00,

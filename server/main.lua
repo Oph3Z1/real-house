@@ -256,7 +256,7 @@ RegisterNetEvent('real-house:BuyHouse', function(data)
                         if PlayerBank >= Config.Houses[data].PurchasePrice or PlayerCash >= Config.Houses[data].PurchasePrice then
                             local key = 'key_' ..math.random(10000, 99999)
                             ExecuteSql("UPDATE `real_house` SET `owner` = '"..Identifier.."', `keydata` = '"..key.."' WHERE id = '"..data.."'")                            
-                            AddItem(Player, data, key)
+                            AddItem(Player, data, key, src)
                             Config.Houses[data].Owner = Identifier
                             Config.Houses[data].KeyData = key
                             if PlayerBank >= Config.Houses[data].PurchasePrice then
@@ -277,7 +277,7 @@ RegisterNetEvent('real-house:BuyHouse', function(data)
                     if PlayerBank >= Config.Houses[data].PurchasePrice or PlayerCash >= Config.Houses[data].PurchasePrice then
                         local key = 'key_' ..math.random(10000, 99999)
                         ExecuteSql("UPDATE `real_house` SET `owner` = '"..Identifier.."', `keydata` = '"..key.."' WHERE id = '"..data.."'")
-                        AddItem(Player, data, key)
+                        AddItem(Player, data, key, src)
                         Config.Houses[data].Owner = Identifier
                         Config.Houses[data].KeyData = key
                         if PlayerBank >= Config.Houses[data].PurchasePrice then
@@ -293,7 +293,51 @@ RegisterNetEvent('real-house:BuyHouse', function(data)
             end
         end                    
     else
-        -- ESX codes
+        local Player = frameworkObject.GetPlayerFromId(src)
+        if not Config.AllowToBuyMoreThanOne then
+            local CheckPlayerData = ExecuteSql("SELECT `owner` FROM `real_house` WHERE `owner` = '"..Identifier.."'")
+            if #CheckPlayerData < 1 then
+                if #HouseData > 0 then
+                    if HouseData[1].Owner ~= nil or HouseData[1].Owner ~= "" then
+                        if PlayerBank >= Config.Houses[data].PurchasePrice or PlayerCash >= Config.Houses[data].PurchasePrice then
+                            local key = 'key_' ..math.random(10000, 99999)
+                            ExecuteSql("UPDATE `real_house` SET `owner` = '"..Identifier.."', `keydata` = '"..key.."' WHERE id = '"..data.."'")                            
+                            AddItem(Player, data, key, src)
+                            Config.Houses[data].Owner = Identifier
+                            Config.Houses[data].KeyData = key
+                            if PlayerBank >= Config.Houses[data].PurchasePrice then
+                                Player.removeAccountMoney('bank', Config.Houses[data].PurchasePrice)
+                            elseif PlayerCash >= Config.Houses[data].PurchasePrice then
+                                Player.RemoveMoney(Config.Houses[data].PurchasePrice)
+                            end
+                            TriggerClientEvent('real-house:Update', -1, Config.Houses, ScriptLoaded)
+                        else
+                            Config.Notification(Config.Language['not_enough_money'], 'error', true, src)
+                        end
+                    end
+                end
+            end
+        else
+            if #HouseData > 0 then
+                if HouseData[1].Owner ~= nil or HouseData[1].Owner ~= "" then
+                    if PlayerBank >= Config.Houses[data].PurchasePrice or PlayerCash >= Config.Houses[data].PurchasePrice then
+                        local key = 'key_' ..math.random(10000, 99999)
+                        ExecuteSql("UPDATE `real_house` SET `owner` = '"..Identifier.."', `keydata` = '"..key.."' WHERE id = '"..data.."'")                            
+                        AddItem(Player, data, key, src)
+                        Config.Houses[data].Owner = Identifier
+                        Config.Houses[data].KeyData = key
+                        if PlayerBank >= Config.Houses[data].PurchasePrice then
+                            Player.removeAccountMoney('bank', Config.Houses[data].PurchasePrice)
+                        elseif PlayerCash >= Config.Houses[data].PurchasePrice then
+                            Player.RemoveMoney(Config.Houses[data].PurchasePrice)
+                        end
+                        TriggerClientEvent('real-house:Update', -1, Config.Houses, ScriptLoaded)
+                    else
+                        Config.Notification(Config.Language['not_enough_money'], 'error', true, src)
+                    end
+                end
+            end
+        end
     end
 end)
 
@@ -904,13 +948,20 @@ function GetPlayerMoneyOnline(source, type)
 end
 
 function LoadFramework()
-    if Config.Framework == 'newqb' or Config.Framework == 'oldqb' then
+    if Config.InventorySystem == 'qb-inventory' then
         frameworkObject.Functions.CreateUseableItem('housekeys', function(source, itemData)
             TriggerClientEvent('real-house:OpenHouseDoors', source, itemData.info.house, itemData.info.keydata)
             TriggerClientEvent('real-house:Update', -1, Config.Houses, ScriptLoaded)
         end)
-    else
-        -- ESX codes
+    elseif Config.InventorySystem == 'ox_inventory' then
+        exports('housekeys', function(event, item, inventory, slot, data)
+            if event == 'usingItem' then
+                local itemslot = exports.ox_inventory:GetSlot(inventory.id, slot)
+                local decode = itemslot.metadata
+                TriggerClientEvent('real-house:OpenHouseDoors', inventory.id, tonumber(decode.house), decode.keydata)
+                TriggerClientEvent('real-house:Update', -1, Config.Houses, ScriptLoaded)
+            end
+        end)
     end
 end
 
