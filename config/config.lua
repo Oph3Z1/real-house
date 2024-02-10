@@ -11,6 +11,9 @@ Config.AllowBuyHouseWhenRented = true
 Config.RentTime = 7 -- Days
 Config.SendMailToPlayer = false
 CodeReal.Bill = 'SwedenEstate'
+Config.SellHouseRatio = 2 -- 2 => 50% | Since 2 is written here, if the player sells the house, system will divide the normal price of the house by 2 and give it to the player.
+Config.CopyKeyPrice = 100
+Config.AddDayPrice = 100 -- If 100, when player want to extend rent time, 1 day = 100$
 
 Config.GiveVehicleKeys = true
 Config.VehicleKeySystem = 'qb-vehiclekeys' -- qb-vehiclekeys, qs-vehiclekeys, wasabi-carlock, cd_garage, custom | If you choose 'custom' you need to edit config/client_config.lua
@@ -18,8 +21,8 @@ Config.VehicleKeySystem = 'qb-vehiclekeys' -- qb-vehiclekeys, qs-vehiclekeys, wa
 Config.CheckVehicleOwner = true
 
 Config.CheckRentStatus = {
-    Hour = 12,
-    Minute = 00
+    Hour = 00,
+    Minute = 42
 }
 
 Config.Houses = {

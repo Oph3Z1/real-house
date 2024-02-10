@@ -69,6 +69,11 @@ const app = Vue.createApp({
         targetname: '',
         targetpp: '',
         selectedrenttime: '',
+        sellhouseratioprice: 0,
+        copykeyprice: 0,
+        rentedtimeee: 0,
+        sananemodel: '',
+        adddayprice: 0,
     }),
 
     methods: {    
@@ -244,11 +249,34 @@ const app = Vue.createApp({
             this.CloseUI()
         },
 
+        SellHouse() {
+            postNUI('SellHouse', {
+                house: this.houseid,
+                price: this.sellhouseratioprice
+            })
+            this.CloseUI()
+        },
+
+        CopyHouseKeys() {
+            postNUI('CopyHouseKeys', this.houseid)
+            this.CloseUI()
+        },
+
+        ConfirmExtendTime() {
+            postNUI('ExtendTime', {
+                house: this.houseid,
+                time: this.sananemodel,
+                price: (this.sananemodel*this.adddayprice)
+            })
+            this.CloseUI()
+        },
+
         ClosePopup() {
             this.popupscreen = false 
             this.rentsellhouseoption = false
             this.vmodel = ''
             this.vmodeltwo = ''
+            this.sananemodel = ''
         },
 
         GoBackToMain(type) {
@@ -279,6 +307,8 @@ const app = Vue.createApp({
             this.currentslot = 0
             this.maxslot = 0
             this.slotprice = 0
+            this.sellhouseratioprice = 0
+            this.sananemodel = ''
             postNUI('CloseUI')
         },
     },
@@ -340,6 +370,11 @@ const app = Vue.createApp({
                 this.nerabyplayers = data.nearbyplayers
                 this.housemngimg = data.houseimg
                 this.housesecondimg = data.housesecondimg
+                this.sellhouseratioprice = data.sellhouseprice
+                this.copykeyprice = data.copykeyprice
+                this.rented = data.rented
+                this.rentedtimeee = data.rentedtime
+                this.adddayprice = data.adddayprice
             } else if (data.action == 'SellRequest') {
                 this.Show = true
                 this.popupscreen = 'sell-request-screen'

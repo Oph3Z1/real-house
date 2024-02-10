@@ -207,6 +207,8 @@
                     <div class="allow-rent-container">  <!-- DO NOT OPEN THIS -->
                         <span>HOUSE SETTINGS</span>
                         <div class="arc-header"> <span>Settings</span> </div>
+                        <div class="arc-container" @click="SellHouse()"> <span>Sell house for - </span><span style="margin-left: 5.55vw; color: red;">{{ PE3D(sellhouseratioprice) }}</span> </div>
+                        <div class="arc-container2" @click="CopyHouseKeys()"> <span>Copy house keys for - </span><span style="margin-left: 7.8vw; color: red;">{{ PE3D(copykeyprice) }}</span> </div>
                         <!-- <div class="allow-rent-button" @click="ChangeRentallowStatus(true)" :style=" {border: rentallowed == true ? '1px solid white' : '',} "> YES </div>
                         <div class="dont-allow-rent" @click="ChangeRentallowStatus(false)" :style=" {border: rentallowed == false ? '1px solid white' : '',} "> NO </div>
                         <div v-if="rentallowed">
@@ -259,20 +261,20 @@
                 <div class="rent-lower">
                     <img :src="housesecondimg">
                     <div class="rl-housename">
-                        <span>HOUSE NAME</span>
-                        <div> <span>My New Home</span> </div>
+                        <span>HOUSE NUMBER</span>
+                        <div> <span>{{'House ' + houseid}}</span> </div>
                     </div>
                     <div class="rl-new-rent-time">
                         <span>HOW LONG DO YOU WANT TO EXTEND THE TIME?</span>
-                        <input type="number" placeholder="24 (HOURS)">
+                        <input type="number" placeholder="24 (DAYS)" v-model="sananemodel">
                     </div>
                     <div class="house-price">
                         <span>HOUSE PRICE</span>
-                        <div> <span>$ 100.000</span> </div>
+                        <div> <span>{{'$ ' + (adddayprice*sananemodel)}}</span> </div>
                     </div>
-                    <div class="extend-time">EXTEND TIME</div>
+                    <div class="extend-time" @click="ConfirmExtendTime()">EXTEND TIME</div>
                     <div class="rent-settings-cancel" @click="ChangeScreens('house-management', false)">CANCEL</div>
-                    <span class="rent-time-remaining">Remaining term of the lease: 7 Days - 3 Hours - 45 Minutes</span>
+                    <span class="rent-time-remaining">{{'End date: ' + rentedtimeee}}</span>
                 </div>
             </div>
             <div class="send-request-to-player" v-if="popupscreen == 'request-screen' || popupscreen == 'sell-request-screen'">

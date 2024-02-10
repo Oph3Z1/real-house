@@ -1206,3 +1206,48 @@
     font-weight: 600;
     position: absolute;
 }
+
+.arc-container {
+    background: rgba(217, 217, 217, 0.08);
+    width: 99.3%;
+    height: 14%;
+    top: 25%;
+    left: 0;
+    border: .1vh solid #515151;
+    border-radius: .3vh;
+    cursor: pointer;
+    position: absolute;
+}
+
+.arc-container span {
+    color: #A1A1A1;
+    font-size: 1.3vh;
+    font-weight: 600;
+    left: 1vh;
+    top: .9vh;
+    position: absolute;
+}
+
+.arc-container2 {
+    background: rgba(217, 217, 217, 0.08);
+    width: 99.3%;
+    height: 14%;
+    top: 43%;
+    left: 0;
+    border: .1vh solid #515151;
+    border-radius: .3vh;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+}
+
+.arc-container2 span {
+    color: #A1A1A1;
+    font-size: 1.3vh;
+    font-weight: 600;
+    left: 1vh;
+    top: .9vh;
+    position: absolute;
+}

@@ -128,47 +128,35 @@ function WhenReady()
             local PlayerCoords = GetEntityCoords(Player)
             for k, v in pairs(Config.Houses) do
                 local Distance = #(PlayerCoords - Config.Houses[k].ManagementCoords)
+                local playeridentity = ""
                 if Distance < 3 then
                     sleep = 4
                     if Config.Houses[k].Owner ~= "" or Config.Houses[k].RentOwner.owner ~= "" then
                         if Config.Framework == 'newqb' or Config.Framework == 'oldqb' then
-                            if type(Config.Houses[k].RentOwner) == "table" then
-                                for a, b in pairs(Config.Houses[k].RentOwner) do                             
-                                    if a == "owner" then
-                                        if b == frameworkObject.Functions.GetPlayerData().citizenid then
-                                            DrawText3D("~INPUT_PICKUP~ - Open Management", Config.Houses[k].ManagementCoords)
-                                            if IsControlJustReleased(0, 38) then
-                                                OpenManagementMenu(k)
+                            playeridentity = frameworkObject.Functions.GetPlayerData().citizenid
+                        else
+                            playeridentity = frameworkObject.PlayerData.identifier
+                        end
+                        if type(Config.Houses[k].RentOwner) == "table" then
+                            for a, b in pairs(Config.Houses[k].RentOwner) do                          
+                                if a == "owner" then
+                                    if tostring(b) == tostring(playeridentity) then
+                                        DrawText3D("~INPUT_PICKUP~ - Open Management", Config.Houses[k].ManagementCoords)
+                                        if IsControlJustReleased(0, 38) then
+                                            if Config.Houses[k].Owner == "" then
+                                                OpenManagementMenu(k, true)
+                                            else
+                                                OpenManagementMenu(k, false)
                                             end
                                         end
-                                    end
-                                end
-                            else
-                                if Config.Houses[k].Owner == frameworkObject.Functions.GetPlayerData().citizenid then
-                                    DrawText3D("~INPUT_PICKUP~ - Open Management", Config.Houses[k].ManagementCoords)
-                                    if IsControlJustReleased(0, 38) then
-                                        OpenManagementMenu(k)
                                     end
                                 end
                             end
                         else
-                            if type(Config.Houses[k].RentOwner) == "table" then
-                                for a, b in pairs(Config.Houses[k].RentOwner) do
-                                    if a == "owner" then
-                                        if b == frameworkObject.PlayerData.identifier then
-                                            DrawText3D("~INPUT_PICKUP~ - Open Management", Config.Houses[k].ManagementCoords)
-                                            if IsControlJustReleased(0, 38) then
-                                                OpenManagementMenu(k)
-                                            end
-                                        end
-                                    end
-                                end
-                            else
-                                if Config.Houses[k].Owner == frameworkObject.PlayerData.identifier then
-                                    DrawText3D("~INPUT_PICKUP~ - Open Management", Config.Houses[k].ManagementCoords)
-                                    if IsControlJustReleased(0, 38) then
-                                        OpenManagementMenu(k)
-                                    end
+                            if tostring(Config.Houses[k].Owner) == tostring(playeridentity) then
+                                DrawText3D("~INPUT_PICKUP~ - Open Management", Config.Houses[k].ManagementCoords)
+                                if IsControlJustReleased(0, 38) then
+                                    OpenManagementMenu(k, false)
                                 end
                             end
                         end
@@ -238,7 +226,7 @@ function OpenGarageMenu(k)
     SetNuiFocus(true, true)
 end
 
-function OpenManagementMenu(k)
+function OpenManagementMenu(k, status)
     local data = Callback('real-house:GetHouseData', k)
     SendNUIMessage({
         action = 'OpenManagement',
@@ -253,7 +241,12 @@ function OpenManagementMenu(k)
         nearbyplayers = GetNearbyPlayers(k),
         house = k,
         houseimg = Config.Houses[k].HouseInformation.housemanagementimg,
-        housesecondimg = Config.Houses[k].HouseInformation.rentsettingsbackground
+        housesecondimg = Config.Houses[k].HouseInformation.rentsettingsbackground,
+        sellhouseprice = Config.Houses[k].PurchasePrice / Config.SellHouseRatio,
+        copykeyprice = Config.CopyKeyPrice,
+        rented = status,
+        rentedtime = data.rentdate,
+        adddayprice = Config.AddDayPrice,
     })
     SetNuiFocus(true, true)
 end
@@ -372,7 +365,7 @@ RegisterNetEvent('real-house:Client:ChangeDoorStatus', function(house, status, n
 end)
 
 RegisterNetEvent('real-house:Event:OpenManagementMenu', function(k)
-    OpenManagementMenu(k)
+    OpenManagementMenu(k, false)
 end)
 
 RegisterNetEvent('real-house:Client:SendSellRequest', function(data)
@@ -389,6 +382,11 @@ RegisterNetEvent('real-house:Client:SendRentRequest', function(data)
         data = data
     })
     SetNuiFocus(true, true)
+end)
+
+RegisterNetEvent('real-house:TeleportPlayerOutside', function(house)
+    local Coords = Config.Houses[house].HouseCoords
+    SetEntityCoords(PlayerPedId(), Coords.x, Coords.y, Coords.z, true, false, true, false)
 end)
 
 RegisterNUICallback('BuyNormalHouse', function(data)
@@ -465,6 +463,18 @@ RegisterNUICallback('AddSlot', function(data)
     TriggerServerEvent('real-house:AddGarageSlot', data)
 end)
 
+RegisterNUICallback('SellHouse', function(data)
+    TriggerServerEvent('real-house:SellHouse', data)
+end)
+
+RegisterNUICallback('CopyHouseKeys', function(data)
+    TriggerServerEvent('real-house:CopyHouseKeys', tonumber(data))
+end)
+
+RegisterNUICallback('ExtendTime', function(data)
+    -- Extend time codes
+end)
+
 RegisterNUICallback('CloseUI', function()
     SetNuiFocus(false, false)
     MenuStatus = false
@@ -478,6 +488,14 @@ function UnlockAnim()
     TaskPlayAnim(PlayerPedId(), "anim@mp_player_intmenu@key_fob@", "fob_click", 8.0, 8.0, 1000, 1, 1, 0, 0, 0)
     Citizen.Wait(500)
     ClearPedTasks(PlayerPedId())
+end
+
+function GetLocalTime()
+    local time = GetGameTimer()
+    local year = GetClockYear()
+    local month = GetClockMonth()
+    local day = GetClockDayOfMonth()
+    return year, month, day
 end
 
 function Callback(name, payload)
