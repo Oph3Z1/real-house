@@ -20,9 +20,11 @@ Config.VehicleKeySystem = 'qb-vehiclekeys' -- qb-vehiclekeys, qs-vehiclekeys, wa
 
 Config.CheckVehicleOwner = true
 
-Config.WardrobeSystem = 'qb-clothing'
+Config.WardrobeSystem = 'qb-clothing' -- qb-clothing, fivem-appearance
 
 Config.InventorySystem = 'ox_inventory' -- qb-inventory, ox_inventory
+Config.HouseStashSlot = 50
+Config.HouseStashWeight = 250
 
 Config.CheckRentStatus = {
     Hour = 00,

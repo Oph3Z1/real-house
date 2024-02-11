@@ -27,19 +27,35 @@ function AddItem(Player, House, Key, src)
         keydata = Key
     }
 
-    if Config.InventorySystem == 'qb-inventory' then
-        Player.Functions.AddItem('housekeys', 1, false, keydata)
-    elseif Config.InventorySystem == 'ox_inventory' then
-        exports.ox_inventory:registerHook('createItem', function(payload)
-            local metadata = payload.metadata
-            if not metadata then return end
-            metadata.description = 'House NO: '..House
-            return metadata
-        end, {
-            itemFilter = {
-                housekeys = true
-            }
-        })
-        exports.ox_inventory:AddItem(src, 'housekeys', 1, keydata, 1)
+    if Config.Framework == 'newqb' or Config.Framework == 'oldqb' then
+        if Config.InventorySystem == 'qb-inventory' then
+            Player.Functions.AddItem('housekeys', 1, false, keydata)
+        elseif Config.InventorySystem == 'ox_inventory' then
+            exports.ox_inventory:registerHook('createItem', function(payload)
+                local metadata = payload.metadata
+                if not metadata then return end
+                metadata.description = 'House NO: '..House
+                return metadata
+            end, {
+                itemFilter = {
+                    housekeys = true
+                }
+            })
+            exports.ox_inventory:AddItem(src, 'housekeys', 1, keydata, 1)
+        end
+    else
+        if Config.InventorySystem == 'ox_inventory' then
+            exports.ox_inventory:registerHook('createItem', function(payload)
+                local metadata = payload.metadata
+                if not metadata then return end
+                metadata.description = 'House NO: '..House
+                return metadata
+            end, {
+                itemFilter = {
+                    housekeys = true
+                }
+            })
+            exports.ox_inventory:AddItem(src, 'housekeys', 1, keydata, 1)
+        end
     end
 end

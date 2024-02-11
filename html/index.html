@@ -126,9 +126,10 @@
                         <div class="gi-slot">
                             {{ k + 1 + '/' + currentslot }}
                         </div>
-                        <img :src="'https://docs.fivem.net/vehicles/'+v.vehicle+'.webp'" class="garage-car-icon">
+                        <img :src="'https://docs.fivem.net/vehicles/'+v.vehicle+'.webp'" class="garage-car-icon" v-if="framework == 'qb'">
+                        <img :src="'https://docs.fivem.net/vehicles/'+v.name+'.webp'" class="garage-car-icon" v-else>
                         <div class="garage-car-information">
-                            <span>{{ v.vehicle.toUpperCase() }}</span>
+                            <span>{{ (framework === 'esx' ? v.name.toUpperCase() : v.vehicle.toUpperCase()) }}</span>
                             <p>{{ v.plate }}</p>
                         </div>
                         <div class="garage-car-owner">

@@ -22,13 +22,23 @@ end
 
 function OpenStash(house)
     if Config.InventorySystem == 'qb-inventory' then
+        TriggerServerEvent("inventory:server:OpenInventory", "stash", 'HouseStash_' ..house, {
+            maxweight = Config.HouseStashWeight,
+            slots = Config.HouseStashSlot
+        })
         TriggerEvent("inventory:client:SetCurrentStash", 'HouseStash_' ..house)
-        TriggerServerEvent("inventory:server:OpenInventory", "stash", 'HouseStash_' ..house)
+    elseif Config.InventorySystem == 'ox_inventory' then
+        if exports.ox_inventory:openInventory('stash', "house_"..house) == false then
+            TriggerServerEvent('ox:loadStashes')
+            exports.ox_inventory:openInventory('stash', "house_"..house)
+        end
     end
 end
 
 function OpenWardrobe()
     if Config.WardrobeSystem == 'qb-clothing' then
         TriggerEvent('qb-clothing:client:openOutfitMenu')
+    elseif Config.WardrobeSystem == 'fivem-appearance' then
+        TriggerEvent("fivem-appearance:realhouse")
     end
 end

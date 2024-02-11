@@ -75,6 +75,7 @@ const app = Vue.createApp({
         sananemodel: '',
         adddayprice: 0,
         language: '',
+        framework: 'qb',
     }),
 
     methods: {    
@@ -358,6 +359,7 @@ const app = Vue.createApp({
                 this.maxslot = data.maxslot
                 this.slotprice = data.slotprice
                 this.playername = data.name
+                this.framework = data.framework
             } else if (data.action == 'OpenManagement') {
                 this.Show = true
                 this.page = 'house-management'

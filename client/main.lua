@@ -99,7 +99,7 @@ function WhenReady()
                                             local CheckGarageSlot = Callback('real-house:CheckGarageSlot', k)
                                             if not CheckGarageSlot then
                                                 Config.Notification(Config.Language['parked_vehicle'], 'success', false)
-                                                TriggerServerEvent('real-house:PutVehicleToGarage', GetVehicle, k)
+                                                TriggerServerEvent('real-house:PutVehicleToGarage', GetVehicle, k, GetDisplayNameFromVehicleModel(GetEntityModel(GetVehiclePedIsIn(Player))))
                                                 TaskLeaveVehicle(Player, PlayerVehicle, 64)
                                                 Citizen.Wait(2000)
                                                 DeleteVehicle(PlayerVehicle)
@@ -215,6 +215,12 @@ end
 
 function OpenGarageMenu(k)
     local data = Callback('real-house:GetGarageVehicles', k)
+    local framework
+    if Config.Framework == 'newqb' or Config.Framework == 'oldqb' then
+        framework = 'qb'
+    else
+        framework = 'esx'
+    end
     SendNUIMessage({
         action = 'OpenGarage',
         name = data.name,
@@ -225,7 +231,8 @@ function OpenGarageMenu(k)
         slotprice = Config.Houses[k].Garages.GarageSlotPrice,
         playerbank = data.playerbank,
         playercash = data.playercash,
-        house = k
+        house = k,
+        framework = framework
     })
     SetNuiFocus(true, true)
 end
@@ -560,14 +567,6 @@ function UnlockAnim()
     TaskPlayAnim(PlayerPedId(), "anim@mp_player_intmenu@key_fob@", "fob_click", 8.0, 8.0, 1000, 1, 1, 0, 0, 0)
     Citizen.Wait(500)
     ClearPedTasks(PlayerPedId())
-end
-
-function GetLocalTime()
-    local time = GetGameTimer()
-    local year = GetClockYear()
-    local month = GetClockMonth()
-    local day = GetClockDayOfMonth()
-    return year, month, day
 end
 
 function Callback(name, payload)
