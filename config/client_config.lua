@@ -39,6 +39,12 @@ function OpenWardrobe()
     if Config.WardrobeSystem == 'qb-clothing' then
         TriggerEvent('qb-clothing:client:openOutfitMenu')
     elseif Config.WardrobeSystem == 'fivem-appearance' then
-        TriggerEvent("fivem-appearance:realhouse")
+        exports['fivem-appearance']:startPlayerCustomization()
+    elseif Config.WardrobeSystem == 'illenium-appearance' then
+        TriggerEvent('illenium-appearance:client:openOutfitMenu')
+    elseif Config.WardrobeSystem == 'esx_skin' then
+        TriggerEvent('esx_skin:openSaveableMenu')
+    elseif Config.WardrobeSystem == 'custom' then
+        -- Your code
     end
 end

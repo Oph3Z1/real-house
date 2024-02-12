@@ -20,7 +20,7 @@ Config.VehicleKeySystem = 'qb-vehiclekeys' -- qb-vehiclekeys, qs-vehiclekeys, wa
 
 Config.CheckVehicleOwner = true
 
-Config.WardrobeSystem = 'qb-clothing' -- qb-clothing, fivem-appearance
+Config.WardrobeSystem = 'qb-clothing' -- qb-clothing, fivem-appearance, illenium-appearance, esx_skin, custom | If you choose 'custom' you need to edit config/client_config.lua
 
 Config.InventorySystem = 'ox_inventory' -- qb-inventory, ox_inventory
 Config.HouseStashSlot = 50
