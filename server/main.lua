@@ -208,9 +208,11 @@ Citizen.CreateThread(function()
         local allowrent = json.decode(data[1].allowrent)
         local rentowner = json.decode(data[1].rentowner)
         local date = ""
-        if next(rentowner) then
-            if rentowner.date then
-                date = os.date("%Y-%m-%d", rentowner.date)
+        if rentowner then
+            if next(rentowner) then
+                if rentowner.date then
+                    date = os.date("%Y-%m-%d", rentowner.date)
+                end
             end
         end
         if #data > 0 then
