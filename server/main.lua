@@ -25,8 +25,8 @@ Citizen.CreateThread(function()
         local src = source
         local DiscordProfilePicture = GetDiscordAvatar(src)
         local PlayerName = GetName(src)
-        local PlayerBank = GetPlayerMoneyOnline(src, 'cash')
-        local PlayerCash = GetPlayerMoneyOnline(src, 'bank')
+        local PlayerCash = GetPlayerMoneyOnline(src, 'cash')
+        local PlayerBank = GetPlayerMoneyOnline(src, 'bank')
         local data = ExecuteSql("SELECT * FROM `real_house` WHERE `id` = '"..k.."'")
         local DataTable = {}
         if data then
@@ -120,8 +120,8 @@ Citizen.CreateThread(function()
         local src = source
         local DiscordProfilePicture = GetDiscordAvatar(src)
         local PlayerName = GetName(src)
-        local PlayerBank = GetPlayerMoneyOnline(src, 'cash')
-        local PlayerCash = GetPlayerMoneyOnline(src, 'bank')
+        local PlayerCash = GetPlayerMoneyOnline(src, 'cash')
+        local PlayerBank = GetPlayerMoneyOnline(src, 'bank')
         local DataTable = {}
         if Config.Framework == 'newqb' or Config.Framework == 'oldqb' then
             local data = ExecuteSql("SELECT * FROM `player_vehicles` WHERE garage = '"..house.."'")
@@ -203,8 +203,8 @@ Citizen.CreateThread(function()
         local data = ExecuteSql("SELECT * FROM `real_house` WHERE id = '"..house.."'")
         local DiscordProfilePicture = GetDiscordAvatar(src)
         local PlayerName = GetName(src)
-        local PlayerBank = GetPlayerMoneyOnline(src, 'cash')
-        local PlayerCash = GetPlayerMoneyOnline(src, 'bank')
+        local PlayerBank = GetPlayerMoneyOnline(src, 'bank')
+        local PlayerCash = GetPlayerMoneyOnline(src, 'cash')
         local allowrent = json.decode(data[1].allowrent)
         local rentowner = json.decode(data[1].rentowner)
         local date = ""
