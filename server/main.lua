@@ -832,27 +832,31 @@ end)
 RegisterNetEvent('real-house:SendRentRequest', function(data)
     local src = source
     local targetsrc = data.targetplayer
-    local database = ExecuteSql("SELECT `houseinfo`, `owner` FROM `real_house` WHERE id = '"..tonumber(data.house).."'")
-    if #database > 0 then
-        local houseinfo = json.decode(database[1].houseinfo)
-        local houseowner = database[1].owner
-        if houseowner == GetIdentifier(src) then
-            local SendData = {
-                house = tonumber(data.house),
-                housename = houseinfo.HouseName,
-                player = src,
-                playername = GetName(src),
-                playerpp = GetDiscordAvatar(src),
-                targetplayer = targetsrc,
-                targetplayername = data.targetname,
-                targetpp = data.targetpp,
-                price = tonumber(data.price),
-                time = tonumber(data.time)
-            }
-            TriggerClientEvent('real-house:Client:SendRentRequest', targetsrc, SendData)
-        else
-            Config.Notification(Config.Language['not_owner'], 'error', true, src)
+    if Config.GiveRentSystem then
+        local database = ExecuteSql("SELECT `houseinfo`, `owner` FROM `real_house` WHERE id = '"..tonumber(data.house).."'")
+        if #database > 0 then
+            local houseinfo = json.decode(database[1].houseinfo)
+            local houseowner = database[1].owner
+            if houseowner == GetIdentifier(src) then
+                local SendData = {
+                    house = tonumber(data.house),
+                    housename = houseinfo.HouseName,
+                    player = src,
+                    playername = GetName(src),
+                    playerpp = GetDiscordAvatar(src),
+                    targetplayer = targetsrc,
+                    targetplayername = data.targetname,
+                    targetpp = data.targetpp,
+                    price = tonumber(data.price),
+                    time = tonumber(data.time)
+                }
+                TriggerClientEvent('real-house:Client:SendRentRequest', targetsrc, SendData)
+            else
+                Config.Notification(Config.Language['not_owner'], 'error', true, src)
+            end
         end
+    else
+        Config.Notification(Config.Language['give_rent_not_supported'], 'error', true, src)
     end
 end)
 
@@ -991,11 +995,12 @@ RegisterNetEvent('real-house:CopyHouseKeys', function(house)
             if Config.Framework == 'newqb' or Config.Framework == 'oldqb' then
                 local Player = frameworkObject.Functions.GetPlayer(src)
                 Player.Functions.RemoveMoney('bank', Config.CopyKeyPrice)
-                Citizen.Wait(500)
+                Citizen.Wait(100)
                 AddItem(Player, house, data[1].keydata, src)
             else
                 local Player = frameworkObject.GetPlayerFromId(src)
                 Player.removeAccountMoney('bank', Config.CopyKeyPrice)
+                Citizen.Wait(100)
                 AddItem(Player, house, data[1].keydata, src)
             end        
             Config.Notification(Config.Language['copied_house_keys'], 'success', true, src)

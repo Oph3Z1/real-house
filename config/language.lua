@@ -95,4 +95,5 @@ Config.Language = {
     ['copied_house_keys'] = "You successfully copied the house key!",
     ['locked_stash'] = "You locked the stash!",
     ['unlocked_stash'] = "You unlocked the stash!",
+    ['give_rent_not_supported'] = "The system to rent the house to another player is currently closed. If you want to turn it on, contact the server owner."
 }
