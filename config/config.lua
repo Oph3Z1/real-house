@@ -3,7 +3,6 @@ CodeReal = {}
 
 Config.Framework = 'newesx' -- newesx, oldesx, newqb, oldqb
 Config.MySQL = 'oxmysql' -- oxmysql, ghamattimysql, mysql-async | Don't forget to edit fxmanifest.lua
-Config.Drawtext = 'qb-target' -- qb-target, drawtext
 
 Config.AllowToBuyMoreThanOne = true -- If true, players can buy more than 1 house.
 Config.GiveRentSystem = true -- If you want to enable a system where players can rent houses to each other, set this true.
@@ -22,10 +21,10 @@ Config.CheckVehicleOwner = true -- If there is a friend of the house and this op
 Config.WardrobeSystem = 'qb-clothing' -- qb-clothing, fivem-appearance, illenium-appearance, esx_skin, custom | If you choose 'custom' you need to edit config/client_config.lua
 
 Config.InventorySystem = 'ox_inventory' -- qb-inventory, ox_inventory
-Config.HouseStashSlot = 50
-Config.HouseStashWeight = 250
+Config.HouseStashSlot = 50 -- Stash slot amount
+Config.HouseStashWeight = 250 -- Stash weight limit
 
-Config.CheckRentStatus = {
+Config.CheckRentStatus = { -- Check time for rented houses. For example, if you write 00:00 here, it will check every day at 00:00.
     Hour = 00,
     Minute = 42
 }

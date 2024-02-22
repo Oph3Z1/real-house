@@ -10,7 +10,7 @@ function GiveVehicleKeys(plate, vehicle)
     if Config.VehicleKeySystem == 'qb-vehiclekeys' then
         TriggerServerEvent("qb-vehiclekeys:server:AcquireVehicleKeys", plate)
     elseif Config.VehicleKeySystem == 'qs-vehiclekeys' then
-        exports["qs-vehiclekeys"]:GiveKeys(plate, model)
+        exports["qs-vehiclekeys"]:GiveKeys(plate, vehicle)
     elseif Config.VehicleKeySystem == 'wasabi-carlock' then
         exports.wasabi_carlock:GiveKey(plate)
     elseif Config.VehicleKeySystem == 'cd_garage' then
